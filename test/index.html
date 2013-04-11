@@ -9,11 +9,21 @@
     <div id="mocha"></div>
     <script src="lib/mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
+
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
-    <script>var expect = chai.expect</script>
+    <script>var should = chai.should;</script>
+    <script>var expect = chai.expect;</script>
+    <script>var assert = chai.assert;</script>
 
     <!-- include source files here... -->
+    <script>window.ENIGMA = {};</script>
+    <script src="scripts/reflector.js"></script>
+    <script src="scripts/rotor.js"></script>
+    <script src="scripts/plugboard.js"></script>
+    <script src="scripts/enigma.js"></script>
+    <script src="scripts/user-interface.js"></script>
+    <script src="scripts/main.js"></script>
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>

@@ -1,11 +1,22 @@
+/*jshint
+indent: 2
+*/
+
 /*global describe, it */
 'use strict';
 (function () {
-    describe('Give it some context', function () {
-        describe('maybe a bit more context here', function () {
-            it('should run here few assertions', function () {
 
-            });
-        });
+  describe('ENIGMA.EnigmaMachine', function () {
+
+    describe('#encipherString()', function () {
+
+      it('should encipher "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" as "bdzgowcxltksbtmcdlpbmuqofxyhcxtgyjflinhnxshiuntheorxpqpkovhcbubtzszsoostgotfsodbbzzlxlcyzxifgwfdzeeqibmgfjbwzfckpfmgbxqc"', function () {
+        var enigma = new ENIGMA.EnigmaMachine();
+
+        assert.equal(enigma.encipherString(
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
+          'bdzgowcxltksbtmcdlpbmuqofxyhcxtgyjflinhnxshiuntheorxpqpkovhcbubtzszsoostgotfsodbbzzlxlcyzxifgwfdzeeqibmgfjbwzfckpfmgbxqc');
+      });
     });
+  });
 })();

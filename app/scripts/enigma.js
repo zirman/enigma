@@ -63,8 +63,6 @@ strict: true
 
     plugboard.setLeftObj(rightRotor);
 
-    plugboard.setLetterSwap('a', 'e');
-
     this.getPlugboard = function () {
       return plugboard;
     }.bind(this);

@@ -41,13 +41,20 @@
             s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
 
+        <!-- build:js scripts/plugboard.js -->
+        <!-- build:js scripts/rotor.js -->
+        <!-- build:js scripts/reflector.js -->
+        <!-- build:js scripts/enigma.js -->
+        <!-- build:js scripts/user-interface.js -->
         <!-- build:js scripts/main.js -->
         <script src="components/jquery/jquery.js"></script>
+        <script>window.ENIGMA = {};</script>
+        <script src="scripts/plugboard.js"></script>
+        <script src="scripts/rotor.js"></script>
+        <script src="scripts/reflector.js"></script>
+        <script src="scripts/enigma.js"></script>
+        <script src="scripts/user-interface.js"></script>
         <script src="scripts/main.js"></script>
-        <!-- endbuild -->
-
-        <!-- build:js(.tmp) scripts/coffee.js -->
-        <script src="scripts/hello.js"></script>
         <!-- endbuild -->
 </body>
 </html>

@@ -17,16 +17,37 @@
     </head>
     <body>
         <div class="container">
-            <div class="hero-unit">
-                <h1>'Allo, 'Allo!</h1>
-                <p>You now have</p>
-                <ul>
-                    <li>HTML5 Boilerplate</li>
-                    <li>Twitter Bootstrap</li>
-                </ul>
-                <p>installed.</p>
-                <h3>Enjoy coding! - Yeoman</h3>
-            </div>
+           
+               <div id="userInputForm">
+                     <form action="#" id="userInputOutput" name="userInputOutput" method="post">
+                       <ul>
+                            <li>
+                                <h3>Type your message in the Decrypted box:</h3>
+                            </li>
+                            
+                            <li>
+                              <label for="decryptedMessage">Decrypted Message:</label>
+                                <input type="text" id="decryptedMessage" size="40" maxlength="250">
+                            </li>
+                            
+                            <li>
+                                <label for="encryptedMessage">Encrypted Message:</label>
+                                <input type="text" id="encryptedMessage" size="40" maxlength="250" readonly>
+                            </li>
+                            
+                         <li>
+                            	<input type="reset">
+                                <input type="submit" value="Submit">
+                            </li>
+                            
+                       </ul>
+                       
+                     </form>
+                   </div>
+                   
+               <!-- Canvas tag holding both the bg.jpg and steckerbrett_bg.png images -->
+              <canvas id="enigmaCanvas" width="720" height="1020"></canvas>
+               
         </div>
 
         <!--[if lt IE 7]>

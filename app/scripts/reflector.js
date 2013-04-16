@@ -1,20 +1,25 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 (function () {
   'use strict';
   var ns = window.ENIGMA;
 
-  ns.Reflector = function (right, rightObj) {
+  ns.Reflector = function (label, right, rightObj) {
+    label = label || 'B';
 
     if (!right) {
-      return new ns.ReflectorB();
+      return new ns.Reflector.ReflectorB();
     }
 
     rightObj = rightObj || null;
+
+    this.getLabel = function () {
+      return label;
+    }.bind(this);
+
+    this.getMapping = function () {
+      return right;
+    }.bind(this);
 
     this.getRightObj = function () {
       return rightObj;
@@ -29,7 +34,18 @@ strict: true
       return rightObj.goingRight(right[letter]);
     }.bind(this);
 
-    this.singleStep = function () {
+    this.traceLeft = function (letter, path) {
+      var letterOut = right[letter];
+
+      path.push({
+        obj: this,
+        ringRight: letter,
+        objRight: letter,
+        objLeft: letterOut,
+        ringLeft: letterOut
+      });
+
+      return rightObj.traceRight(letterOut, path);
     }.bind(this);
   };
 
@@ -64,7 +80,7 @@ strict: true
     };
 
     return function () {
-      return new ns.Reflector(reflectorB, rightObj);
+      return new ns.Reflector('B', reflectorB, rightObj);
     };
   }());
 
@@ -99,7 +115,7 @@ strict: true
     };
 
     return function () {
-      return new ns.Reflector(reflectorC, rightObj);
+      return new ns.Reflector('C', reflectorC, rightObj);
     };
   }());
 }());

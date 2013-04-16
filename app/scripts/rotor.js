@@ -1,15 +1,32 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 (function () {
   'use strict';
   var ns = window.ENIGMA;
+  var aCharCode = ('a').charCodeAt(0);
 
-  ns.Rotor = function (left, notches, ringSetting, windowSetting, leftObj,
-    rightObj) {
+  // returns the next consecutive letter, 'z' goes to 'a'
+  var nextLetter = function (letter) {
+    var l = letter.toLowerCase().charCodeAt(0) + 1;
+    return String.fromCharCode(((l - aCharCode) % 26) + aCharCode);
+  };
+
+  // ceasar shifts letter to right
+  var shiftRightLetter = function (letter, shift) {
+    var l = letter.toLowerCase().charCodeAt(0) - aCharCode;
+    var s = shift.toLowerCase().charCodeAt(0) - aCharCode;
+    return String.fromCharCode(((l + s) % 26) + aCharCode);
+  };
+
+  // ceasar shifts letter to left
+  var shiftLeftLetter = function (letter, shift) {
+    var l = letter.toLowerCase().charCodeAt(0) - aCharCode;
+    var s = shift.toLowerCase().charCodeAt(0) - aCharCode;
+    return String.fromCharCode(((l + 26 - s) % 26) + aCharCode);
+  };
+
+  ns.Rotor = function (label, left, notches, ringSetting, groundSetting,
+    leftObj, rightObj) {
 
     if (!left) {
       return new ns.Rotor.Rotor1();
@@ -17,7 +34,7 @@ strict: true
 
     notches = notches || 'q';
     ringSetting = ringSetting || 'a';
-    windowSetting = windowSetting || 'a';
+    groundSetting = groundSetting || 'a';
     leftObj = leftObj || null;
     rightObj = rightObj || null;
 
@@ -25,6 +42,7 @@ strict: true
     var right = {};
 
     (function () {
+
       for (var key in left) {
 
         if (left.hasOwnProperty(key)) {
@@ -32,6 +50,18 @@ strict: true
         }
       }
     }());
+
+    this.getLabel = function () {
+      return label;
+    }.bind(this);
+
+    this.getMapping = function () {
+      return left;
+    }.bind(this);
+
+    this.getNotches = function () {
+      return notches;
+    }.bind(this);
 
     this.getRingSetting = function () {
       return ringSetting;
@@ -41,12 +71,12 @@ strict: true
       ringSetting = newRingSetting;
     }.bind(this);
 
-    this.getWindowSetting = function () {
-      return windowSetting;
+    this.getGroundSetting = function () {
+      return groundSetting;
     }.bind(this);
 
-    this.setWindowSetting = function (newWindowSetting) {
-      windowSetting = newWindowSetting;
+    this.setGroundSetting = function (newGroundSetting) {
+      groundSetting = newGroundSetting;
     }.bind(this);
 
     this.getLeftObj = function () {
@@ -66,39 +96,83 @@ strict: true
     }.bind(this);
 
     this.goingLeft = function (letter) {
-      var shift = ns.shiftLeftLetter(windowSetting, ringSetting);
-      var rightSideLetter = ns.shiftRightLetter(letter, shift);
+      var shift = shiftLeftLetter(groundSetting, ringSetting);
+      var rightSideLetter = shiftRightLetter(letter, shift);
       var leftSideLetter = left[rightSideLetter];
-      var out = ns.shiftLeftLetter(leftSideLetter, shift);
+      var out = shiftLeftLetter(leftSideLetter, shift);
       return leftObj.goingLeft(out);
     }.bind(this);
 
     this.goingRight = function (letter) {
-      var shift = ns.shiftLeftLetter(windowSetting, ringSetting);
-      var leftSideLetter = ns.shiftRightLetter(letter, shift);
+      var shift = shiftLeftLetter(groundSetting, ringSetting);
+      var leftSideLetter = shiftRightLetter(letter, shift);
       var rightSideLetter = right[leftSideLetter];
-      var out = ns.shiftLeftLetter(rightSideLetter, shift);
+      var out = shiftLeftLetter(rightSideLetter, shift);
       return rightObj.goingRight(out);
     }.bind(this);
 
-    this.singleStep = function () {
+    this.traceLeft = function (letter, path) {
+      var shift = shiftLeftLetter(groundSetting, ringSetting);
+      var objRight = shiftRightLetter(letter, shift);
+      var objLeft = left[objRight];
+      var letterOut = shiftLeftLetter(objLeft, shift);
 
-      if (notches.indexOf(windowSetting) !== -1) {
+      path.push({
+        obj: this,
+        ringRight: letter,
+        objRight: objRight,
+        objLeft: objLeft,
+        ringLeft: letterOut
+      });
+
+      return leftObj.traceLeft(letterOut, path);
+    }.bind(this);
+
+    this.traceRight = function (letter, path) {
+      var shift = shiftLeftLetter(groundSetting, ringSetting);
+      var objLeft = shiftRightLetter(letter, shift);
+      var objRight = right[objLeft];
+      var letterOut = shiftLeftLetter(objRight, shift);
+
+      path.push({
+        obj: this,
+        ringRight: letterOut,
+        objRight: objRight,
+        objLeft: objLeft,
+        ringLeft: letter
+      });
+
+      return rightObj.traceRight(letterOut, path);
+    }.bind(this);
+
+    this.isOnNotch = function () {
+      return notches.indexOf(groundSetting) !== -1;
+    };
+
+    this.advanceGroundSetting = function () {
+      groundSetting = nextLetter(groundSetting);
+    }.bind(this);
+
+    /*
+    this.step = function () {
+
+      if (notches.indexOf(groundSetting) !== -1) {
         leftObj.singleStep();
       }
 
-      windowSetting = ns.nextLetter(windowSetting);
+      groundSetting = nextLetter(groundSetting);
     }.bind(this);
 
-    this.doubleStep = function () {
+    this.dubStep = function () {
 
-      if (notches.indexOf(windowSetting) !== -1) {
+      if (notches.indexOf(groundSetting) !== -1) {
         this.singleStep();
       }
-    };
+    }.bind(this);
+    */
   };
 
-  ns.Rotor.Rotor1 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor1 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor1 = {
@@ -133,12 +207,12 @@ strict: true
     var notches = 'q';
 
     return function () {
-      return new ns.Rotor(rotor1, notches, ringSetting, windowSetting,
+      return new ns.Rotor('I', rotor1, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor2 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor2 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor2 = {
@@ -173,12 +247,12 @@ strict: true
     var notches = 'e';
 
     return function () {
-      return new ns.Rotor(rotor2, notches, ringSetting, windowSetting,
+      return new ns.Rotor('II', rotor2, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor3 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor3 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor3 = {
@@ -213,12 +287,12 @@ strict: true
     var notches = 'v';
 
     return function () {
-      return new ns.Rotor(rotor3, notches, ringSetting, windowSetting,
+      return new ns.Rotor('III', rotor3, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor4 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor4 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor4 = {
@@ -253,12 +327,12 @@ strict: true
     var notches = 'j';
 
     return function () {
-      return new ns.Rotor(rotor4, notches, ringSetting, windowSetting,
+      return new ns.Rotor('IV', rotor4, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor5 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor5 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor5 = {
@@ -293,12 +367,12 @@ strict: true
     var notches = 'z';
 
     return function () {
-      return new ns.Rotor(rotor5, notches, ringSetting, windowSetting,
+      return new ns.Rotor('V', rotor5, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor6 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor6 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor6 = {
@@ -333,12 +407,12 @@ strict: true
     var notches = 'zm';
 
     return function () {
-      return new ns.Rotor(rotor6, notches, ringSetting, windowSetting,
+      return new ns.Rotor('VI', rotor6, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor7 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor7 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor7 = {
@@ -373,12 +447,12 @@ strict: true
     var notches = 'zm';
 
     return function () {
-      return new ns.Rotor(rotor7, notches, ringSetting, windowSetting,
+      return new ns.Rotor('VII', rotor7, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());
 
-  ns.Rotor.Rotor8 = (function (ringSetting, windowSetting, rightObject,
+  ns.Rotor.Rotor8 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
     var rotor8 = {
@@ -413,7 +487,7 @@ strict: true
     var notches = 'zm';
 
     return function () {
-      return new ns.Rotor(rotor8, notches, ringSetting, windowSetting,
+      return new ns.Rotor('VIII', rotor8, notches, ringSetting, groundSetting,
         rightObject, leftObject);
     };
   }());

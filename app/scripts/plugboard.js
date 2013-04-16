@@ -1,8 +1,4 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 (function () {
   'use strict';
@@ -65,6 +61,10 @@ strict: true
       this.clearAll();
     }
 
+    this.getMapping = function () {
+      return left;
+    }.bind(this);
+
     this.setLetterSwap = function (letter1, letter2) {
       console.assert(letter1 !== letter2);
       console.assert(left[letter1] === letter1);
@@ -85,6 +85,10 @@ strict: true
       right[letter2] = letter2;
     };
 
+    this.getLeftObj = function () {
+      return leftObj;
+    }.bind(this);
+
     this.setLeftObj = function (newLeftObj) {
       leftObj = newLeftObj;
     }.bind(this);
@@ -95,6 +99,34 @@ strict: true
 
     this.goingRight = function (letter) {
       return right[letter];
+    }.bind(this);
+
+    this.traceLeft = function (letter, path) {
+      var letterOut = left[letter];
+
+      path.push({
+        obj: this,
+        ringRight: letter,
+        objRight: letter,
+        objLeft: letterOut,
+        ringLeft: letterOut
+      });
+
+      return leftObj.traceLeft(letterOut, path);
+    }.bind(this);
+
+    this.traceRight = function (letter, path) {
+      var letterOut = right[letter];
+
+      path.push({
+        obj: this,
+        ringRight: letterOut,
+        objRight: letterOut,
+        objLeft: letter,
+        ringLeft: letter
+      });
+
+      return letterOut;
     }.bind(this);
   };
 }());

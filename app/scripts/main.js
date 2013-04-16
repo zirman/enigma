@@ -4,9 +4,11 @@ maxlen: 80,
 strict: true
 */
 
+/*globals ENIGMA*/
+
 (function () {
   'use strict';
-  //var ns = window.ENIGMA;
 
-
+  ENIGMA.EnigmaController = function () {
+  };
 }());

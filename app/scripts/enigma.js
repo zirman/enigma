@@ -9,38 +9,6 @@ strict: true
 
   var ns = window.ENIGMA;
 
-  // returns the next consecutive letter, 'z' goes to 'a'
-  ns.nextLetter = (function () {
-    var a = ('a').charCodeAt(0);
-
-    return function (letter) {
-      var l = letter.toLowerCase().charCodeAt(0) + 1;
-      return String.fromCharCode(((l - a) % 26) + a);
-    };
-  }());
-
-  // ceasar shifts letter to right
-  ns.shiftRightLetter = (function () {
-    var a = ('a').charCodeAt(0);
-
-    return function (letter, shift) {
-      var l = letter.toLowerCase().charCodeAt(0) - a;
-      var s = shift.toLowerCase().charCodeAt(0) - a;
-      return String.fromCharCode(((l + s) % 26) + a);
-    };
-  }());
-
-  // ceasar shifts letter to left
-  ns.shiftLeftLetter = (function () {
-    var a = ('a').charCodeAt(0);
-
-    return function (letter, shift) {
-      var l = letter.toLowerCase().charCodeAt(0) - a;
-      var s = shift.toLowerCase().charCodeAt(0) - a;
-      return String.fromCharCode(((l + 26 - s) % 26) + a);
-    };
-  }());
-
   ns.EnigmaMachine = function () {
     // create all plugboard, rotors and reflector
     var reflector = new ns.Reflector.ReflectorB();
@@ -48,6 +16,8 @@ strict: true
     var middleRotor = new ns.Rotor.Rotor2();
     var rightRotor = new ns.Rotor.Rotor3();
     var plugboard = new ns.Plugboard();
+    var aCharCode = ('a').charCodeAt(0);
+    var zCharCode = ('z').charCodeAt(0);
 
     // 'wire up' the reflectors, rotors and plugboard
     reflector.setRightObj(leftRotor);
@@ -62,6 +32,19 @@ strict: true
     rightRotor.setRightObj(plugboard);
 
     plugboard.setLeftObj(rightRotor);
+
+    var advanceRotors = function () {
+      if (middleRotor.isOnNotch()) {
+        leftRotor.advanceGroundSetting();
+      }
+
+      // this is dub step
+      if (rightRotor.isOnNotch() || middleRotor.isOnNotch()) {
+        middleRotor.advanceGroundSetting();
+      }
+
+      rightRotor.advanceGroundSetting();
+    };
 
     this.getPlugboard = function () {
       return plugboard;
@@ -122,24 +105,38 @@ strict: true
     // enciphers a single character
     // only the first character of the string is enciphered and returned
     // non a-z characters are passed through in lower case
-    this.encipherLetter = (function () {
-      var a = ('a').charCodeAt(0);
-      var z = ('z').charCodeAt(0);
+    this.encipherLetter = function (letter) {
+      var lowerCase = letter.toLowerCase();
+      var charCode = lowerCase.charCodeAt(0);
 
-      return function (letter) {
-        var lowerCase = letter.toLowerCase();
-        var charCode = lowerCase.charCodeAt(0);
+      // passthrough characters that are not a-z
+      if (charCode < aCharCode || charCode > zCharCode) {
+        return lowerCase;
+      }
 
-        // passthrough characters that are not a-z
-        if (charCode < a || charCode > z) {
-          return lowerCase;
-        }
+      advanceRotors();
 
-        middleRotor.doubleStep();
-        rightRotor.singleStep();
-        return plugboard.goingLeft(lowerCase);
-      }.bind(this);
-    }());
+      return plugboard.goingLeft(lowerCase);
+    }.bind(this);
+
+    this.traceLetter = function (letter) {
+      var lowerCase = letter.toLowerCase();
+      var charCode = lowerCase.charCodeAt(0);
+
+      // passthrough characters that are not a-z
+      if (charCode < aCharCode || charCode > zCharCode) {
+        return {};
+      }
+
+      advanceRotors();
+      var path = [];
+
+      return {
+        letterIn: lowerCase,
+        letterOut: plugboard.traceLeft(lowerCase, path),
+        path: path
+      };
+    }.bind(this);
 
     // enciphers a string
     // non a-z characters are passed through in lower case
@@ -148,9 +145,9 @@ strict: true
 
       for (var i = 0; i < cleartext.length; i += 1) {
         ciphertext += this.encipherLetter(cleartext.charAt(i));
-        /*console.log(leftRotor.getWindowSetting() +
-          middleRotor.getWindowSetting() + rightRotor.getWindowSetting() + ' ' +
-          cleartext.charAt(i) + '->' + ciphertext.charAt(i));*/
+        console.log(leftRotor.getGroundSetting() +
+          middleRotor.getGroundSetting() + rightRotor.getGroundSetting() + ' ' +
+          cleartext.charAt(i) + '->' + ciphertext.charAt(i));
       }
 
       return ciphertext;

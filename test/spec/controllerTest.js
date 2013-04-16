@@ -31,8 +31,8 @@
       });
 
       it('should return an EnigmaView', function () {
-        expect(enigmaController.getModel()).to.be.an('object');
-        expect(enigmaController.getModel().constructor).to.equal(ENIGMA.EnigmaView);
+        expect(enigmaController.getEnigmaView()).to.be.an('object');
+        expect(enigmaController.getEnigmaView().constructor).to.equal(ENIGMA.EnigmaView);
       });
     });
 

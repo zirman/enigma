@@ -32,7 +32,7 @@
 
       it('should return an EnigmaView', function () {
         expect(enigmaController.getEnigmaView()).to.be.an('object');
-        expect(enigmaController.getEnigmaView().constructor).to.equal(ENIGMA.EnigmaView);
+        expect(enigmaController.getEnigmaView().constructor).to.be.instanceOf(ENIGMA.EnigmaView);
       });
     });
 
@@ -43,8 +43,7 @@
       });
 
       it('should set enigmaView', function () {
-        var enigmaView = {};
-        enigmaView.constructor = ENIGMA.EnigmaView;
+        var enigmaView = new ENIGMA.EnigmaView();
         enigmaController.setEnigmaView(enigmaView);
         expect(enigmaController.getEnigmaView()).to.equal(enigmaView);
       });

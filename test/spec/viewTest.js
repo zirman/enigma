@@ -19,7 +19,7 @@
       });
 
       it('should return a canvas object', function () {
-        expect(enigmaView.getCanvas()).to.be.a('object');
+        expect(typeof enigmaView.getCanvas()).to.not.equal('undefined');
       });
     });
 

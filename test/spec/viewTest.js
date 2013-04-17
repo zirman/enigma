@@ -20,7 +20,6 @@
 
       it('should return a canvas object', function () {
         expect(enigmaView.getCanvas()).to.be.a('object');
-        expect(enigmaView.getCanvas().constructor).to.equal(HTMLCanvasElement);
       });
     });
 

@@ -44,6 +44,7 @@
 
       it('should set enigmaView', function () {
         var enigmaView = {};
+        enigmaView.constructor = ENIGMA.EnigmaView;
         enigmaController.setEnigmaView(enigmaView);
         expect(enigmaController.getEnigmaView()).to.equal(enigmaView);
       });

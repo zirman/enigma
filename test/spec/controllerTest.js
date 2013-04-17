@@ -19,8 +19,7 @@
       });
 
       it('should return an EnigmaMachine', function () {
-        expect(enigmaController.getEnigmaMachine()).to.be.an('object');
-        expect(enigmaController.getEnigmaMachine().constructor).to.equal(ENIGMA.EnigmaMachine);
+        expect(enigmaController.getEnigmaMachine()).to.be.an.instanceOf(ENIGMA.EnigmaMachine);
       });
     });
 
@@ -31,8 +30,7 @@
       });
 
       it('should return an EnigmaView', function () {
-        expect(enigmaController.getEnigmaView()).to.be.an('object');
-        expect(enigmaController.getEnigmaView().constructor).to.be.instanceOf(ENIGMA.EnigmaView);
+        expect(enigmaController.getEnigmaView()).to.be.an.instanceOf(ENIGMA.EnigmaView);
       });
     });
 

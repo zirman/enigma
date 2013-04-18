@@ -112,36 +112,88 @@
         keyState = getClearState();
       });
 
-      it('should update Enigma Machine', function () {
-        var makeKeyboardEvent = function (key) {
-          return new KeyboardEvent('keydown', {
-            bubbles: true,
-            cancelable: true,
-            key: key,
-            char: key,
-            shiftKey: key === key.toUpperCase()
-          });
-        };
+      var makeKeyboardEvent = function (key) {
 
-        var testEnigma = function (key) {
+        return new KeyboardEvent('keydown', {
+          bubbles: true,
+          cancelable: true,
+          key: key,
+          char: key,
+          shiftKey: key === key.toUpperCase()
+        });
+      };
+
+      it('should update EnigmaMachine when receiving a keyboardEvent', function () {
+
+        var keyboardEventEnigmaMachine = function (key) {
           var enigmaMachine = new ENIGMA.EnigmaMachine();
           var model = enigmaController.getEnigmaMachine();
           enigmaMachine.getLeftRotor().setGroundSetting(model.getLeftRotor().getGroundSetting());
           enigmaMachine.getMiddleRotor().setGroundSetting(model.getMiddleRotor().getGroundSetting());
           enigmaMachine.getRightRotor().setGroundSetting(model.getRightRotor().getGroundSetting());
+          enigmaMachine.encipherLetter(key);
           enigmaController.keyboardEvent(makeKeyboardEvent(key));
           expect(model.getLeftRotor().getGroundSetting()).to.equal(enigmaMachine.getLeftRotor().getGroundSetting());
           expect(model.getMiddleRotor().getGroundSetting()).to.equal(enigmaMachine.getMiddleRotor().getGroundSetting());
           expect(model.getRightRotor().getGroundSetting()).to.equal(enigmaMachine.getRightRotor().getGroundSetting());
         };
 
-        testEnigma('a');
-        testEnigma('b');
-        testEnigma('c');
-        testEnigma('d');
-        testEnigma('e');
-        testEnigma('f');
-        testEnigma('g');
+        keyboardEventEnigmaMachine('a');
+        keyboardEventEnigmaMachine('b');
+        keyboardEventEnigmaMachine('c');
+        keyboardEventEnigmaMachine('d');
+        keyboardEventEnigmaMachine('e');
+        keyboardEventEnigmaMachine('f');
+        keyboardEventEnigmaMachine('g');
+      });
+
+      it('should update EnigmaView when receiving a keyboardEvent', function () {
+        var clearText = '';
+        var cipherText = '';
+
+        var enigmaView = {
+          getClearText: function () {
+            return clearText;
+          },
+          setClearText: function (newClearText) {
+            clearText= newClearText;
+          },
+          getCipherText: function () {
+            return cipherText;
+          },
+          setCipherText: function (newCipherText) {
+            cipherText = newCipherText;
+          }
+        };
+
+        enigmaController.setEnigmaView(enigmaView);
+
+        var keyboardEventEnigmaView = function (letter) {
+          var enigmaMachine = new ENIGMA.EnigmaMachine();
+          var model = enigmaController.getEnigmaMachine();
+          enigmaMachine.getLeftRotor().setGroundSetting(model.getLeftRotor().getGroundSetting());
+          enigmaMachine.getMiddleRotor().setGroundSetting(model.getMiddleRotor().getGroundSetting());
+          enigmaMachine.getRightRotor().setGroundSetting(model.getRightRotor().getGroundSetting());
+
+          var oldClearText = enigmaController.getEnigmaView().getClearText();
+          var oldCipherText = enigmaController.getEnigmaView().getCipherText();
+
+          var clearLetter = letter;
+          var cipherLetter = enigmaMachine.encipherLetter(letter);
+
+          enigmaController.keyboardEvent(makeKeyboardEvent(letter));
+
+          expect(enigmaController.getEnigmaView().getClearText()).to.equal(oldClearText + clearLetter);
+          expect(enigmaController.getEnigmaView().getCipherText()).to.equal(oldCipherText + cipherLetter);
+        };
+
+        keyboardEventEnigmaView('a');
+        keyboardEventEnigmaView('b');
+        keyboardEventEnigmaView('c');
+        keyboardEventEnigmaView('d');
+        keyboardEventEnigmaView('e');
+        keyboardEventEnigmaView('f');
+        keyboardEventEnigmaView('g');
       });
     });
   });

@@ -76,6 +76,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
+                    hostname: '0.0.0.0',
                     middleware: function (connect) {
                         return [
                             require('./app/scripts/chat-server.js').upgrade,

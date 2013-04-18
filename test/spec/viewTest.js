@@ -177,6 +177,54 @@
       });
     });
 
+    describe('#getClearText()', function () {
+
+      it('should respond to getClearText', function () {
+        expect(enigmaView).to.respondTo('getClearText');
+      });
+
+      it('should return a string', function () {
+        expect(enigmaView.getClearText()).to.be.a('string');
+      });
+    });
+
+    describe('#setClearText()', function () {
+
+      it('should respond to setClearText', function () {
+        expect(enigmaView).to.respondTo('setClearText');
+      });
+
+      it('should set value of getClearText', function () {
+        var clearText = 'clear text';
+        enigmaView.setClearText(clearText);
+        expect(enigmaView.getClearText()).to.equal(clearText);
+      });
+    });
+
+    describe('#getCipherText()', function () {
+
+      it('should respond to getCipherText', function () {
+        expect(enigmaView).to.respondTo('getCipherText');
+      });
+
+      it('should return a string', function () {
+        expect(enigmaView.getCipherText()).to.be.a('string');
+      });
+    });
+
+    describe('#setCipherText()', function () {
+
+      it('should respond to setCipherText', function () {
+        expect(enigmaView).to.respondTo('setCipherText');
+      });
+
+      it('should set value of getCipherText', function () {
+        var cipherText = 'cipher text';
+        enigmaView.setCipherText(cipherText);
+        expect(enigmaView.getCipherText()).to.equal(cipherText);
+      });
+    });
+
     describe('#getKeyState()', function () {
 
       it('should respond to getKeyState', function () {

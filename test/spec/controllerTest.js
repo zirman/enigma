@@ -114,13 +114,17 @@
 
       var makeKeyboardEvent = function (key) {
 
-        return new KeyboardEvent('keydown', {
+        var event = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
           key: key,
           char: key,
           shiftKey: key === key.toUpperCase()
         });
+
+        event.key = key;
+        event.char = key;
+        return event;
       };
 
       it('should update EnigmaMachine when receiving a keyboardEvent', function () {

@@ -25,6 +25,13 @@ strict: true
     var rightRotor;
     var groundSetting;
 
+    this.clearAll = function () {
+      clearText = '';
+      cipherText = '';
+      enigmaView.setClearText(clearText);
+      enigmaView.setCipherText(cipherText);
+    };
+
     this.keyboardEvent = function (event) {
       var keyCode = event.key.charCodeAt(0);
 

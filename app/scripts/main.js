@@ -16,25 +16,9 @@ strict: true
     var enigmaView;
     enigmaView = new ENIGMA.EnigmaView();
 
-    var plainText = '';
+
+    var clearText = '';
     var cipherText = '';
-
-    enigmaView = {
-      getPlainText: function () {
-        return plainText;
-      },
-      setPlainText: function (plainText) {
-        plainText = new ENIGMA.EnigmaView.newPlainText();
-      },
-      getCipherText: function () {
-        return cipherText;
-      },
-      setCipherText: function (cipherText) {
-        cipherText = new ENIGMA.EnigmaView.newCipherText();
-      }
-    };
-
-
 
     var leftRotor;
     var middleRotor;
@@ -45,8 +29,12 @@ strict: true
       var keyCode = event.key.charCodeAt(0);
 
       if (keyCode >= 'a'.charCodeAt(0) || keyCode <= 'z'.charCodeAt(0)) {
-        enigmaMachine.encipherLetter(event.key);
+        clearText += event.key;
+        cipherText += enigmaMachine.encipherLetter(event.key);
+        enigmaView.setClearText(clearText);
+        enigmaView.setCipherText(cipherText);
       }
+
     };
 
     var keys = {

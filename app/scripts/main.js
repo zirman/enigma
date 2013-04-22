@@ -34,7 +34,7 @@ strict: true
       }
     };
 
-    ENIGMA.setEnigmaView(enigmaView);
+
 
     var leftRotor;
     var middleRotor;

@@ -47,6 +47,13 @@
       });
     });
 
+    describe('#clearAll()', function () {
+
+      it('should respond to clearAll', function () {
+        expect(enigmaController).to.respondTo('clearAll');
+      });
+    });
+
     describe('#keyboardEvent()', function () {
 
       it('should respond to keyboardEvent', function () {
@@ -154,6 +161,8 @@
       it('should update EnigmaView when receiving a keyboardEvent', function () {
         var clearText = '';
         var cipherText = '';
+
+        enigmaController.clearAll();
 
         var enigmaView = {
           getClearText: function () {

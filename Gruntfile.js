@@ -68,6 +68,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
+                            require('./app/scripts/chat-server.js').upgrade,
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, 'test')
                         ];

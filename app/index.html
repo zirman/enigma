@@ -16,6 +16,47 @@
         <!-- endbuild -->
     </head>
     <body>
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#enigma">Enigma</a>
+      <div class="nav-collapse collapse navbar-responsive-collapse">
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Code Book <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#cb1">Code Book 1</a></li>
+              <li><a href="#cb2">Code Book 2</a></li>
+              <!--li class="divider"></li>
+              <li class="nav-header">Nav header</li>
+              <li><a href="#">Separated link</a></li>
+              <li><a href="#">One more separated link</a></li-->
+            </ul>
+          </li>
+          <!--li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li-->
+        </ul>
+        <ul class="nav pull-right">
+          <!--form class="navbar-search" action="">
+            <input type="text" class="search-query span2" placeholder="Search">
+          </form-->
+          <li class="divider-vertical"></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Name <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#settings">Settings</a></li>
+              <li><a href="#profile">Profile</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         <div class="container">
 
                <div id="userInputForm">
@@ -64,6 +105,8 @@
 
         <script>window.ENIGMA = {};</script>
 
+        <!-- build:js components/jquery/jquery.js -->
+        <!-- build:js scripts/vendor/bootstrap.js -->
         <!-- build:js scripts/reflector.js -->
         <!-- build:js scripts/rotor.js -->
         <!-- build:js scripts/plugboard.js -->
@@ -72,6 +115,7 @@
         <!-- build:js scripts/chat-client.js -->
         <!-- build:js scripts/main.js -->
         <script src="components/jquery/jquery.js"></script>
+        <script src="scripts/vendor/bootstrap.js"></script>
         <script src="scripts/reflector.js"></script>
         <script src="scripts/rotor.js"></script>
         <script src="scripts/plugboard.js"></script>

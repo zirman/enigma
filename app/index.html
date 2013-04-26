@@ -59,37 +59,1019 @@
 
         <div class="container">
 
-               <div id="userInputForm">
-                     <form action="#" id="userInputOutput" name="userInputOutput" method="post">
-                       <ul>
-                            <li>
-                                <h3>Type your message in the Decrypted box:</h3>
-                            </li>
+          <div class="row">
 
-                            <li>
-                              <label for="decryptedMessage">Decrypted Message:</label>
-                                <input type="text" id="decryptedMessage" size="40" maxlength="250">
-                            </li>
+              <div class="span6" id="rotor">
+                        <label for="userReflector" class="userSetting">Reflector</label>
+                        <div class="btn-group">
+                            <button class="btn">Select a Reflector</button>
+                            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#reflector1">Reflector 1</a></li>
+                                <li><a href="#reflector2">Reflector 2</a></li>
+                            </ul>
+                        </div>
 
-                            <li>
-                                <label for="encryptedMessage">Encrypted Message:</label>
-                                <input type="text" id="encryptedMessage" size="40" maxlength="250" readonly>
-                            </li>
+                        <label for="userRoter" class="userSetting">Rotors</label>
+                        <div class="btn-group">
+                          <button class="btn">I</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#leftRotor=II">II</a></li>
+                          <li><a href="#leftRotor=III">III</a></li>
+                          <li><a href="#leftRotor=IV">IV</a></li>
+                          <li><a href="#leftRotor=V">V</a></li>
+                        </ul>
+                        </div>
 
-                         <li>
-                            	<input type="reset">
-                                <input type="submit" value="Submit">
-                            </li>
+                        <div class="btn-group">
+                          <button class="btn">I</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#middleRotor=II">II</a></li>
+                          <li><a href="#middleRotor=III">III</a></li>
+                          <li><a href="#middleRotor=IV">IV</a></li>
+                          <li><a href="#middleRotor=V">V</a></li>
+                        </ul>
+                        </div>
 
-                       </ul>
+                        <div class="btn-group">
+                          <button class="btn">I</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#rightRotor=II">II</a></li>
+                          <li><a href="#rightRotor=III">III</a></li>
+                          <li><a href="#rightRotor=IV">IV</a></li>
+                          <li><a href="#rightRotor=V">V</a></li>
+                        </ul>
+                        </div>
 
-                     </form>
-                   </div>
+                        <label for="userRingSetting" class="userSetting">Ring Setting</label>
+                        <div class="ringSetting">
+                            <input type="text" class="input-small inline" id="ringSetting1" value="A" maxlength="1">
+                            <input type="text" class="input-small inline" id="ringSetting2" value="A" maxlength="1">
+                            <input type="text" class="input-small inline" id="ringSetting3" value="A" maxlength="1">
+                        </div>
 
-               <!-- Canvas tag holding both the bg.jpg and steckerbrett_bg.png images -->
-              <canvas id="enigmaCanvas" width="720" height="1020"></canvas>
+                        <label for="userGroundSetting" class="userSetting">Ground Setting</label>
+                        <div class="groundSetting">
+                            <input type="text" class="input-small inline" id="groundSetting1" value="A" maxlength="1">
+                            <input type="text" class="input-small inline" id="groundSetting2" value="A" maxlength="1">
+                            <input type="text" class="input-small inline" id="groundSetting3" value="A" maxlength="1">
+                        </div>
 
-        </div>
+                      </div>
+
+                   <div class="span6" id="userInputForm">
+                         <form action="#" id="userInputOutput" name="userInputOutput" method="post">
+                           <ul>
+                                <li>
+                                    <h3>Type your message in the Decrypted box:</h3>
+                                </li>
+
+                                <li>
+                                  <label for="decryptedMessage">Decrypted Message:</label>
+                                    <input type="text" id="decryptedMessage" size="40" maxlength="250">
+                                </li>
+
+                                <li>
+                                    <label for="encryptedMessage">Encrypted Message:</label>
+                                    <input type="text" id="encryptedMessage" size="40" maxlength="250" readonly>
+                                </li>
+
+                             <li>
+                                  <input type="reset">
+                                    <input type="submit" value="Submit">
+                                </li>
+
+                           </ul>
+
+                         </form>
+                       </div>
+                 </div> <!-- End of Row for Enigma settings and text input form -->
+
+                 <div class="row"><!-- Beginning of Row that holds the plug board -->
+
+                    <div class="span12" id="plugBoard">
+                        <label for="userPlugBoard" class="userPlugBoard">Plug Board</label>
+                        <div class="btn-group">
+                          <button class="btn">A</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#aPlugSetting=a">A</a></li>
+                          <li><a href="#aPlugSetting=b">B</a></li>
+                          <li><a href="#aPlugSetting=c">C</a></li>
+                          <li><a href="#aPlugSetting=d">D</a></li>
+                          <li><a href="#aPlugSetting=e">E</a></li>
+                          <li><a href="#aPlugSetting=f">F</a></li>
+                          <li><a href="#aPlugSetting=g">G</a></li>
+                          <li><a href="#aPlugSetting=h">H</a></li>
+                          <li><a href="#aPlugSetting=i">I</a></li>
+                          <li><a href="#aPlugSetting=j">J</a></li>
+                          <li><a href="#aPlugSetting=k">K</a></li>
+                          <li><a href="#aPlugSetting=l">L</a></li>
+                          <li><a href="#aPlugSetting=m">M</a></li>
+                          <li><a href="#aPlugSetting=n">N</a></li>
+                          <li><a href="#aPlugSetting=o">O</a></li>
+                          <li><a href="#aPlugSetting=p">P</a></li>
+                          <li><a href="#aPlugSetting=q">Q</a></li>
+                          <li><a href="#aPlugSetting=r">R</a></li>
+                          <li><a href="#aPlugSetting=s">S</a></li>
+                          <li><a href="#aPlugSetting=t">T</a></li>
+                          <li><a href="#aPlugSetting=u">U</a></li>
+                          <li><a href="#aPlugSetting=v">V</a></li>
+                          <li><a href="#aPlugSetting=w">W</a></li>
+                          <li><a href="#aPlugSetting=x">X</a></li>
+                          <li><a href="#aPlugSetting=y">Y</a></li>
+                          <li><a href="#aPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">B</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#bPlugSetting=a">A</a></li>
+                          <li><a href="#bPlugSetting=b">B</a></li>
+                          <li><a href="#bPlugSetting=c">C</a></li>
+                          <li><a href="#aPlugSetting=d">D</a></li>
+                          <li><a href="#bPlugSetting=e">E</a></li>
+                          <li><a href="#bPlugSetting=f">F</a></li>
+                          <li><a href="#bPlugSetting=g">G</a></li>
+                          <li><a href="#bPlugSetting=h">H</a></li>
+                          <li><a href="#bPlugSetting=i">I</a></li>
+                          <li><a href="#bPlugSetting=j">J</a></li>
+                          <li><a href="#bPlugSetting=k">K</a></li>
+                          <li><a href="#bPlugSetting=l">L</a></li>
+                          <li><a href="#bPlugSetting=m">M</a></li>
+                          <li><a href="#bPlugSetting=n">N</a></li>
+                          <li><a href="#bPlugSetting=o">O</a></li>
+                          <li><a href="#bPlugSetting=p">P</a></li>
+                          <li><a href="#bPlugSetting=q">Q</a></li>
+                          <li><a href="#bPlugSetting=r">R</a></li>
+                          <li><a href="#bPlugSetting=s">S</a></li>
+                          <li><a href="#bPlugSetting=t">T</a></li>
+                          <li><a href="#bPlugSetting=u">U</a></li>
+                          <li><a href="#bPlugSetting=v">V</a></li>
+                          <li><a href="#bPlugSetting=w">W</a></li>
+                          <li><a href="#bPlugSetting=x">X</a></li>
+                          <li><a href="#bPlugSetting=y">Y</a></li>
+                          <li><a href="#bPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">C</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#cPlugSetting=a">A</a></li>
+                          <li><a href="#cPlugSetting=b">B</a></li>
+                          <li><a href="#cPlugSetting=c">C</a></li>
+                          <li><a href="#cPlugSetting=d">D</a></li>
+                          <li><a href="#cPlugSetting=e">E</a></li>
+                          <li><a href="#cPlugSetting=f">F</a></li>
+                          <li><a href="#cPlugSetting=g">G</a></li>
+                          <li><a href="#cPlugSetting=h">H</a></li>
+                          <li><a href="#cPlugSetting=i">I</a></li>
+                          <li><a href="#cPlugSetting=j">J</a></li>
+                          <li><a href="#cPlugSetting=k">K</a></li>
+                          <li><a href="#cPlugSetting=l">L</a></li>
+                          <li><a href="#cPlugSetting=m">M</a></li>
+                          <li><a href="#cPlugSetting=n">N</a></li>
+                          <li><a href="#cPlugSetting=o">O</a></li>
+                          <li><a href="#cPlugSetting=p">P</a></li>
+                          <li><a href="#cPlugSetting=q">Q</a></li>
+                          <li><a href="#cPlugSetting=r">R</a></li>
+                          <li><a href="#cPlugSetting=s">S</a></li>
+                          <li><a href="#cPlugSetting=t">T</a></li>
+                          <li><a href="#cPlugSetting=u">U</a></li>
+                          <li><a href="#cPlugSetting=v">V</a></li>
+                          <li><a href="#cPlugSetting=w">W</a></li>
+                          <li><a href="#cPlugSetting=x">X</a></li>
+                          <li><a href="#cPlugSetting=y">Y</a></li>
+                          <li><a href="#cPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">D</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#dPlugSetting=a">A</a></li>
+                          <li><a href="#dPlugSetting=b">B</a></li>
+                          <li><a href="#dPlugSetting=c">C</a></li>
+                          <li><a href="#dPlugSetting=d">D</a></li>
+                          <li><a href="#dPlugSetting=e">E</a></li>
+                          <li><a href="#dPlugSetting=f">F</a></li>
+                          <li><a href="#dPlugSetting=g">G</a></li>
+                          <li><a href="#dPlugSetting=h">H</a></li>
+                          <li><a href="#dPlugSetting=i">I</a></li>
+                          <li><a href="#dPlugSetting=j">J</a></li>
+                          <li><a href="#dPlugSetting=k">K</a></li>
+                          <li><a href="#dPlugSetting=l">L</a></li>
+                          <li><a href="#dPlugSetting=m">M</a></li>
+                          <li><a href="#dPlugSetting=n">N</a></li>
+                          <li><a href="#dPlugSetting=o">O</a></li>
+                          <li><a href="#dPlugSetting=p">P</a></li>
+                          <li><a href="#dPlugSetting=q">Q</a></li>
+                          <li><a href="#dPlugSetting=r">R</a></li>
+                          <li><a href="#dPlugSetting=s">S</a></li>
+                          <li><a href="#dPlugSetting=t">T</a></li>
+                          <li><a href="#dPlugSetting=u">U</a></li>
+                          <li><a href="#dPlugSetting=v">V</a></li>
+                          <li><a href="#dPlugSetting=w">W</a></li>
+                          <li><a href="#dPlugSetting=x">X</a></li>
+                          <li><a href="#dPlugSetting=y">Y</a></li>
+                          <li><a href="#dPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">E</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#ePlugSetting=a">A</a></li>
+                          <li><a href="#ePlugSetting=b">B</a></li>
+                          <li><a href="#ePlugSetting=c">C</a></li>
+                          <li><a href="#ePlugSetting=d">D</a></li>
+                          <li><a href="#ePlugSetting=e">E</a></li>
+                          <li><a href="#ePlugSetting=f">F</a></li>
+                          <li><a href="#ePlugSetting=g">G</a></li>
+                          <li><a href="#ePlugSetting=h">H</a></li>
+                          <li><a href="#ePlugSetting=i">I</a></li>
+                          <li><a href="#ePlugSetting=j">J</a></li>
+                          <li><a href="#ePlugSetting=k">K</a></li>
+                          <li><a href="#ePlugSetting=l">L</a></li>
+                          <li><a href="#ePlugSetting=m">M</a></li>
+                          <li><a href="#ePlugSetting=n">N</a></li>
+                          <li><a href="#ePlugSetting=o">O</a></li>
+                          <li><a href="#ePlugSetting=p">P</a></li>
+                          <li><a href="#ePlugSetting=q">Q</a></li>
+                          <li><a href="#ePlugSetting=r">R</a></li>
+                          <li><a href="#ePlugSetting=s">S</a></li>
+                          <li><a href="#ePlugSetting=t">T</a></li>
+                          <li><a href="#ePlugSetting=u">U</a></li>
+                          <li><a href="#ePlugSetting=v">V</a></li>
+                          <li><a href="#ePlugSetting=w">W</a></li>
+                          <li><a href="#ePlugSetting=x">X</a></li>
+                          <li><a href="#ePlugSetting=y">Y</a></li>
+                          <li><a href="#ePlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">F</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#fPlugSetting=a">A</a></li>
+                          <li><a href="#fPlugSetting=b">B</a></li>
+                          <li><a href="#fPlugSetting=c">C</a></li>
+                          <li><a href="#fPlugSetting=d">D</a></li>
+                          <li><a href="#fPlugSetting=e">E</a></li>
+                          <li><a href="#fPlugSetting=f">F</a></li>
+                          <li><a href="#fPlugSetting=g">G</a></li>
+                          <li><a href="#fPlugSetting=h">H</a></li>
+                          <li><a href="#fPlugSetting=i">I</a></li>
+                          <li><a href="#fPlugSetting=j">J</a></li>
+                          <li><a href="#fPlugSetting=k">K</a></li>
+                          <li><a href="#fPlugSetting=l">L</a></li>
+                          <li><a href="#fPlugSetting=m">M</a></li>
+                          <li><a href="#fPlugSetting=n">N</a></li>
+                          <li><a href="#fPlugSetting=o">O</a></li>
+                          <li><a href="#fPlugSetting=p">P</a></li>
+                          <li><a href="#fPlugSetting=q">Q</a></li>
+                          <li><a href="#fPlugSetting=r">R</a></li>
+                          <li><a href="#fPlugSetting=s">S</a></li>
+                          <li><a href="#fPlugSetting=t">T</a></li>
+                          <li><a href="#fPlugSetting=u">U</a></li>
+                          <li><a href="#fPlugSetting=v">V</a></li>
+                          <li><a href="#fPlugSetting=w">W</a></li>
+                          <li><a href="#fPlugSetting=x">X</a></li>
+                          <li><a href="#fPlugSetting=y">Y</a></li>
+                          <li><a href="#fPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">G</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#gPlugSetting=a">A</a></li>
+                          <li><a href="#gPlugSetting=b">B</a></li>
+                          <li><a href="#gPlugSetting=c">C</a></li>
+                          <li><a href="#gPlugSetting=d">D</a></li>
+                          <li><a href="#gPlugSetting=e">E</a></li>
+                          <li><a href="#gPlugSetting=f">F</a></li>
+                          <li><a href="#gPlugSetting=g">G</a></li>
+                          <li><a href="#gPlugSetting=h">H</a></li>
+                          <li><a href="#gPlugSetting=i">I</a></li>
+                          <li><a href="#gPlugSetting=j">J</a></li>
+                          <li><a href="#gPlugSetting=k">K</a></li>
+                          <li><a href="#gPlugSetting=l">L</a></li>
+                          <li><a href="#gPlugSetting=m">M</a></li>
+                          <li><a href="#gPlugSetting=n">N</a></li>
+                          <li><a href="#gPlugSetting=o">O</a></li>
+                          <li><a href="#gPlugSetting=p">P</a></li>
+                          <li><a href="#gPlugSetting=q">Q</a></li>
+                          <li><a href="#gPlugSetting=r">R</a></li>
+                          <li><a href="#gPlugSetting=s">S</a></li>
+                          <li><a href="#gPlugSetting=t">T</a></li>
+                          <li><a href="#gPlugSetting=u">U</a></li>
+                          <li><a href="#gPlugSetting=v">V</a></li>
+                          <li><a href="#gPlugSetting=w">W</a></li>
+                          <li><a href="#gPlugSetting=x">X</a></li>
+                          <li><a href="#gPlugSetting=y">Y</a></li>
+                          <li><a href="#gPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">H</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#hPlugSetting=a">A</a></li>
+                          <li><a href="#hPlugSetting=b">B</a></li>
+                          <li><a href="#hPlugSetting=c">C</a></li>
+                          <li><a href="#hPlugSetting=d">D</a></li>
+                          <li><a href="#hPlugSetting=e">E</a></li>
+                          <li><a href="#hPlugSetting=f">F</a></li>
+                          <li><a href="#hPlugSetting=g">G</a></li>
+                          <li><a href="#hPlugSetting=h">H</a></li>
+                          <li><a href="#hPlugSetting=i">I</a></li>
+                          <li><a href="#hPlugSetting=j">J</a></li>
+                          <li><a href="#hPlugSetting=k">K</a></li>
+                          <li><a href="#hPlugSetting=l">L</a></li>
+                          <li><a href="#hPlugSetting=m">M</a></li>
+                          <li><a href="#hPlugSetting=n">N</a></li>
+                          <li><a href="#hPlugSetting=o">O</a></li>
+                          <li><a href="#hPlugSetting=p">P</a></li>
+                          <li><a href="#hPlugSetting=q">Q</a></li>
+                          <li><a href="#hPlugSetting=r">R</a></li>
+                          <li><a href="#hPlugSetting=s">S</a></li>
+                          <li><a href="#hPlugSetting=t">T</a></li>
+                          <li><a href="#hPlugSetting=u">U</a></li>
+                          <li><a href="#hPlugSetting=v">V</a></li>
+                          <li><a href="#hPlugSetting=w">W</a></li>
+                          <li><a href="#hPlugSetting=x">X</a></li>
+                          <li><a href="#hPlugSetting=y">Y</a></li>
+                          <li><a href="#hPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">I</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#iPlugSetting=a">A</a></li>
+                          <li><a href="#iPlugSetting=b">B</a></li>
+                          <li><a href="#iPlugSetting=c">C</a></li>
+                          <li><a href="#iPlugSetting=d">D</a></li>
+                          <li><a href="#iPlugSetting=e">E</a></li>
+                          <li><a href="#iPlugSetting=f">F</a></li>
+                          <li><a href="#iPlugSetting=g">G</a></li>
+                          <li><a href="#iPlugSetting=h">H</a></li>
+                          <li><a href="#iPlugSetting=i">I</a></li>
+                          <li><a href="#iPlugSetting=j">J</a></li>
+                          <li><a href="#iPlugSetting=k">K</a></li>
+                          <li><a href="#iPlugSetting=l">L</a></li>
+                          <li><a href="#iPlugSetting=m">M</a></li>
+                          <li><a href="#iPlugSetting=n">N</a></li>
+                          <li><a href="#iPlugSetting=o">O</a></li>
+                          <li><a href="#iPlugSetting=p">P</a></li>
+                          <li><a href="#iPlugSetting=q">Q</a></li>
+                          <li><a href="#iPlugSetting=r">R</a></li>
+                          <li><a href="#iPlugSetting=s">S</a></li>
+                          <li><a href="#iPlugSetting=t">T</a></li>
+                          <li><a href="#iPlugSetting=u">U</a></li>
+                          <li><a href="#iPlugSetting=v">V</a></li>
+                          <li><a href="#iPlugSetting=w">W</a></li>
+                          <li><a href="#iPlugSetting=x">X</a></li>
+                          <li><a href="#iPlugSetting=y">Y</a></li>
+                          <li><a href="#iPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">J</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#jPlugSetting=a">A</a></li>
+                          <li><a href="#jPlugSetting=b">B</a></li>
+                          <li><a href="#jPlugSetting=c">C</a></li>
+                          <li><a href="#jPlugSetting=d">D</a></li>
+                          <li><a href="#jPlugSetting=e">E</a></li>
+                          <li><a href="#jPlugSetting=f">F</a></li>
+                          <li><a href="#jPlugSetting=g">G</a></li>
+                          <li><a href="#jPlugSetting=h">H</a></li>
+                          <li><a href="#jPlugSetting=i">I</a></li>
+                          <li><a href="#jPlugSetting=j">J</a></li>
+                          <li><a href="#jPlugSetting=k">K</a></li>
+                          <li><a href="#jPlugSetting=l">L</a></li>
+                          <li><a href="#jPlugSetting=m">M</a></li>
+                          <li><a href="#jPlugSetting=n">N</a></li>
+                          <li><a href="#jPlugSetting=o">O</a></li>
+                          <li><a href="#jPlugSetting=p">P</a></li>
+                          <li><a href="#jPlugSetting=q">Q</a></li>
+                          <li><a href="#jPlugSetting=r">R</a></li>
+                          <li><a href="#jPlugSetting=s">S</a></li>
+                          <li><a href="#jPlugSetting=t">T</a></li>
+                          <li><a href="#jPlugSetting=u">U</a></li>
+                          <li><a href="#jPlugSetting=v">V</a></li>
+                          <li><a href="#jPlugSetting=w">W</a></li>
+                          <li><a href="#jPlugSetting=x">X</a></li>
+                          <li><a href="#jPlugSetting=y">Y</a></li>
+                          <li><a href="#jPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">K</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#kPlugSetting=a">A</a></li>
+                          <li><a href="#kPlugSetting=b">B</a></li>
+                          <li><a href="#kPlugSetting=c">C</a></li>
+                          <li><a href="#kPlugSetting=d">D</a></li>
+                          <li><a href="#kPlugSetting=e">E</a></li>
+                          <li><a href="#kPlugSetting=f">F</a></li>
+                          <li><a href="#kPlugSetting=g">G</a></li>
+                          <li><a href="#kPlugSetting=h">H</a></li>
+                          <li><a href="#kPlugSetting=i">I</a></li>
+                          <li><a href="#kPlugSetting=j">J</a></li>
+                          <li><a href="#kPlugSetting=k">K</a></li>
+                          <li><a href="#kPlugSetting=l">L</a></li>
+                          <li><a href="#kPlugSetting=m">M</a></li>
+                          <li><a href="#kPlugSetting=n">N</a></li>
+                          <li><a href="#kPlugSetting=o">O</a></li>
+                          <li><a href="#kPlugSetting=p">P</a></li>
+                          <li><a href="#kPlugSetting=q">Q</a></li>
+                          <li><a href="#kPlugSetting=r">R</a></li>
+                          <li><a href="#kPlugSetting=s">S</a></li>
+                          <li><a href="#kPlugSetting=t">T</a></li>
+                          <li><a href="#kPlugSetting=u">U</a></li>
+                          <li><a href="#kPlugSetting=v">V</a></li>
+                          <li><a href="#kPlugSetting=w">W</a></li>
+                          <li><a href="#kPlugSetting=x">X</a></li>
+                          <li><a href="#kPlugSetting=y">Y</a></li>
+                          <li><a href="#kPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">L</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#lPlugSetting=a">A</a></li>
+                          <li><a href="#lPlugSetting=b">B</a></li>
+                          <li><a href="#lPlugSetting=c">C</a></li>
+                          <li><a href="#lPlugSetting=d">D</a></li>
+                          <li><a href="#lPlugSetting=e">E</a></li>
+                          <li><a href="#lPlugSetting=f">F</a></li>
+                          <li><a href="#lPlugSetting=g">G</a></li>
+                          <li><a href="#lPlugSetting=h">H</a></li>
+                          <li><a href="#lPlugSetting=i">I</a></li>
+                          <li><a href="#lPlugSetting=j">J</a></li>
+                          <li><a href="#lPlugSetting=k">K</a></li>
+                          <li><a href="#lPlugSetting=l">L</a></li>
+                          <li><a href="#lPlugSetting=m">M</a></li>
+                          <li><a href="#lPlugSetting=n">N</a></li>
+                          <li><a href="#lPlugSetting=o">O</a></li>
+                          <li><a href="#lPlugSetting=p">P</a></li>
+                          <li><a href="#lPlugSetting=q">Q</a></li>
+                          <li><a href="#lPlugSetting=r">R</a></li>
+                          <li><a href="#lPlugSetting=s">S</a></li>
+                          <li><a href="#lPlugSetting=t">T</a></li>
+                          <li><a href="#lPlugSetting=u">U</a></li>
+                          <li><a href="#lPlugSetting=v">V</a></li>
+                          <li><a href="#lPlugSetting=w">W</a></li>
+                          <li><a href="#lPlugSetting=x">X</a></li>
+                          <li><a href="#lPlugSetting=y">Y</a></li>
+                          <li><a href="#lPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">M</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#mPlugSetting=a">A</a></li>
+                          <li><a href="#mPlugSetting=b">B</a></li>
+                          <li><a href="#mPlugSetting=c">C</a></li>
+                          <li><a href="#mPlugSetting=d">D</a></li>
+                          <li><a href="#mPlugSetting=e">E</a></li>
+                          <li><a href="#mPlugSetting=f">F</a></li>
+                          <li><a href="#mPlugSetting=g">G</a></li>
+                          <li><a href="#mPlugSetting=h">H</a></li>
+                          <li><a href="#mPlugSetting=i">I</a></li>
+                          <li><a href="#mPlugSetting=j">J</a></li>
+                          <li><a href="#mPlugSetting=k">K</a></li>
+                          <li><a href="#mPlugSetting=l">L</a></li>
+                          <li><a href="#mPlugSetting=m">M</a></li>
+                          <li><a href="#mPlugSetting=n">N</a></li>
+                          <li><a href="#mPlugSetting=o">O</a></li>
+                          <li><a href="#mPlugSetting=p">P</a></li>
+                          <li><a href="#mPlugSetting=q">Q</a></li>
+                          <li><a href="#mPlugSetting=r">R</a></li>
+                          <li><a href="#mPlugSetting=s">S</a></li>
+                          <li><a href="#mPlugSetting=t">T</a></li>
+                          <li><a href="#mPlugSetting=u">U</a></li>
+                          <li><a href="#mPlugSetting=v">V</a></li>
+                          <li><a href="#mPlugSetting=w">W</a></li>
+                          <li><a href="#mPlugSetting=x">X</a></li>
+                          <li><a href="#mPlugSetting=y">Y</a></li>
+                          <li><a href="#mPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">N</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#nPlugSetting=a">A</a></li>
+                          <li><a href="#nPlugSetting=b">B</a></li>
+                          <li><a href="#nPlugSetting=c">C</a></li>
+                          <li><a href="#nPlugSetting=d">D</a></li>
+                          <li><a href="#nPlugSetting=e">E</a></li>
+                          <li><a href="#nPlugSetting=f">F</a></li>
+                          <li><a href="#nPlugSetting=g">G</a></li>
+                          <li><a href="#nPlugSetting=h">H</a></li>
+                          <li><a href="#nPlugSetting=i">I</a></li>
+                          <li><a href="#nPlugSetting=j">J</a></li>
+                          <li><a href="#nPlugSetting=k">K</a></li>
+                          <li><a href="#nPlugSetting=l">L</a></li>
+                          <li><a href="#nPlugSetting=m">M</a></li>
+                          <li><a href="#nPlugSetting=n">N</a></li>
+                          <li><a href="#nPlugSetting=o">O</a></li>
+                          <li><a href="#nPlugSetting=p">P</a></li>
+                          <li><a href="#nPlugSetting=q">Q</a></li>
+                          <li><a href="#nPlugSetting=r">R</a></li>
+                          <li><a href="#nPlugSetting=s">S</a></li>
+                          <li><a href="#nPlugSetting=t">T</a></li>
+                          <li><a href="#nPlugSetting=u">U</a></li>
+                          <li><a href="#nPlugSetting=v">V</a></li>
+                          <li><a href="#nPlugSetting=w">W</a></li>
+                          <li><a href="#nPlugSetting=x">X</a></li>
+                          <li><a href="#nPlugSetting=y">Y</a></li>
+                          <li><a href="#nPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">O</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#oPlugSetting=a">A</a></li>
+                          <li><a href="#oPlugSetting=b">B</a></li>
+                          <li><a href="#oPlugSetting=c">C</a></li>
+                          <li><a href="#oPlugSetting=d">D</a></li>
+                          <li><a href="#oPlugSetting=e">E</a></li>
+                          <li><a href="#oPlugSetting=f">F</a></li>
+                          <li><a href="#oPlugSetting=g">G</a></li>
+                          <li><a href="#oPlugSetting=h">H</a></li>
+                          <li><a href="#oPlugSetting=i">I</a></li>
+                          <li><a href="#oPlugSetting=j">J</a></li>
+                          <li><a href="#oPlugSetting=k">K</a></li>
+                          <li><a href="#oPlugSetting=l">L</a></li>
+                          <li><a href="#oPlugSetting=m">M</a></li>
+                          <li><a href="#oPlugSetting=n">N</a></li>
+                          <li><a href="#oPlugSetting=o">O</a></li>
+                          <li><a href="#oPlugSetting=p">P</a></li>
+                          <li><a href="#oPlugSetting=q">Q</a></li>
+                          <li><a href="#oPlugSetting=r">R</a></li>
+                          <li><a href="#oPlugSetting=s">S</a></li>
+                          <li><a href="#oPlugSetting=t">T</a></li>
+                          <li><a href="#oPlugSetting=u">U</a></li>
+                          <li><a href="#oPlugSetting=v">V</a></li>
+                          <li><a href="#oPlugSetting=w">W</a></li>
+                          <li><a href="#oPlugSetting=x">X</a></li>
+                          <li><a href="#oPlugSetting=y">Y</a></li>
+                          <li><a href="#oPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">P</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#pPlugSetting=a">A</a></li>
+                          <li><a href="#pPlugSetting=b">B</a></li>
+                          <li><a href="#pPlugSetting=c">C</a></li>
+                          <li><a href="#pPlugSetting=d">D</a></li>
+                          <li><a href="#pPlugSetting=e">E</a></li>
+                          <li><a href="#pPlugSetting=f">F</a></li>
+                          <li><a href="#pPlugSetting=g">G</a></li>
+                          <li><a href="#pPlugSetting=h">H</a></li>
+                          <li><a href="#pPlugSetting=i">I</a></li>
+                          <li><a href="#pPlugSetting=j">J</a></li>
+                          <li><a href="#pPlugSetting=k">K</a></li>
+                          <li><a href="#pPlugSetting=l">L</a></li>
+                          <li><a href="#pPlugSetting=m">M</a></li>
+                          <li><a href="#pPlugSetting=n">N</a></li>
+                          <li><a href="#pPlugSetting=o">O</a></li>
+                          <li><a href="#pPlugSetting=p">P</a></li>
+                          <li><a href="#pPlugSetting=q">Q</a></li>
+                          <li><a href="#pPlugSetting=r">R</a></li>
+                          <li><a href="#pPlugSetting=s">S</a></li>
+                          <li><a href="#pPlugSetting=t">T</a></li>
+                          <li><a href="#pPlugSetting=u">U</a></li>
+                          <li><a href="#pPlugSetting=v">V</a></li>
+                          <li><a href="#pPlugSetting=w">W</a></li>
+                          <li><a href="#pPlugSetting=x">X</a></li>
+                          <li><a href="#pPlugSetting=y">Y</a></li>
+                          <li><a href="#pPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">Q</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#qPlugSetting=a">A</a></li>
+                          <li><a href="#qPlugSetting=b">B</a></li>
+                          <li><a href="#qPlugSetting=c">C</a></li>
+                          <li><a href="#qPlugSetting=d">D</a></li>
+                          <li><a href="#qPlugSetting=e">E</a></li>
+                          <li><a href="#qPlugSetting=f">F</a></li>
+                          <li><a href="#qPlugSetting=g">G</a></li>
+                          <li><a href="#qPlugSetting=h">H</a></li>
+                          <li><a href="#qPlugSetting=i">I</a></li>
+                          <li><a href="#qPlugSetting=j">J</a></li>
+                          <li><a href="#qPlugSetting=k">K</a></li>
+                          <li><a href="#qPlugSetting=l">L</a></li>
+                          <li><a href="#qPlugSetting=m">M</a></li>
+                          <li><a href="#qPlugSetting=n">N</a></li>
+                          <li><a href="#qPlugSetting=o">O</a></li>
+                          <li><a href="#qPlugSetting=p">P</a></li>
+                          <li><a href="#qPlugSetting=q">Q</a></li>
+                          <li><a href="#qPlugSetting=r">R</a></li>
+                          <li><a href="#qPlugSetting=s">S</a></li>
+                          <li><a href="#qPlugSetting=t">T</a></li>
+                          <li><a href="#qPlugSetting=u">U</a></li>
+                          <li><a href="#qPlugSetting=v">V</a></li>
+                          <li><a href="#qPlugSetting=w">W</a></li>
+                          <li><a href="#qPlugSetting=x">X</a></li>
+                          <li><a href="#qPlugSetting=y">Y</a></li>
+                          <li><a href="#qPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">R</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#rPlugSetting=a">A</a></li>
+                          <li><a href="#rPlugSetting=b">B</a></li>
+                          <li><a href="#rPlugSetting=c">C</a></li>
+                          <li><a href="#rPlugSetting=d">D</a></li>
+                          <li><a href="#rPlugSetting=e">E</a></li>
+                          <li><a href="#rPlugSetting=f">F</a></li>
+                          <li><a href="#rPlugSetting=g">G</a></li>
+                          <li><a href="#rPlugSetting=h">H</a></li>
+                          <li><a href="#rPlugSetting=i">I</a></li>
+                          <li><a href="#rPlugSetting=j">J</a></li>
+                          <li><a href="#rPlugSetting=k">K</a></li>
+                          <li><a href="#rPlugSetting=l">L</a></li>
+                          <li><a href="#rPlugSetting=m">M</a></li>
+                          <li><a href="#rPlugSetting=n">N</a></li>
+                          <li><a href="#rPlugSetting=o">O</a></li>
+                          <li><a href="#rPlugSetting=p">P</a></li>
+                          <li><a href="#rPlugSetting=q">Q</a></li>
+                          <li><a href="#rPlugSetting=r">R</a></li>
+                          <li><a href="#rPlugSetting=s">S</a></li>
+                          <li><a href="#rPlugSetting=t">T</a></li>
+                          <li><a href="#rPlugSetting=u">U</a></li>
+                          <li><a href="#rPlugSetting=v">V</a></li>
+                          <li><a href="#rPlugSetting=w">W</a></li>
+                          <li><a href="#rPlugSetting=x">X</a></li>
+                          <li><a href="#rPlugSetting=y">Y</a></li>
+                          <li><a href="#rPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">S</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#sPlugSetting=a">A</a></li>
+                          <li><a href="#sPlugSetting=b">B</a></li>
+                          <li><a href="#sPlugSetting=c">C</a></li>
+                          <li><a href="#sPlugSetting=d">D</a></li>
+                          <li><a href="#sPlugSetting=e">E</a></li>
+                          <li><a href="#sPlugSetting=f">F</a></li>
+                          <li><a href="#sPlugSetting=g">G</a></li>
+                          <li><a href="#sPlugSetting=h">H</a></li>
+                          <li><a href="#sPlugSetting=i">I</a></li>
+                          <li><a href="#sPlugSetting=j">J</a></li>
+                          <li><a href="#sPlugSetting=k">K</a></li>
+                          <li><a href="#sPlugSetting=l">L</a></li>
+                          <li><a href="#sPlugSetting=m">M</a></li>
+                          <li><a href="#sPlugSetting=n">N</a></li>
+                          <li><a href="#sPlugSetting=o">O</a></li>
+                          <li><a href="#sPlugSetting=p">P</a></li>
+                          <li><a href="#sPlugSetting=q">Q</a></li>
+                          <li><a href="#sPlugSetting=r">R</a></li>
+                          <li><a href="#sPlugSetting=s">S</a></li>
+                          <li><a href="#sPlugSetting=t">T</a></li>
+                          <li><a href="#sPlugSetting=u">U</a></li>
+                          <li><a href="#sPlugSetting=v">V</a></li>
+                          <li><a href="#sPlugSetting=w">W</a></li>
+                          <li><a href="#sPlugSetting=x">X</a></li>
+                          <li><a href="#sPlugSetting=y">Y</a></li>
+                          <li><a href="#sPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">T</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#tPlugSetting=a">A</a></li>
+                          <li><a href="#tPlugSetting=b">B</a></li>
+                          <li><a href="#tPlugSetting=c">C</a></li>
+                          <li><a href="#tPlugSetting=d">D</a></li>
+                          <li><a href="#tPlugSetting=e">E</a></li>
+                          <li><a href="#tPlugSetting=f">F</a></li>
+                          <li><a href="#tPlugSetting=g">G</a></li>
+                          <li><a href="#tPlugSetting=h">H</a></li>
+                          <li><a href="#tPlugSetting=i">I</a></li>
+                          <li><a href="#tPlugSetting=j">J</a></li>
+                          <li><a href="#tPlugSetting=k">K</a></li>
+                          <li><a href="#tPlugSetting=l">L</a></li>
+                          <li><a href="#tPlugSetting=m">M</a></li>
+                          <li><a href="#tPlugSetting=n">N</a></li>
+                          <li><a href="#tPlugSetting=o">O</a></li>
+                          <li><a href="#tPlugSetting=p">P</a></li>
+                          <li><a href="#tPlugSetting=q">Q</a></li>
+                          <li><a href="#tPlugSetting=r">R</a></li>
+                          <li><a href="#tPlugSetting=s">S</a></li>
+                          <li><a href="#tPlugSetting=t">T</a></li>
+                          <li><a href="#tPlugSetting=u">U</a></li>
+                          <li><a href="#tPlugSetting=v">V</a></li>
+                          <li><a href="#tPlugSetting=w">W</a></li>
+                          <li><a href="#tPlugSetting=x">X</a></li>
+                          <li><a href="#tPlugSetting=y">Y</a></li>
+                          <li><a href="#tPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">U</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#uPlugSetting=a">A</a></li>
+                          <li><a href="#uPlugSetting=b">B</a></li>
+                          <li><a href="#uPlugSetting=c">C</a></li>
+                          <li><a href="#uPlugSetting=d">D</a></li>
+                          <li><a href="#uPlugSetting=e">E</a></li>
+                          <li><a href="#uPlugSetting=f">F</a></li>
+                          <li><a href="#uPlugSetting=g">G</a></li>
+                          <li><a href="#uPlugSetting=h">H</a></li>
+                          <li><a href="#uPlugSetting=i">I</a></li>
+                          <li><a href="#uPlugSetting=j">J</a></li>
+                          <li><a href="#uPlugSetting=k">K</a></li>
+                          <li><a href="#uPlugSetting=l">L</a></li>
+                          <li><a href="#uPlugSetting=m">M</a></li>
+                          <li><a href="#uPlugSetting=n">N</a></li>
+                          <li><a href="#uPlugSetting=o">O</a></li>
+                          <li><a href="#uPlugSetting=p">P</a></li>
+                          <li><a href="#uPlugSetting=q">Q</a></li>
+                          <li><a href="#uPlugSetting=r">R</a></li>
+                          <li><a href="#uPlugSetting=s">S</a></li>
+                          <li><a href="#uPlugSetting=t">T</a></li>
+                          <li><a href="#uPlugSetting=u">U</a></li>
+                          <li><a href="#uPlugSetting=v">V</a></li>
+                          <li><a href="#uPlugSetting=w">W</a></li>
+                          <li><a href="#uPlugSetting=x">X</a></li>
+                          <li><a href="#uPlugSetting=y">Y</a></li>
+                          <li><a href="#uPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                          <button class="btn">V</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#vPlugSetting=a">A</a></li>
+                          <li><a href="#vPlugSetting=b">B</a></li>
+                          <li><a href="#vPlugSetting=c">C</a></li>
+                          <li><a href="#vPlugSetting=d">D</a></li>
+                          <li><a href="#vPlugSetting=e">E</a></li>
+                          <li><a href="#vPlugSetting=f">F</a></li>
+                          <li><a href="#vPlugSetting=g">G</a></li>
+                          <li><a href="#vPlugSetting=h">H</a></li>
+                          <li><a href="#vPlugSetting=i">I</a></li>
+                          <li><a href="#vPlugSetting=j">J</a></li>
+                          <li><a href="#vPlugSetting=k">K</a></li>
+                          <li><a href="#vPlugSetting=l">L</a></li>
+                          <li><a href="#vPlugSetting=m">M</a></li>
+                          <li><a href="#vPlugSetting=n">N</a></li>
+                          <li><a href="#vPlugSetting=o">O</a></li>
+                          <li><a href="#vPlugSetting=p">P</a></li>
+                          <li><a href="#vPlugSetting=q">Q</a></li>
+                          <li><a href="#vPlugSetting=r">R</a></li>
+                          <li><a href="#vPlugSetting=s">S</a></li>
+                          <li><a href="#vPlugSetting=t">T</a></li>
+                          <li><a href="#vPlugSetting=u">U</a></li>
+                          <li><a href="#vPlugSetting=v">V</a></li>
+                          <li><a href="#vPlugSetting=w">W</a></li>
+                          <li><a href="#vPlugSetting=x">X</a></li>
+                          <li><a href="#vPlugSetting=y">Y</a></li>
+                          <li><a href="#vPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">W</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#wPlugSetting=a">A</a></li>
+                          <li><a href="#wPlugSetting=b">B</a></li>
+                          <li><a href="#wPlugSetting=c">C</a></li>
+                          <li><a href="#wPlugSetting=d">D</a></li>
+                          <li><a href="#wPlugSetting=e">E</a></li>
+                          <li><a href="#wPlugSetting=f">F</a></li>
+                          <li><a href="#wPlugSetting=g">G</a></li>
+                          <li><a href="#wPlugSetting=h">H</a></li>
+                          <li><a href="#wPlugSetting=i">I</a></li>
+                          <li><a href="#wPlugSetting=j">J</a></li>
+                          <li><a href="#wPlugSetting=k">K</a></li>
+                          <li><a href="#wPlugSetting=l">L</a></li>
+                          <li><a href="#wPlugSetting=m">M</a></li>
+                          <li><a href="#wPlugSetting=n">N</a></li>
+                          <li><a href="#wPlugSetting=o">O</a></li>
+                          <li><a href="#wPlugSetting=p">P</a></li>
+                          <li><a href="#wPlugSetting=q">Q</a></li>
+                          <li><a href="#wPlugSetting=r">R</a></li>
+                          <li><a href="#wPlugSetting=s">S</a></li>
+                          <li><a href="#wPlugSetting=t">T</a></li>
+                          <li><a href="#wPlugSetting=u">U</a></li>
+                          <li><a href="#wPlugSetting=v">V</a></li>
+                          <li><a href="#wPlugSetting=w">W</a></li>
+                          <li><a href="#wPlugSetting=x">X</a></li>
+                          <li><a href="#wPlugSetting=y">Y</a></li>
+                          <li><a href="#wPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">X</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#xPlugSetting=a">A</a></li>
+                          <li><a href="#xPlugSetting=b">B</a></li>
+                          <li><a href="#xPlugSetting=c">C</a></li>
+                          <li><a href="#xPlugSetting=d">D</a></li>
+                          <li><a href="#xPlugSetting=e">E</a></li>
+                          <li><a href="#xPlugSetting=f">F</a></li>
+                          <li><a href="#xPlugSetting=g">G</a></li>
+                          <li><a href="#xPlugSetting=h">H</a></li>
+                          <li><a href="#xPlugSetting=i">I</a></li>
+                          <li><a href="#xPlugSetting=j">J</a></li>
+                          <li><a href="#xPlugSetting=k">K</a></li>
+                          <li><a href="#xPlugSetting=l">L</a></li>
+                          <li><a href="#xPlugSetting=m">M</a></li>
+                          <li><a href="#xPlugSetting=n">N</a></li>
+                          <li><a href="#xPlugSetting=o">O</a></li>
+                          <li><a href="#xPlugSetting=p">P</a></li>
+                          <li><a href="#xPlugSetting=q">Q</a></li>
+                          <li><a href="#xPlugSetting=r">R</a></li>
+                          <li><a href="#xPlugSetting=s">S</a></li>
+                          <li><a href="#xPlugSetting=t">T</a></li>
+                          <li><a href="#xPlugSetting=u">U</a></li>
+                          <li><a href="#xPlugSetting=v">V</a></li>
+                          <li><a href="#xPlugSetting=w">W</a></li>
+                          <li><a href="#xPlugSetting=x">X</a></li>
+                          <li><a href="#xPlugSetting=y">Y</a></li>
+                          <li><a href="#xPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">Y</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#yPlugSetting=a">A</a></li>
+                          <li><a href="#yPlugSetting=b">B</a></li>
+                          <li><a href="#yPlugSetting=c">C</a></li>
+                          <li><a href="#yPlugSetting=d">D</a></li>
+                          <li><a href="#yPlugSetting=e">E</a></li>
+                          <li><a href="#yPlugSetting=f">F</a></li>
+                          <li><a href="#yPlugSetting=g">G</a></li>
+                          <li><a href="#yPlugSetting=h">H</a></li>
+                          <li><a href="#yPlugSetting=i">I</a></li>
+                          <li><a href="#yPlugSetting=j">J</a></li>
+                          <li><a href="#yPlugSetting=k">K</a></li>
+                          <li><a href="#yPlugSetting=l">L</a></li>
+                          <li><a href="#yPlugSetting=m">M</a></li>
+                          <li><a href="#yPlugSetting=n">N</a></li>
+                          <li><a href="#yPlugSetting=o">O</a></li>
+                          <li><a href="#yPlugSetting=p">P</a></li>
+                          <li><a href="#yPlugSetting=q">Q</a></li>
+                          <li><a href="#yPlugSetting=r">R</a></li>
+                          <li><a href="#yPlugSetting=s">S</a></li>
+                          <li><a href="#yPlugSetting=t">T</a></li>
+                          <li><a href="#yPlugSetting=u">U</a></li>
+                          <li><a href="#yPlugSetting=v">V</a></li>
+                          <li><a href="#yPlugSetting=w">W</a></li>
+                          <li><a href="#yPlugSetting=x">X</a></li>
+                          <li><a href="#yPlugSetting=y">Y</a></li>
+                          <li><a href="#yPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn">Z</button>
+                          <button class="btn dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#zPlugSetting=a">A</a></li>
+                          <li><a href="#zPlugSetting=b">B</a></li>
+                          <li><a href="#zPlugSetting=c">C</a></li>
+                          <li><a href="#zPlugSetting=d">D</a></li>
+                          <li><a href="#zPlugSetting=e">E</a></li>
+                          <li><a href="#zPlugSetting=f">F</a></li>
+                          <li><a href="#zPlugSetting=g">G</a></li>
+                          <li><a href="#zPlugSetting=h">H</a></li>
+                          <li><a href="#zPlugSetting=i">I</a></li>
+                          <li><a href="#zPlugSetting=j">J</a></li>
+                          <li><a href="#zPlugSetting=k">K</a></li>
+                          <li><a href="#zPlugSetting=l">L</a></li>
+                          <li><a href="#zPlugSetting=m">M</a></li>
+                          <li><a href="#zPlugSetting=n">N</a></li>
+                          <li><a href="#zPlugSetting=o">O</a></li>
+                          <li><a href="#zPlugSetting=p">P</a></li>
+                          <li><a href="#zPlugSetting=q">Q</a></li>
+                          <li><a href="#zPlugSetting=r">R</a></li>
+                          <li><a href="#zPlugSetting=s">S</a></li>
+                          <li><a href="#zPlugSetting=t">T</a></li>
+                          <li><a href="#zPlugSetting=u">U</a></li>
+                          <li><a href="#zPlugSetting=v">V</a></li>
+                          <li><a href="#zPlugSetting=w">W</a></li>
+                          <li><a href="#zPlugSetting=x">X</a></li>
+                          <li><a href="#zPlugSetting=y">Y</a></li>
+                          <li><a href="#zPlugSetting=z">Z</a></li>
+                        </ul>
+                        </div>
+
+                    </div>
+
+                 </div> <!-- End of Row that holds the plug board -->
+
+        </div><!-- End of Container tag that hold the Enigma parts -->
+
+
 
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>

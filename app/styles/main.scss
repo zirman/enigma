@@ -12,3 +12,35 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 	position: relative;
     display: none;
 }
+
+
+#userInputForm{
+	background-color:#999;
+	float: right;
+}
+
+#userInputForm ul{
+	list-style: none;
+	list-style-position: outside;
+}
+
+#userInputForm li{
+	padding: 12px;
+}
+
+.userSetting{
+	margin-top: 15px;
+}
+
+.ringSetting input{
+	text-align: center;
+}
+
+.groundSetting input{
+	text-align: center;
+}
+
+.btn-group{
+	margin-bottom: 10px;
+}
+

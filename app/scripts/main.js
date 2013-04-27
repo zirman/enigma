@@ -9,54 +9,19 @@ strict: true
 (function () {
   'use strict';
 
-  var EnigmaController;
-  EnigmaController = ENIGMA.EnigmaController = {};
-
-  var enigmaMachine = new ENIGMA.EnigmaMachine();
-  var enigmaView = new ENIGMA.EnigmaView();
-
-  var clearText = '';
-  var cipherText = '';
-
-  EnigmaController.clearAll = function () {
-    clearText = '';
-    cipherText = '';
-    enigmaView.setClearText(clearText);
-    enigmaView.setCipherText(cipherText);
-  };
-
-  EnigmaController.keyboardEvent = function (event) {
-    var keyCode = event.key.charCodeAt(0);
-
-    if (keyCode >= 'a'.charCodeAt(0) || keyCode <= 'z'.charCodeAt(0)) {
-      clearText += event.key;
-      cipherText += enigmaMachine.encipherLetter(event.key);
-      enigmaView.setClearText(clearText);
-      enigmaView.setCipherText(cipherText);
-    }
-  };
-
-  EnigmaController.getEnigmaMachine = function () {
-    return enigmaMachine;
-  };
-
-  EnigmaController.setEnigmaMachine = function (newEnigmaMachine) {
-    enigmaMachine = newEnigmaMachine;
-  };
-
-  EnigmaController.getEnigmaView = function () {
-    return enigmaView;
-  };
-
-  EnigmaController.setEnigmaView = function (newEnigmaView) {
-    enigmaView = newEnigmaView;
-  };
-
   $(document).ready(function () {
+    var enigmaMachine = new ENIGMA.EnigmaMachine();
+    var clearText = '';
+    var cipherText = '';
+
     var whiteSpace = /\s/;
     var alphabetic = /[a-zA-Z]/;
 
     var chatWindow = $('#chatWindow');
+
+    var leftRotorDropdown = $('#leftRotorDropdown');
+    var middleRotorDropdown = $('#middleRotorDropdown');
+    var rightRotorDropdown = $('#rightRotorDropdown');
 
     var leftRotorRingSettingField = $('#leftRotorRingSettingField');
     var middleRotorRingSettingField = $('#middleRotorRingSettingField');
@@ -99,95 +64,179 @@ strict: true
     var clearTextField = $('#clearTextField');
     var cipherTextField = $('#cipherTextField');
 
-    var hashStack = [];
+    var enigmaStateStack;
 
+    // this function reads and validates the current #hash tag and updates
+    // the user interface
     var validateHashSettings = function () {
       var hashSettings = window.location.hash.slice(1);
       enigmaMachine.setAllSettings(hashSettings);
-      var allSettings = enigmaMachine.getAllSettings();
+      var validHashSettings = enigmaMachine.getAllSettings();
 
-      if (allSettings !== hashSettings) {
-        hashStack.pop();
-        window.location.hash = '#' + allSettings;
-        hashStack.push(window.location.hash);
+      if (validHashSettings !== hashSettings) {
+        //window.history.back();
+        window.location.hash = '#' + validHashSettings;
       }
+
+      enigmaStateStack = [window.location.hash];
 
       // update user interface
 
-      leftRotorRingSettingField.val(
-        enigmaMachine.getLeftRotor().getRingSetting().toUpperCase()
-      );
+      $('#reflectorDropdown').text(enigmaMachine.getReflector().getLabel());
 
-      middleRotorRingSettingField.val(
-        enigmaMachine.getMiddleRotor().getRingSetting().toUpperCase()
-      );
+      var leftRotor = enigmaMachine.getLeftRotor();
+      var middleRotor = enigmaMachine.getMiddleRotor();
+      var rightRotor = enigmaMachine.getRightRotor();
 
-      rightRotorRingSettingField.val(
-        enigmaMachine.getRightRotor().getRingSetting().toUpperCase()
-      );
+      leftRotorDropdown.text(leftRotor.getLabel());
+      middleRotorDropdown.text(middleRotor.getLabel());
+      rightRotorDropdown.text(rightRotor.getLabel());
 
-      leftRotorGroundSettingField.val(
-        enigmaMachine.getLeftRotor().getGroundSetting().toUpperCase()
-      );
+      leftRotorRingSettingField.val(leftRotor.getRingSetting());
+      middleRotorRingSettingField.val(middleRotor.getRingSetting());
+      rightRotorRingSettingField.val(rightRotor.getRingSetting());
 
-      middleRotorGroundSettingField.val(
-        enigmaMachine.getMiddleRotor().getGroundSetting().toUpperCase()
-      );
-
-      rightRotorGroundSettingField.val(
-        enigmaMachine.getRightRotor().getGroundSetting().toUpperCase()
-      );
+      leftRotorGroundSettingField.val(leftRotor.getGroundSetting());
+      middleRotorGroundSettingField.val(middleRotor.getGroundSetting());
+      rightRotorGroundSettingField.val(rightRotor.getGroundSetting());
 
       var plugboardMapping = enigmaMachine.getPlugboard().getMapping();
-      plugboardAField.val(plugboardMapping.a.toUpperCase());
-      plugboardBField.val(plugboardMapping.b.toUpperCase());
-      plugboardCField.val(plugboardMapping.c.toUpperCase());
-      plugboardDField.val(plugboardMapping.d.toUpperCase());
-      plugboardEField.val(plugboardMapping.e.toUpperCase());
-      plugboardFField.val(plugboardMapping.f.toUpperCase());
-      plugboardGField.val(plugboardMapping.g.toUpperCase());
-      plugboardHField.val(plugboardMapping.h.toUpperCase());
-      plugboardIField.val(plugboardMapping.i.toUpperCase());
-      plugboardJField.val(plugboardMapping.j.toUpperCase());
-      plugboardKField.val(plugboardMapping.k.toUpperCase());
-      plugboardLField.val(plugboardMapping.l.toUpperCase());
-      plugboardMField.val(plugboardMapping.m.toUpperCase());
-      plugboardNField.val(plugboardMapping.n.toUpperCase());
-      plugboardOField.val(plugboardMapping.o.toUpperCase());
-      plugboardPField.val(plugboardMapping.p.toUpperCase());
-      plugboardQField.val(plugboardMapping.q.toUpperCase());
-      plugboardRField.val(plugboardMapping.r.toUpperCase());
-      plugboardSField.val(plugboardMapping.s.toUpperCase());
-      plugboardTField.val(plugboardMapping.t.toUpperCase());
-      plugboardUField.val(plugboardMapping.u.toUpperCase());
-      plugboardVField.val(plugboardMapping.v.toUpperCase());
-      plugboardWField.val(plugboardMapping.w.toUpperCase());
-      plugboardXField.val(plugboardMapping.x.toUpperCase());
-      plugboardYField.val(plugboardMapping.y.toUpperCase());
-      plugboardZField.val(plugboardMapping.z.toUpperCase());
+      plugboardAField.val(plugboardMapping.A);
+      plugboardBField.val(plugboardMapping.B);
+      plugboardCField.val(plugboardMapping.C);
+      plugboardDField.val(plugboardMapping.D);
+      plugboardEField.val(plugboardMapping.E);
+      plugboardFField.val(plugboardMapping.F);
+      plugboardGField.val(plugboardMapping.G);
+      plugboardHField.val(plugboardMapping.H);
+      plugboardIField.val(plugboardMapping.I);
+      plugboardJField.val(plugboardMapping.J);
+      plugboardKField.val(plugboardMapping.K);
+      plugboardLField.val(plugboardMapping.L);
+      plugboardMField.val(plugboardMapping.M);
+      plugboardNField.val(plugboardMapping.N);
+      plugboardOField.val(plugboardMapping.O);
+      plugboardPField.val(plugboardMapping.P);
+      plugboardQField.val(plugboardMapping.Q);
+      plugboardRField.val(plugboardMapping.R);
+      plugboardSField.val(plugboardMapping.S);
+      plugboardTField.val(plugboardMapping.T);
+      plugboardUField.val(plugboardMapping.U);
+      plugboardVField.val(plugboardMapping.V);
+      plugboardWField.val(plugboardMapping.W);
+      plugboardXField.val(plugboardMapping.X);
+      plugboardYField.val(plugboardMapping.Y);
+      plugboardZField.val(plugboardMapping.Z);
     };
 
-    // get hash settings if they exist
+    //-------------------------------
+    // setup initial enigma settings
+    //-------------------------------
+
     if (window.location.hash.length > 1) {
-      hashStack.push(window.location.hash);
       validateHashSettings();
 
-    // otherwise set hash settings to current enigma settings
+    // otherwise set hash tag to default enigma settings
     } else {
+      // this will trigger event to call validateHashSettings
       window.location.hash = '#' + enigmaMachine.getAllSettings();
-      hashStack.push(window.location.hash);
     }
+
+    //----------------------
+    // setup event handlers
+    //----------------------
+
+    var updateHashTag = function () {
+      window.location.hash = '#' + enigmaMachine.getAllSettings();
+      enigmaStateStack = [window.location.hash];
+      clearTextField.val(clearText = '');
+      cipherTextField.val(cipherText = '');
+    };
+
+    $('.reflectorItem').click(function () {
+      var label = $(event.target).text();
+      var reflector = enigmaMachine.getReflector();
+
+      if (reflector.getLabel() !== label) {
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.swapReflector(ENIGMA.Reflector.withLabel(label));
+        updateHashTag();
+      }
+    });
+
+    var rotorPulldownHandler = function (getRotor) {
+
+      return function(event) {
+        var label = $(event.target).text();
+        var rotor = getRotor();
+
+        if (rotor.getLabel() !== label) {
+          enigmaMachine.setAllSettings(window.location.hash.slice(1));
+          enigmaMachine.swapRotor(rotor, ENIGMA.Rotor.withLabel(label));
+          updateHashTag();
+        }
+      };
+    };
+
+    $('.leftRotorItem').click(rotorPulldownHandler(enigmaMachine.getLeftRotor));
+
+    $('.middleRotorItem').click(rotorPulldownHandler(
+      enigmaMachine.getMiddleRotor));
+
+    $('.rightRotorItem').click(rotorPulldownHandler(
+      enigmaMachine.getRightRotor));
+
+    var plugboardFieldHandler = function (letter) {
+
+      return function (event) {
+        event.preventDefault();
+        var character = String.fromCharCode(event.keyCode);
+
+        if (alphabetic.test(character)) {
+          enigmaMachine.setAllSettings(window.location.hash.slice(1));
+          var plugboard = enigmaMachine.getPlugboard();
+          plugboard.clearLetter(letter);
+          plugboard.setLetterSwap(letter, character);
+          updateHashTag();
+        }
+      };
+    };
+
+    plugboardAField.keydown(plugboardFieldHandler('A'));
+    plugboardBField.keydown(plugboardFieldHandler('B'));
+    plugboardCField.keydown(plugboardFieldHandler('C'));
+    plugboardDField.keydown(plugboardFieldHandler('D'));
+    plugboardEField.keydown(plugboardFieldHandler('E'));
+    plugboardFField.keydown(plugboardFieldHandler('F'));
+    plugboardGField.keydown(plugboardFieldHandler('G'));
+    plugboardHField.keydown(plugboardFieldHandler('H'));
+    plugboardIField.keydown(plugboardFieldHandler('I'));
+    plugboardJField.keydown(plugboardFieldHandler('J'));
+    plugboardKField.keydown(plugboardFieldHandler('K'));
+    plugboardLField.keydown(plugboardFieldHandler('L'));
+    plugboardMField.keydown(plugboardFieldHandler('M'));
+    plugboardNField.keydown(plugboardFieldHandler('N'));
+    plugboardOField.keydown(plugboardFieldHandler('O'));
+    plugboardPField.keydown(plugboardFieldHandler('P'));
+    plugboardQField.keydown(plugboardFieldHandler('Q'));
+    plugboardRField.keydown(plugboardFieldHandler('R'));
+    plugboardSField.keydown(plugboardFieldHandler('S'));
+    plugboardTField.keydown(plugboardFieldHandler('T'));
+    plugboardUField.keydown(plugboardFieldHandler('U'));
+    plugboardVField.keydown(plugboardFieldHandler('V'));
+    plugboardWField.keydown(plugboardFieldHandler('W'));
+    plugboardXField.keydown(plugboardFieldHandler('X'));
+    plugboardYField.keydown(plugboardFieldHandler('Y'));
+    plugboardZField.keydown(plugboardFieldHandler('Z'));
 
     leftRotorRingSettingField.keydown(function(event) {
       event.preventDefault();
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getLeftRotor().setRingSetting(character.toLowerCase());
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getLeftRotor().setRingSetting(character);
+        updateHashTag();
       }
     });
 
@@ -196,11 +245,9 @@ strict: true
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getMiddleRotor().setRingSetting(character.toLowerCase());
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getMiddleRotor().setRingSetting(character);
+        updateHashTag();
       }
     });
 
@@ -209,11 +256,9 @@ strict: true
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getRightRotor().setRingSetting(character.toLowerCase());
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getRightRotor().setRingSetting(character);
+        updateHashTag();
       }
     });
 
@@ -222,11 +267,9 @@ strict: true
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getLeftRotor().setGroundSetting(character.toLowerCase());
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getLeftRotor().setGroundSetting(character);
+        updateHashTag();
       }
     });
 
@@ -235,13 +278,9 @@ strict: true
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getMiddleRotor().setGroundSetting(character.
-          toLowerCase());
-
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getMiddleRotor().setGroundSetting(character);
+        updateHashTag();
       }
     });
 
@@ -250,20 +289,38 @@ strict: true
       var character = String.fromCharCode(event.keyCode);
 
       if (alphabetic.test(character)) {
-        enigmaMachine.getRightRotor().setGroundSetting(character.toLowerCase());
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
+        enigmaMachine.setAllSettings(window.location.hash.slice(1));
+        enigmaMachine.getRightRotor().setGroundSetting(character);
+        updateHashTag();
       }
     });
 
-    randomizeSettingsButton.click(function(event) {
-      console.log(event);
+    randomizeSettingsButton.click(function() {
+      enigmaMachine.swapReflector(ENIGMA.Reflector.getRandomly());
+
+      enigmaMachine.swapRotor(enigmaMachine.getLeftRotor(),
+        ENIGMA.Rotor.getRandomly());
+
+      enigmaMachine.swapRotor(enigmaMachine.getMiddleRotor(),
+        ENIGMA.Rotor.getRandomly());
+
+      enigmaMachine.swapRotor(enigmaMachine.getRightRotor(),
+        ENIGMA.Rotor.getRandomly());
+
+      enigmaMachine.swapRotor(enigmaMachine.getRightRotor(),
+        ENIGMA.Rotor.getRandomly());
+
+      enigmaMachine.getLeftRotor().randomize();
+      enigmaMachine.getMiddleRotor().randomize();
+      enigmaMachine.getRightRotor().randomize();
+
+      enigmaMachine.getPlugboard().randomize();
+
+      window.location.hash = '#' + enigmaMachine.getAllSettings();
     });
 
-    sendSettingsButton.click(function(event) {
-      console.log(event);
+    sendSettingsButton.click(function() {
+      ENIGMA.chatClient.sendSettings(window.location.hash.slice(1));
     });
 
     clearTextField.keydown(function(event) {
@@ -281,9 +338,21 @@ strict: true
       // encrypt alphabetic characters
       } else if (alphabetic.test(character)) {
         clearText += character.toLowerCase();
-        cipherText += enigmaMachine.encipherLetter(character).toUpperCase();
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack.push(window.location.hash);
+        cipherText += enigmaMachine.encipherLetter(character);
+        enigmaStateStack.push('#' + enigmaMachine.getAllSettings());
+
+        leftRotorGroundSettingField.val(
+          enigmaMachine.getLeftRotor().getGroundSetting()
+        );
+
+        middleRotorGroundSettingField.val(
+          enigmaMachine.getMiddleRotor().getGroundSetting()
+        );
+
+        rightRotorGroundSettingField.val(
+          enigmaMachine.getRightRotor().getGroundSetting()
+        );
+
         clearTextField.val(clearText);
         cipherTextField.val(cipherText);
 
@@ -292,10 +361,22 @@ strict: true
 
         if (clearText.length > 0) {
 
-          // go back one in history which updates hash and enigma state
           if (!whiteSpace.test(clearText.slice(-1))) {
-            hashStack.pop();
-            window.location.hash = hashStack[hashStack.length - 1];
+            enigmaStateStack.pop();
+            enigmaMachine.setAllSettings(enigmaStateStack[enigmaStateStack.
+              length - 1].slice(1));
+
+            leftRotorGroundSettingField.val(
+              enigmaMachine.getLeftRotor().getGroundSetting()
+            );
+
+            middleRotorGroundSettingField.val(
+              enigmaMachine.getMiddleRotor().getGroundSetting()
+            );
+
+            rightRotorGroundSettingField.val(
+              enigmaMachine.getRightRotor().getGroundSetting()
+            );
           }
 
           // remove last character
@@ -311,65 +392,52 @@ strict: true
 
     $('#sendClearTextButton').click(function () {
       ENIGMA.chatClient.sendClearText(clearText);
-      window.location.hash = hashStack[0];
-      hashStack = [hashStack[0]];
+      enigmaStateStack = [window.location.hash];
+      enigmaMachine.setAllSettings(window.location.hash.slice(1));
+
+      leftRotorGroundSettingField.val(
+        enigmaMachine.getLeftRotor().getGroundSetting()
+      );
+
+      middleRotorGroundSettingField.val(
+        enigmaMachine.getMiddleRotor().getGroundSetting()
+      );
+
+      rightRotorGroundSettingField.val(
+        enigmaMachine.getRightRotor().getGroundSetting()
+      );
+
       clearTextField.val(clearText = '');
       cipherTextField.val(cipherText = '');
     });
 
     $('#sendCipherTextButton').click(function () {
       ENIGMA.chatClient.sendCipherText(cipherText);
-      window.location.hash = hashStack[0];
-      hashStack = [hashStack[0]];
+
+      enigmaStateStack = [window.location.hash];
+      enigmaMachine.setAllSettings(window.location.hash.slice(1));
+
+      leftRotorGroundSettingField.val(
+        enigmaMachine.getLeftRotor().getGroundSetting()
+      );
+
+      middleRotorGroundSettingField.val(
+        enigmaMachine.getMiddleRotor().getGroundSetting()
+      );
+
+      rightRotorGroundSettingField.val(
+        enigmaMachine.getRightRotor().getGroundSetting()
+      );
+
       clearTextField.val(clearText = '');
       cipherTextField.val(cipherText = '');
     });
-
-    $('.reflectorItem').click(function () {
-      var label = $(event.target).text();
-      var reflector = enigmaMachine.getReflector();
-
-      if (reflector.getLabel() !== label) {
-        enigmaMachine.swapReflector(ENIGMA.Reflector.withLabel(label));
-        window.location.hash = '#' + enigmaMachine.getAllSettings();
-        hashStack = [window.location.hash];
-        $('#reflectorDropdown').text(label);
-        clearTextField.val(clearText = '');
-        cipherTextField.val(cipherText = '');
-      }
-    });
-
-    var getRotorPulldownHandler = function (dropdown, getter) {
-
-      return function(event) {
-        var label = $(event.target).text();
-        var rotor = getter();
-
-        if (rotor.getLabel() !== label) {
-          enigmaMachine.swapRotor(rotor, ENIGMA.Rotor.withLabel(label));
-          window.location.hash = '#' + enigmaMachine.getAllSettings();
-          hashStack = [window.location.hash];
-          dropdown.text(label);
-          clearTextField.val(clearText = '');
-          cipherTextField.val(cipherText = '');
-        }
-      };
-    };
-
-    $('.leftRotorItem').click(getRotorPulldownHandler($('#leftRotorDropdown'),
-      enigmaMachine.getLeftRotor));
-
-    $('.middleRotorItem').click(getRotorPulldownHandler(
-      $('#middleRotorDropdown'), enigmaMachine.getMiddleRotor));
-
-    $('.rightRotorItem').click(getRotorPulldownHandler($('#rightRotorDropdown'),
-      enigmaMachine.getRightRotor));
 
     // connect to chat server and setup event handlers
     ENIGMA.chatClient.connect({
 
       onopen: function () {
-        chatWindow.append('<p>connected</p>');
+        chatWindow.append('<p><span class="chatStatus">connected</span></p>');
       },
 
       onerror: function (error) {
@@ -377,7 +445,6 @@ strict: true
       },
 
       onmessage: function (json) {
-        console.log(json);
 
         if (json.server) {
           chatWindow.append('<p><span class="server">' + json.server +
@@ -386,17 +453,30 @@ strict: true
 
         if (json.clearText) {
           chatWindow.append('<p>' + json.from + ': <span class="clearText">' +
-            json.clearText.toLowerCase() + '</span></p>');
+            json.clearText + '</span></p>');
         }
 
         if (json.cipherText) {
-          chatWindow.append('<p>' + json.from + ': <span class="cipherText">' +
-            json.cipherText.toUpperCase() + '</span></p>');
+
+          if (json.settings) {
+            chatWindow.append('<p><a href="#' + json.settings + '">' +
+              json.from + '</a>: <span class="cipherText">' + json.cipherText +
+              '</span></p>');
+
+          } else {
+            chatWindow.append('<p>' + json.from +
+              ': <span class="cipherText">' + json.cipherText + '</span></p>');
+          }
+
+        } else if (json.settings) {
+          chatWindow.append('<p><a href="#' + json.settings + '">' + json.from +
+            '\'s settings</a></p>');
         }
       },
 
       onclose: function () {
-        chatWindow.append('<p>disconnected</p>');
+        chatWindow.append(
+          '<p><span class="chatStatus">disconnected</span></p>');
       }
     });
   });

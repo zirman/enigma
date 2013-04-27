@@ -132,7 +132,8 @@ strict: true
         var inputObject = JSON.parse(jsonString);
 
         if (typeof inputObject.clearText !== 'string' &&
-            typeof inputObject.cipherText !== 'string') {
+            typeof inputObject.cipherText !== 'string' &&
+            typeof inputObject.settings !== 'string') {
           console.log('strange message from ' + name);
           return;
         }
@@ -147,6 +148,10 @@ strict: true
 
         if (inputObject.cipherText) {
           outputObject.cipherText = inputObject.cipherText;
+        }
+
+        if (inputObject.settings) {
+          outputObject.settings = inputObject.settings;
         }
 
         console.log(outputObject);

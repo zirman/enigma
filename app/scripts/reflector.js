@@ -1,14 +1,15 @@
 /*jshint indent: 2, maxlen: 80, strict: true*/
 
+/*globals ENIGMA*/
+
 (function () {
   'use strict';
-  var ns = window.ENIGMA;
 
-  ns.Reflector = function (label, right, rightObj) {
+  ENIGMA.Reflector = function (label, right, rightObj) {
     label = label || 'B';
 
     if (!right) {
-      return new ns.Reflector.ReflectorB();
+      return new ENIGMA.Reflector.ReflectorB();
     }
 
     rightObj = rightObj || null;
@@ -49,85 +50,99 @@
     }.bind(this);
   };
 
-  ns.Reflector.withLabel = function (label) {
+  ENIGMA.Reflector.withLabel = function (label) {
     if (label === 'B') {
-      return new ns.Reflector.ReflectorB();
+      return new ENIGMA.Reflector.ReflectorB();
 
     } else if (label === 'C') {
-      return new ns.Reflector.ReflectorC();
+      return new ENIGMA.Reflector.ReflectorC();
 
     } else {
       return null;
     }
   };
 
-  ns.Reflector.ReflectorB = (function (rightObj) {
+  ENIGMA.Reflector.getRandomly = function () {
+
+    switch (Math.floor(Math.random() * 2)) {
+    case 0:
+      return new ENIGMA.Reflector.ReflectorB();
+
+    case 1:
+      return new ENIGMA.Reflector.ReflectorC();
+
+    default:
+      return null;
+    }
+  };
+
+  ENIGMA.Reflector.ReflectorB = (function (rightObj) {
     var reflectorB = {
-      'a': 'y',
-      'b': 'r',
-      'c': 'u',
-      'd': 'h',
-      'e': 'q',
-      'f': 's',
-      'g': 'l',
-      'h': 'd',
-      'i': 'p',
-      'j': 'x',
-      'k': 'n',
-      'l': 'g',
-      'm': 'o',
-      'n': 'k',
-      'o': 'm',
-      'p': 'i',
-      'q': 'e',
-      'r': 'b',
-      's': 'f',
-      't': 'z',
-      'u': 'c',
-      'v': 'w',
-      'w': 'v',
-      'x': 'j',
-      'y': 'a',
-      'z': 't'
+      'A': 'Y',
+      'B': 'R',
+      'C': 'U',
+      'D': 'H',
+      'E': 'Q',
+      'F': 'S',
+      'G': 'L',
+      'H': 'D',
+      'I': 'P',
+      'J': 'X',
+      'K': 'N',
+      'L': 'G',
+      'M': 'O',
+      'N': 'K',
+      'O': 'M',
+      'P': 'I',
+      'Q': 'E',
+      'R': 'B',
+      'S': 'F',
+      'T': 'Z',
+      'U': 'C',
+      'V': 'W',
+      'W': 'V',
+      'X': 'J',
+      'Y': 'A',
+      'Z': 'T'
     };
 
     return function () {
-      return new ns.Reflector('B', reflectorB, rightObj);
+      return new ENIGMA.Reflector('B', reflectorB, rightObj);
     };
   }());
 
-  ns.Reflector.ReflectorC = (function (rightObj) {
+  ENIGMA.Reflector.ReflectorC = (function (rightObj) {
     var reflectorC = {
-      'a': 'f',
-      'b': 'v',
-      'c': 'p',
-      'd': 'j',
-      'e': 'i',
-      'f': 'a',
-      'g': 'o',
-      'h': 'y',
-      'i': 'e',
-      'j': 'd',
-      'k': 'r',
-      'l': 'z',
-      'm': 'x',
-      'n': 'w',
-      'o': 'g',
-      'p': 'c',
-      'q': 't',
-      'r': 'k',
-      's': 'u',
-      't': 'q',
-      'u': 's',
-      'v': 'b',
-      'w': 'n',
-      'x': 'm',
-      'y': 'h',
-      'z': 'l'
+      'A': 'F',
+      'B': 'V',
+      'C': 'P',
+      'D': 'J',
+      'E': 'I',
+      'F': 'A',
+      'G': 'O',
+      'H': 'Y',
+      'I': 'E',
+      'J': 'D',
+      'K': 'R',
+      'L': 'Z',
+      'M': 'X',
+      'N': 'W',
+      'O': 'G',
+      'P': 'C',
+      'Q': 'T',
+      'R': 'K',
+      'S': 'U',
+      'T': 'Q',
+      'U': 'S',
+      'V': 'B',
+      'W': 'N',
+      'X': 'M',
+      'Y': 'H',
+      'Z': 'L'
     };
 
     return function () {
-      return new ns.Reflector('C', reflectorC, rightObj);
+      return new ENIGMA.Reflector('C', reflectorC, rightObj);
     };
   }());
 }());

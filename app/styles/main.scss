@@ -13,6 +13,10 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
     margin: 0px;
 }
 
+#chatWindow .chatStatus {
+    font-style:italic;
+}
+
 #chatWindow .server {
     font-weight: bold;
 }

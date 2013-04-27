@@ -1,10 +1,11 @@
 /*jshint indent: 2, maxlen: 80, strict: true*/
 
+/*globals ENIGMA*/
+
 (function () {
   'use strict';
-  var ns = window.ENIGMA;
 
-  ns.Plugboard = function (left, leftObj) {
+  ENIGMA.Plugboard = function (left, leftObj) {
     leftObj = leftObj || null;
 
     var right;
@@ -22,36 +23,36 @@
 
     this.clearAll = function () {
       left = {
-        'a': 'a',
-        'b': 'b',
-        'c': 'c',
-        'd': 'd',
-        'e': 'e',
-        'f': 'f',
-        'g': 'g',
-        'h': 'h',
-        'i': 'i',
-        'j': 'j',
-        'k': 'k',
-        'l': 'l',
-        'm': 'm',
-        'n': 'n',
-        'o': 'o',
-        'p': 'p',
-        'q': 'q',
-        'r': 'r',
-        's': 's',
-        't': 't',
-        'u': 'u',
-        'v': 'v',
-        'w': 'w',
-        'x': 'x',
-        'y': 'y',
-        'z': 'z'
+        'A': 'A',
+        'B': 'B',
+        'C': 'C',
+        'D': 'D',
+        'E': 'E',
+        'F': 'F',
+        'G': 'G',
+        'H': 'H',
+        'I': 'I',
+        'J': 'J',
+        'K': 'K',
+        'L': 'L',
+        'M': 'M',
+        'N': 'N',
+        'O': 'O',
+        'P': 'P',
+        'Q': 'Q',
+        'R': 'R',
+        'S': 'S',
+        'T': 'T',
+        'U': 'U',
+        'V': 'V',
+        'W': 'W',
+        'X': 'X',
+        'Y': 'Y',
+        'Z': 'Z'
       };
 
       makeReverseMap();
-    };
+    }.bind(this);
 
     if (left) {
       // should probably check to make sure that mapping is valid here
@@ -73,17 +74,15 @@
       left[letter2] = letter1;
       right[letter1] = letter2;
       right[letter2] = letter1;
-    };
+    }.bind(this);
 
-    this.clearLetterSwap = function (letter1, letter2) {
-      console.assert(letter1 !== letter2);
-      console.assert(left[letter1] === letter2);
-      console.assert(left[letter2] === letter1);
-      left[letter1] = letter1;
-      left[letter2] = letter2;
-      right[letter1] = letter1;
-      right[letter2] = letter2;
-    };
+    this.clearLetter = function (letter) {
+      var to = left[letter];
+      left[to] = to;
+      left[letter] = letter;
+      right[to] = to;
+      right[letter] = letter;
+    }.bind(this);
 
     this.getLeftObj = function () {
       return leftObj;
@@ -127,6 +126,26 @@
       });
 
       return letterOut;
+    }.bind(this);
+
+    this.randomize = function () {
+      var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+        'Z'];
+
+      this.clearAll();
+
+      while (alphabet.length > 0) {
+        var index = Math.floor(Math.random() * (alphabet.length - 1)) + 1;
+
+        this.setLetterSwap(
+          alphabet[0],
+          alphabet[index]
+        );
+
+        alphabet.splice(index, 1);
+        alphabet.splice(0, 1);
+      }
     }.bind(this);
   };
 }());

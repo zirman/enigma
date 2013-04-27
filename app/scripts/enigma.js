@@ -9,17 +9,18 @@ strict: true
 (function () {
   'use strict';
 
-  var ns = window.ENIGMA;
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-  ns.EnigmaMachine = function () {
+  ENIGMA.EnigmaMachine = function () {
     // create all plugboard, rotors and reflector
-    var reflector = new ns.Reflector.ReflectorB();
-    var leftRotor = new ns.Rotor.Rotor1();
-    var middleRotor = new ns.Rotor.Rotor2();
-    var rightRotor = new ns.Rotor.Rotor3();
-    var plugboard = new ns.Plugboard();
-    var aCharCode = ('a').charCodeAt(0);
-    var zCharCode = ('z').charCodeAt(0);
+    var reflector = new ENIGMA.Reflector.ReflectorB();
+    var leftRotor = new ENIGMA.Rotor.Rotor1();
+    var middleRotor = new ENIGMA.Rotor.Rotor2();
+    var rightRotor = new ENIGMA.Rotor.Rotor3();
+    var plugboard = new ENIGMA.Plugboard();
+    var aCharCode = 'A'.charCodeAt(0);
+    var zCharCode = 'Z'.charCodeAt(0);
 
     // 'wire up' the reflectors, rotors and plugboard
     reflector.setRightObj(leftRotor);
@@ -66,27 +67,21 @@ strict: true
 
       var plugboardMapping = plugboard.getMapping();
       var plugboardSettings = '';
-      var alreadySwapped = [];
 
-      for (var key in plugboardMapping) {
+      alphabet.forEach(function (from) {
+        var to = plugboardMapping[from];
 
-        if (plugboardMapping.hasOwnProperty(key)) {
-
-          if (plugboardMapping[key] !== key &&
-              alreadySwapped.indexOf(key) === -1) {
-
-            plugboardSettings += '-' + key + plugboardMapping[key];
-            alreadySwapped.push(plugboardMapping[key]);
-          }
+        if (to.charCodeAt(0) > from.charCodeAt(0)) {
+          plugboardSettings += '-' + from + to;
         }
-      }
+      });
 
       return reflectorConfig + '-' + rotorConfig + '-' + ringSettings + '-' +
         groundSettings + plugboardSettings;
     };
 
     this.setAllSettings = function (settings) {
-      var items = settings.split('-');
+      var items = settings.toUpperCase().split('-');
       var reflectorLabel = items[0];
       var leftRotorLabel = items[1];
       var middleRotorLabel = items[2];
@@ -141,20 +136,10 @@ strict: true
 
       // set plugboard settings
       plugboard.clearAll();
-      var plugboardMapping = plugboard.getMapping();
 
       plugboardSettings.forEach(function (swap) {
-
-        // if already set
-        if (plugboardMapping[swap[0]] === swap[1]) {
-          return;
-        }
-
-        // if letter was swapped with a different letter, clear it
-        if (plugboardMapping[swap[0]] !== swap[0]) {
-          plugboard.clearLetterSwap(swap[0], plugboardMapping[swap[0]]);
-        }
-
+        plugboard.clearLetter(swap[0]);
+        plugboard.clearLetter(swap[1]);
         plugboard.setLetterSwap(swap[0], swap[1]);
       });
     };
@@ -220,22 +205,22 @@ strict: true
     // only the first character of the string is enciphered and returned
     // non a-z characters are passed through in lower case
     this.encipherLetter = function (letter) {
-      var lowerCase = letter.toLowerCase();
-      var charCode = lowerCase.charCodeAt(0);
+      var upperCase = letter.toUpperCase();
+      var charCode = upperCase.charCodeAt(0);
 
       // passthrough characters that are not a-z
       if (charCode < aCharCode || charCode > zCharCode) {
-        return lowerCase;
+        return upperCase;
       }
 
       advanceRotors();
 
-      return plugboard.goingLeft(lowerCase);
+      return plugboard.goingLeft(upperCase);
     }.bind(this);
 
     this.traceLetter = function (letter) {
-      var lowerCase = letter.toLowerCase();
-      var charCode = lowerCase.charCodeAt(0);
+      var upperCase = letter.toUpperCase();
+      var charCode = upperCase.charCodeAt(0);
 
       // passthrough characters that are not a-z
       if (charCode < aCharCode || charCode > zCharCode) {
@@ -246,8 +231,8 @@ strict: true
       var path = [];
 
       return {
-        letterIn: lowerCase,
-        letterOut: plugboard.traceLeft(lowerCase, path),
+        letterIn: upperCase,
+        letterOut: plugboard.traceLeft(upperCase, path),
         path: path
       };
     }.bind(this);

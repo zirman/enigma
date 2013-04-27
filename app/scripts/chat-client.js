@@ -7,16 +7,22 @@ strict: true
 (function () {
   'use strict';
 
-  var chatClient = window.ENIGMA.chatClient = {};
+  var debug = false;
   var socket;
+  var chatClient = window.ENIGMA.chatClient = {};
 
   chatClient.connect = function (delegate) {
     socket = new WebSocket('ws://' + location.host, ['enigmaChat']);
 
-    console.log('WebSocket Connecting...');
+    if (debug) {
+      console.log('WebSocket: Connecting...');
+    }
 
     socket.onopen = function () {
-      console.log('WebSocket: Opened');
+
+      if (debug) {
+        console.log('WebSocket: Opened');
+      }
 
       if (delegate && typeof delegate.onopen === 'function') {
         delegate.onopen();
@@ -24,7 +30,11 @@ strict: true
     };
 
     socket.onerror = function (error) {
-      console.log('WebSocket: Error ' + error);
+
+      if (debug) {
+        console.log('WebSocket: Error ' + error);
+      }
+
       clearInterval(keepAliveInterval);
 
       if (delegate && typeof delegate.onerror === 'function') {
@@ -33,7 +43,10 @@ strict: true
     };
 
     socket.onmessage = function (event) {
-      console.log('WebSocket: Received Message');
+
+      if (debug) {
+        console.log('WebSocket: Received Message');
+      }
 
       if (delegate && typeof delegate.onmessage === 'function') {
         delegate.onmessage(JSON.parse(event.data));
@@ -60,9 +73,21 @@ strict: true
       socket.send(JSON.stringify(json));
     };
 
-    chatClient.sendCipherText = function (cipherText) {
+    chatClient.sendCipherText = function (cipherText, settings) {
       var json = {
         cipherText: cipherText
+      };
+
+      if (settings) {
+        json.settings = settings;
+      }
+
+      socket.send(JSON.stringify(json));
+    };
+
+    chatClient.sendSettings = function (settings) {
+      var json = {
+        settings: settings
       };
 
       socket.send(JSON.stringify(json));

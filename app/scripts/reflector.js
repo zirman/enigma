@@ -49,6 +49,18 @@
     }.bind(this);
   };
 
+  ns.Reflector.withLabel = function (label) {
+    if (label === 'B') {
+      return new ns.Reflector.ReflectorB();
+
+    } else if (label === 'C') {
+      return new ns.Reflector.ReflectorC();
+
+    } else {
+      return null;
+    }
+  };
+
   ns.Reflector.ReflectorB = (function (rightObj) {
     var reflectorB = {
       'a': 'y',

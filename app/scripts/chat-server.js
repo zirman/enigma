@@ -131,15 +131,23 @@ strict: true
 
         var inputObject = JSON.parse(jsonString);
 
-        if (typeof inputObject.message !== 'string') {
+        if (typeof inputObject.clearText !== 'string' &&
+            typeof inputObject.cipherText !== 'string') {
           console.log('strange message from ' + name);
           return;
         }
 
         var outputObject = {
-          from: name,
-          message: inputObject.message
+          from: name
         };
+
+        if (inputObject.clearText) {
+          outputObject.clearText = inputObject.clearText;
+        }
+
+        if (inputObject.cipherText) {
+          outputObject.cipherText = inputObject.cipherText;
+        }
 
         console.log(outputObject);
 

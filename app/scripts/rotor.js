@@ -172,6 +172,36 @@
     */
   };
 
+  ns.Rotor.withLabel = function (label) {
+    if (label === 'I') {
+      return new ns.Rotor.Rotor1();
+
+    } else if (label === 'II') {
+      return new ns.Rotor.Rotor2();
+
+    } else if (label === 'III') {
+      return new ns.Rotor.Rotor3();
+
+    } else if (label === 'IV') {
+      return new ns.Rotor.Rotor4();
+
+    } else if (label === 'V') {
+      return new ns.Rotor.Rotor5();
+
+    } else if (label === 'VI') {
+      return new ns.Rotor.Rotor6();
+
+    } else if (label === 'VII') {
+      return new ns.Rotor.Rotor7();
+
+    } else if (label === 'VIII') {
+      return new ns.Rotor.Rotor8();
+
+    } else {
+      return null;
+    }
+  };
+
   ns.Rotor.Rotor1 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 

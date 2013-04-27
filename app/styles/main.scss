@@ -3,21 +3,36 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
+#chatWindow {
+    font-family: Courier;
+    height: 200px;
+    overflow: auto;
 }
 
-.hoverHidden {
-	position: relative;
-    display: none;
+#chatWindow p {
+    margin: 0px;
 }
 
+#chatWindow .server {
+    font-weight: bold;
+}
+
+#chatWindow .clearText {
+    color: red;
+    font-weight: bold;
+}
+
+#chatWindow .cipherText {
+    color: black;
+    font-weight: bold;
+}
 
 input[type="text"] {
     font-family: Courier;
 }
 
-.groundSetting input{
-	text-align: center;
+.input-nano {
+    @extend .input-mini;
+    text-align: center;
+    width: 20px;
 }

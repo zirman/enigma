@@ -316,7 +316,7 @@ strict: true
 
       enigmaMachine.getPlugboard().randomize();
 
-      window.location.hash = '#' + enigmaMachine.getAllSettings();
+      updateHashTag();
     });
 
     sendSettingsButton.click(function() {

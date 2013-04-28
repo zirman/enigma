@@ -151,7 +151,7 @@ strict: true
     // setup event handlers
     //----------------------
 
-    $('.reflectorItem').click(function () {
+    $('.reflectorItem').click(function (event) {
       var label = $(event.target).text();
       var reflector = enigmaMachine.getReflector();
 

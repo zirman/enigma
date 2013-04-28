@@ -73,12 +73,17 @@ strict: true
       enigmaMachine.setAllSettings(hashSettings);
       var validHashSettings = enigmaMachine.getAllSettings();
 
+      // change hash to valid version and return, we will be back
       if (validHashSettings !== hashSettings) {
-        //window.history.back();
         window.location.hash = '#' + validHashSettings;
+        return;
       }
 
       enigmaStateStack = [window.location.hash];
+
+      // clear text fields
+      clearTextField.val(clearText = '');
+      cipherTextField.val(cipherText = '');
 
       // update user interface
 
@@ -146,13 +151,6 @@ strict: true
     // setup event handlers
     //----------------------
 
-    var updateHashTag = function () {
-      window.location.hash = '#' + enigmaMachine.getAllSettings();
-      enigmaStateStack = [window.location.hash];
-      clearTextField.val(clearText = '');
-      cipherTextField.val(cipherText = '');
-    };
-
     $('.reflectorItem').click(function () {
       var label = $(event.target).text();
       var reflector = enigmaMachine.getReflector();
@@ -160,7 +158,7 @@ strict: true
       if (reflector.getLabel() !== label) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.swapReflector(ENIGMA.Reflector.withLabel(label));
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -173,7 +171,7 @@ strict: true
         if (rotor.getLabel() !== label) {
           enigmaMachine.setAllSettings(window.location.hash.slice(1));
           enigmaMachine.swapRotor(rotor, ENIGMA.Rotor.withLabel(label));
-          updateHashTag();
+          window.location.hash = '#' + enigmaMachine.getAllSettings();
         }
       };
     };
@@ -197,7 +195,7 @@ strict: true
           var plugboard = enigmaMachine.getPlugboard();
           plugboard.clearLetter(letter);
           plugboard.setLetterSwap(letter, character);
-          updateHashTag();
+          window.location.hash = '#' + enigmaMachine.getAllSettings();
         }
       };
     };
@@ -236,7 +234,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getLeftRotor().setRingSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -247,7 +245,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getMiddleRotor().setRingSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -258,7 +256,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getRightRotor().setRingSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -269,7 +267,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getLeftRotor().setGroundSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -280,7 +278,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getMiddleRotor().setGroundSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -291,7 +289,7 @@ strict: true
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getRightRotor().setGroundSetting(character);
-        updateHashTag();
+        window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
     });
 
@@ -316,7 +314,7 @@ strict: true
 
       enigmaMachine.getPlugboard().randomize();
 
-      updateHashTag();
+      window.location.hash = '#' + enigmaMachine.getAllSettings();
     });
 
     sendSettingsButton.click(function() {

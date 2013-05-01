@@ -2,6 +2,7 @@ $iconSpritePath: "../images/glyphicons-halflings.png";
 $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 
 @import 'sass-bootstrap/lib/bootstrap';
+@import 'sass-bootstrap/lib/responsive';
 
 #chatWindow {
     font-family: Courier;
@@ -14,7 +15,7 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 }
 
 #chatWindow .chatStatus {
-    font-style:italic;
+    font-style: italic;
 }
 
 #chatWindow .server {
@@ -31,6 +32,10 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
     font-weight: bold;
 }
 
+.plugboardSettings {
+    font-family: Courier;
+}
+
 input[type="text"] {
     font-family: Courier;
 }
@@ -38,5 +43,5 @@ input[type="text"] {
 .input-nano {
     @extend .input-mini;
     text-align: center;
-    width: 20px;
+    width: 10px;
 }

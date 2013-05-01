@@ -32,32 +32,32 @@
 
       it('should have keys for every letter of alphabet', function () {
         expect(rotor.getMapping()).to.contain.keys(
-          'a',
-          'b',
-          'c',
-          'd',
-          'e',
-          'f',
-          'g',
-          'h',
-          'i',
-          'j',
-          'k',
-          'l',
-          'm',
-          'n',
-          'o',
-          'p',
-          'q',
-          'r',
-          's',
-          't',
-          'u',
-          'v',
-          'w',
-          'x',
-          'y',
-          'z'
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F',
+          'G',
+          'H',
+          'I',
+          'J',
+          'K',
+          'L',
+          'M',
+          'N',
+          'O',
+          'P',
+          'Q',
+          'R',
+          'S',
+          'T',
+          'U',
+          'V',
+          'W',
+          'X',
+          'Y',
+          'Z'
         );
       });
     });
@@ -205,32 +205,32 @@
 
       it('should have keys for every letter of alphabet', function () {
         expect(reflector.getMapping()).to.contain.keys(
-          'a',
-          'b',
-          'c',
-          'd',
-          'e',
-          'f',
-          'g',
-          'h',
-          'i',
-          'j',
-          'k',
-          'l',
-          'm',
-          'n',
-          'o',
-          'p',
-          'q',
-          'r',
-          's',
-          't',
-          'u',
-          'v',
-          'w',
-          'x',
-          'y',
-          'z'
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F',
+          'G',
+          'H',
+          'I',
+          'J',
+          'K',
+          'L',
+          'M',
+          'N',
+          'O',
+          'P',
+          'Q',
+          'R',
+          'S',
+          'T',
+          'U',
+          'V',
+          'W',
+          'X',
+          'Y',
+          'Z'
         );
       });
     });
@@ -291,32 +291,32 @@
 
       it('should have keys for every letter of alphabet', function () {
         expect(plugboard.getMapping()).to.contain.keys(
-          'a',
-          'b',
-          'c',
-          'd',
-          'e',
-          'f',
-          'g',
-          'h',
-          'i',
-          'j',
-          'k',
-          'l',
-          'm',
-          'n',
-          'o',
-          'p',
-          'q',
-          'r',
-          's',
-          't',
-          'u',
-          'v',
-          'w',
-          'x',
-          'y',
-          'z'
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F',
+          'G',
+          'H',
+          'I',
+          'J',
+          'K',
+          'L',
+          'M',
+          'N',
+          'O',
+          'P',
+          'Q',
+          'R',
+          'S',
+          'T',
+          'U',
+          'V',
+          'W',
+          'X',
+          'Y',
+          'Z'
         );
       });
     });
@@ -328,10 +328,10 @@
       });
     });
 
-    describe('#clearLetterSwap()', function () {
+    describe('#clearLetter()', function () {
 
-      it('should respond to clearLetterSwap', function () {
-        expect(plugboard).to.respondTo('clearLetterSwap');
+      it('should respond to clearLetter', function () {
+        expect(plugboard).to.respondTo('clearLetter');
       });
     });
 
@@ -516,30 +516,30 @@
       enigmaMachine.getPlugboard().clearAll();
 
       beforeEach(function () {
-        enigmaMachine.getLeftRotor().setGroundSetting('a');
-        enigmaMachine.getMiddleRotor().setGroundSetting('a');
-        enigmaMachine.getRightRotor().setGroundSetting('a');
+        enigmaMachine.getLeftRotor().setGroundSetting('A');
+        enigmaMachine.getMiddleRotor().setGroundSetting('A');
+        enigmaMachine.getRightRotor().setGroundSetting('A');
       });
 
       it('should encipher "the quick brown fox jumps over the lazy dog" as "opc illaz fxlqt dnl gglek dizo kqk gxie zkd"', function () {
-        expect(enigmaMachine.encipherString('the quick brown fox jumps over the lazy dog')).to.equal('opc illaz fxlqt dnl gglek dizo kqk gxie zkd');
+        expect(enigmaMachine.encipherString('the quick brown fox jumps over the lazy dog')).to.equal('OPC ILLAZ FXLQT DNL GGLEK DIZO KQK GXIE ZKD');
       });
 
       it('should decipher "pixwhlifpvfhecgdyiovybvwgxlkpughtxukswhotprogzjkezybfhmdmzzjmzzetovctlvfyaeobtyqvdwukzpxjkhvvufeldabnnxzvdcqzymkpvsvmxwoltaybqphxocpbzjkasklceqnqwyynegfsqzjupmttjnbhhjwvhmtwwwhjonasiljqhyuotbtmqgqfgmalxrdlcahaebcaectmfjqadmfewtjnouiqngfhoykeznsddozdvtwdkmvpmavavgrdtzailwpzxntyxysalrmitcbtcswilcjzdoosptpfyyrlshgrupsyscvnokwzjdwzqpixbqyyjbgjthxuhinrratnoztnlqmpaiglgthrpvfuokllmzxpdhmhlwrouyxicwxtdqlcksyaxegfojqnpblwlvdqwxhaqykzosjgznnrq" as "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda"', function () {
 
         expect(enigmaMachine.encipherString('pixwhlifpvfhecgdyiovybvwgxlkpughtxukswhotprogzjkezybfhmdmzzjmzzetovctlvfyaeobtyqvdwukzpxjkhvvufeldabnnxzvdcqzymkpvsvmxwoltaybqphxocpbzjkasklceqnqwyynegfsqzjupmttjnbhhjwvhmtwwwhjonasiljqhyuotbtmqgqfgmalxrdlcahaebcaectmfjqadmfewtjnouiqngfhoykeznsddozdvtwdkmvpmavavgrdtzailwpzxntyxysalrmitcbtcswilcjzdoosptpfyyrlshgrupsyscvnokwzjdwzqpixbqyyjbgjthxuhinrratnoztnlqmpaiglgthrpvfuokllmzxpdhmhlwrouyxicwxtdqlcksyaxegfojqnpblwlvdqwxhaqykzosjgznnrq')).to.equal(
-          'loremipsumdolorsiterelitlametconsectetaurcilliumadipisicingpecuseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliquautenimadminimveniamquisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequatduisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariaturexcepteursintoccaecatcupidatatnonproidentsuntinculpaquiofficiadeseruntmollitanimidestlaborumnamliberteconscienttofactortumpoenlegumodioqueciviuda');
+          'LOREMIPSUMDOLORSITERELITLAMETCONSECTETAURCILLIUMADIPISICINGPECUSEDDOEIUSMODTEMPORINCIDIDUNTUTLABOREETDOLOREMAGNAALIQUAUTENIMADMINIMVENIAMQUISNOSTRUDEXERCITATIONULLAMCOLABORISNISIUTALIQUIPEXEACOMMODOCONSEQUATDUISAUTEIRUREDOLORINREPREHENDERITINVOLUPTATEVELITESSECILLUMDOLOREEUFUGIATNULLAPARIATUREXCEPTEURSINTOCCAECATCUPIDATATNONPROIDENTSUNTINCULPAQUIOFFICIADESERUNTMOLLITANIMIDESTLABORUMNAMLIBERTECONSCIENTTOFACTORTUMPOENLEGUMODIOQUECIVIUDA');
       });
 
-      it('should encipher "a" with reflector b rotor 1, 2 and 3, ring setting "aaa" ground setting "qev" as "l" and get final ground setting of "rfw"', function () {
-        enigmaMachine.getLeftRotor().setGroundSetting('q');
-        enigmaMachine.getMiddleRotor().setGroundSetting('e');
-        enigmaMachine.getRightRotor().setGroundSetting('v');
+      it('should encipher "a" with reflector b rotor 1, 2 and 3, ring setting "AAA" ground setting "QEV" as "L" and get final ground setting of "RFW"', function () {
+        enigmaMachine.getLeftRotor().setGroundSetting('Q');
+        enigmaMachine.getMiddleRotor().setGroundSetting('E');
+        enigmaMachine.getRightRotor().setGroundSetting('V');
 
-        expect(enigmaMachine.encipherString('a')).to.equal('l');
-        expect(enigmaMachine.getLeftRotor().getGroundSetting()).to.equal('r');
-        expect(enigmaMachine.getMiddleRotor().getGroundSetting()).to.equal('f');
-        expect(enigmaMachine.getRightRotor().getGroundSetting()).to.equal('w');
+        expect(enigmaMachine.encipherString('a')).to.equal('L');
+        expect(enigmaMachine.getLeftRotor().getGroundSetting()).to.equal('R');
+        expect(enigmaMachine.getMiddleRotor().getGroundSetting()).to.equal('F');
+        expect(enigmaMachine.getRightRotor().getGroundSetting()).to.equal('W');
       });
     });
   });

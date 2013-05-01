@@ -68,7 +68,7 @@
    * @classdesc Simulates a rotor object of a German Enigma Machine.
    *
    * @property {string} label            - Label for this rotor.
-   * @property {object} left             - Letter transposition of this rotor
+   * @property {object} left             - Letter substitution of this rotor
    * when going to the left.
    * @property {string} notches          - Ground setting when the enigma
    * machine rotates this rotor.  Can contain multiple letters.
@@ -175,8 +175,8 @@
     }.bind(this);
 
     /**
-     * Sets this rotor's groundSetting property.
-     * @param {string} newGroundSetting
+     * Returns this rotor's leftObj property.
+     * @return {Rotor|Reflector} leftObj
      */
     this.getLeftObj = function () {
       return leftObj;
@@ -184,24 +184,34 @@
 
     /**
      * Sets this rotor's leftObj property.
-     * @param {string} newLeftObj
+     * @param {Rotor|Reflector} newLeftObj
      */
     this.setLeftObj = function (newLeftObj) {
       leftObj = newLeftObj;
     }.bind(this);
 
+    /**
+     * Returns this rotor's rightObj property.
+     * @return {Rotor|Plugboard} rightObj
+     */
     this.getRightObj = function () {
       return rightObj;
     }.bind(this);
 
     /**
      * Sets this rotor's rightObj property.
-     * @param {string} newRightObj
+     * @param {Rotor|Plugboard} newRightObj
      */
     this.setRightObj = function (newRightObj) {
       rightObj = newRightObj;
     }.bind(this);
 
+    /**
+     * Returns letter substitution when passing letter to the left for this
+     * rotor.
+     * @param {string} letter
+     * @return {string} Substituted letter.
+     */
     this.goingLeft = function (letter) {
       var shift = shiftLeftLetter(groundSetting, ringSetting);
       var rightSideLetter = shiftRightLetter(letter, shift);
@@ -210,6 +220,12 @@
       return leftObj.goingLeft(out);
     }.bind(this);
 
+    /**
+     * Returns letter substitution when passing letter to the right for this
+     * rotor.
+     * @param {string} letter
+     * @return {string} Substituted letter.
+     */
     this.goingRight = function (letter) {
       var shift = shiftLeftLetter(groundSetting, ringSetting);
       var leftSideLetter = shiftRightLetter(letter, shift);
@@ -218,6 +234,14 @@
       return rightObj.goingRight(out);
     }.bind(this);
 
+    /**
+     * Traces the path a letter takes through the enigma machine when passing
+     * letter to the left.
+     * rotor.
+     * @param {string} letter
+     * @param {array} path Contains path information.
+     * @return {string} Substituted letter.
+     */
     this.traceLeft = function (letter, path) {
       var shift = shiftLeftLetter(groundSetting, ringSetting);
       var objRight = shiftRightLetter(letter, shift);
@@ -235,6 +259,13 @@
       return leftObj.traceLeft(letterOut, path);
     }.bind(this);
 
+    /**
+     * Traces the path a letter takes through the enigma machine when passing
+     * letter to the right.
+     * @param {string} letter
+     * @param {array} path Contains path information.
+     * @return {string} Substituted letter.
+     */
     this.traceRight = function (letter, path) {
       var shift = shiftLeftLetter(groundSetting, ringSetting);
       var objLeft = shiftRightLetter(letter, shift);
@@ -252,20 +283,35 @@
       return rightObj.traceRight(letterOut, path);
     }.bind(this);
 
+    /**
+     * Returns true when this rotor can be rotated by it's notches.
+     * @return {boolean}
+     */
     this.isOnNotch = function () {
       return notches.indexOf(groundSetting) !== -1;
     }.bind(this);
 
+    /**
+     * Advances this rotor's ground setting.
+     */
     this.advanceGroundSetting = function () {
       groundSetting = nextLetter(groundSetting);
     }.bind(this);
 
+    /**
+     * Randomly configures this rotor's ring setting and ground setting.
+     */
     this.randomize = function () {
       this.setRingSetting(randomLetter());
       this.setGroundSetting(randomLetter());
     }.bind(this);
   };
 
+  /**
+   * Returns a new Rotor with label.
+   * @param {string} label The label of the rotor to return.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.withLabel = function (label) {
     if (label === 'I') {
       return new ENIGMA.Rotor.Rotor1();
@@ -296,6 +342,10 @@
     }
   };
 
+  /**
+   * Returns a randomly generated new Rotor.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.getRandomly = function () {
 
     switch (Math.floor(Math.random() * 8)) {
@@ -328,6 +378,10 @@
     }
   };
 
+  /**
+   * Returns a Rotor that configured to the German Rotor I specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor1 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -368,6 +422,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor II specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor2 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -408,6 +466,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor III specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor3 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -448,6 +510,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor IV specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor4 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -488,6 +554,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor V specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor5 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -528,6 +598,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor VI specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor6 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -568,6 +642,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor VII specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor7 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 
@@ -608,6 +686,10 @@
     };
   }());
 
+  /**
+   * Returns a Rotor that configured to the German Rotor VIII specifications.
+   * @return {Rotor} Instantiated rotor.
+   */
   ENIGMA.Rotor.Rotor8 = (function (ringSetting, groundSetting, rightObject,
     leftObject) {
 

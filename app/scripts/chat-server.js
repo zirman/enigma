@@ -1,8 +1,4 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 (function () {
   'use strict';
@@ -169,17 +165,21 @@ strict: true
     });
 
     var leave = function () {
-      sockets.splice(sockets.indexOf(socket), 1);
+      var index = sockets.indexOf(socket);
 
-      console.log(name + ' left');
+      if (index !== -1) {
+        sockets.splice(index, 1);
 
-      var encodedJsonString = ws.encode(JSON.stringify({
-        server: name + ' left'
-      }));
+        console.log(name + ' left');
 
-      sockets.forEach(function (socket) {
-        socket.write(encodedJsonString);
-      });
+        var encodedJsonString = ws.encode(JSON.stringify({
+          server: name + ' left'
+        }));
+
+        sockets.forEach(function (socket) {
+          socket.write(encodedJsonString);
+        });
+      }
     };
   };
 }());

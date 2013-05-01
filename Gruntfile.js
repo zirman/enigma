@@ -50,13 +50,13 @@ module.exports = function (grunt) {
             options: {
                 port: 9000,
                 // change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost'
+                hostname: '0.0.0.0'//'localhost'
             },
             livereload: {
                 options: {
                     middleware: function (connect) {
                         return [
-                            require('./app/scripts/chat-server.js').upgrade,
+                            require('./app/scripts/chat-server.js').middleware,
                             lrSnippet,
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, 'app')
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
-                            require('./app/scripts/chat-server.js').upgrade,
+                            require('./app/scripts/chat-server.js').middleware,
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, 'test')
                         ];
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
                     hostname: '0.0.0.0',
                     middleware: function (connect) {
                         return [
-                            require('./app/scripts/chat-server.js').upgrade,
+                            require('./app/scripts/chat-server.js').middleware,
                             mountFolder(connect, 'dist')
                         ];
                     }

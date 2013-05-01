@@ -44,7 +44,7 @@
     next();
   };
 
-  exports.upgrade = function (req, res, next) {
+  exports.middleware = function (req, res, next) {
     upgrade(req, res, next);
   };
 
@@ -165,21 +165,19 @@
     });
 
     var leave = function () {
-      var index = sockets.indexOf(socket);
+      sockets.splice(sockets.indexOf(socket), 1);
 
-      if (index !== -1) {
-        sockets.splice(index, 1);
+      console.log(name + ' left');
 
-        console.log(name + ' left');
+      var encodedJsonString = ws.encode(JSON.stringify({
+        server: name + ' left'
+      }));
 
-        var encodedJsonString = ws.encode(JSON.stringify({
-          server: name + ' left'
-        }));
+      sockets.forEach(function (socket) {
+        socket.write(encodedJsonString);
+      });
 
-        sockets.forEach(function (socket) {
-          socket.write(encodedJsonString);
-        });
-      }
+      leave = function () {};
     };
   };
 }());

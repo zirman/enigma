@@ -2,41 +2,102 @@
 
 /*globals ENIGMA*/
 
+/**
+ * Immediate function that instantiates Rotor class.
+ */
 (function () {
   'use strict';
 
+  /**
+   * Private variables.
+   * @private
+   */
   var aCharCode = 'A'.charCodeAt(0);
 
+  /**
+   * Returns a randomized capital letter in a single character string.
+   * @returns {string} Random capitalized letter.
+   */
   var randomLetter = function () {
     return String.fromCharCode(aCharCode + Math.floor(Math.random() * 26));
   };
 
-  // returns the next consecutive letter, 'Z' goes to 'A'
+  /**
+   * Takes a capitalized single character string and returns the next
+   * consecutive letter of the alphabet.  'Z' wraps to 'A'.
+   * @param {string} letter
+   * @returns {string} Single character string  is the next letter of the
+   * alphabet.
+   */
   var nextLetter = function (letter) {
     var l = letter.toUpperCase().charCodeAt(0) + 1;
     return String.fromCharCode(((l - aCharCode) % 26) + aCharCode);
   };
 
-  // ceasar shifts letter to right
+  /**
+   * Performs a Caesar shift on a capitalized single character string.
+   * @param {string} letter Capitalized single character string that is Caesar
+   * shifted.
+   * @param {string} shift Capitalized single character string that is the key
+   * for the Ceasar shift.
+   * @returns {string} Single character string of Ceasar shift cipher text.
+   */
   var shiftRightLetter = function (letter, shift) {
     var l = letter.toUpperCase().charCodeAt(0) - aCharCode;
     var s = shift.toUpperCase().charCodeAt(0) - aCharCode;
     return String.fromCharCode(((l + s) % 26) + aCharCode);
   };
 
-  // ceasar shifts letter to left
+  /**
+   * Performs a reverse Caesar shift on a capitalized single character string.
+   * @param {string} letter Capitalized single character string that is Caesar
+   * shifted.
+   * @param {string} shift Capitalized single character string that is the key
+   * for the reverse Ceasar shift.
+   * @returns {string} Single character string of reverse Ceasar shift.
+   */
   var shiftLeftLetter = function (letter, shift) {
     var l = letter.toUpperCase().charCodeAt(0) - aCharCode;
     var s = shift.toUpperCase().charCodeAt(0) - aCharCode;
     return String.fromCharCode(((l + 26 - s) % 26) + aCharCode);
   };
 
+  /**
+   * Creates a Enigma Machine rotor object.
+   * @class
+   * @classdesc Simulates a rotor object of a German Enigma Machine.
+   *
+   * @property {string} label            - Label for this rotor.
+   * @property {object} left             - Letter transposition of this rotor
+   * when going to the left.
+   * @property {string} notches          - Ground setting when the enigma
+   * machine rotates this rotor.  Can contain multiple letters.
+   * @property {string} ringSetting      - Ring setting for this rotor.
+   * @property {string} groundSetting    - Current ground setting for this
+   * rotor.
+   * @property {Rotor|Reflector} leftObj - Object connected to the left of this
+   * rotor.
+   * @property {Rotor|Plugboard} rightObj - Object connected to the right of
+   * this rotor.
+   *
+   * @constructor
+   * @param {string} [label=I] label property.
+   * @param {string} [left] left property.
+   * @param {string} [notches] notches property.
+   * @param {string} [ringSetting] Initial ringSetting property.
+   * @param {string} [groundSetting] Initial groundSetting property.
+   * @param {Rotor|Reflector} [leftObj] Initial leftObj property.
+   * @param {Rotor|Plugboard} [rightObj] Initial rightObj property.
+   *
+   * @return {Rotor} Instantiated rotor object.
+   */
   ENIGMA.Rotor = function (label, left, notches, ringSetting, groundSetting,
     leftObj, rightObj) {
 
     if (!left) {
       return new ENIGMA.Rotor.Rotor1();
     }
+
 
     notches = notches || 'Q';
     ringSetting = ringSetting || 'A';
@@ -57,38 +118,74 @@
       }
     }());
 
+    /**
+     * Returns this rotor's label property.
+     * @return {string} label
+     */
     this.getLabel = function () {
       return label;
     }.bind(this);
 
+    /**
+     * Returns this rotor's left property.
+     * @return {object} left
+     */
     this.getMapping = function () {
       return left;
     }.bind(this);
 
+    /**
+     * Returns this rotor's notches property.
+     * @return {string} notches
+     */
     this.getNotches = function () {
       return notches;
     }.bind(this);
 
+    /**
+     * Returns this rotor's ringSetting property.
+     * @return {string} ringSetting
+     */
     this.getRingSetting = function () {
       return ringSetting;
     }.bind(this);
 
+    /**
+     * Sets this rotor's ringSetting property.
+     * @param {string} newRingSetting
+     */
     this.setRingSetting = function (newRingSetting) {
       ringSetting = newRingSetting.toUpperCase();
     }.bind(this);
 
+    /**
+     * Returns this rotor's groundSetting property.
+     * @return {string} groundSetting
+     */
     this.getGroundSetting = function () {
       return groundSetting;
     }.bind(this);
 
+    /**
+     * Sets this rotor's groundSetting property.
+     * @param {string} newGroundSetting
+     */
     this.setGroundSetting = function (newGroundSetting) {
       groundSetting = newGroundSetting.toUpperCase();
     }.bind(this);
 
+    /**
+     * Sets this rotor's groundSetting property.
+     * @param {string} newGroundSetting
+     */
     this.getLeftObj = function () {
       return leftObj;
     }.bind(this);
 
+    /**
+     * Sets this rotor's leftObj property.
+     * @param {string} newLeftObj
+     */
     this.setLeftObj = function (newLeftObj) {
       leftObj = newLeftObj;
     }.bind(this);
@@ -97,6 +194,10 @@
       return rightObj;
     }.bind(this);
 
+    /**
+     * Sets this rotor's rightObj property.
+     * @param {string} newRightObj
+     */
     this.setRightObj = function (newRightObj) {
       rightObj = newRightObj;
     }.bind(this);

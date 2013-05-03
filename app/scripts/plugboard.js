@@ -8,20 +8,20 @@
 (function () {
   'use strict';
 
-   /**
-    * Creates an Enigma Machine plugboard object.
-    * @class
-    * @classdesc Simulates a plugboard object for the German Enigma Machine.
-    *
-    * @property {object} left - Letter substitution of this letter when
-    *   moving to the left.
-    * @property {Rotor} leftObj - Object connected to the left of
-    *   this rotor.
-    *
-    * @constructor
-    * @param {string} [left] - Left property.
-    * @param {string} [leftObj] - Initial leftObj property.
-    */
+  /**
+   * Creates an Enigma Machine plugboard object.
+   * @class
+   * @classdesc Simulates a plugboard object for the German Enigma Machine.
+   *
+   * @property {object} left - Letter substitution of this letter when
+   *   moving to the left.
+   * @property {Rotor} leftObj - Object connected to the left of
+   *   this rotor.
+   *
+   * @constructor
+   * @param {string} [left] - Left property.
+   * @param {string} [leftObj] - Initial leftObj property.
+   */
   ENIGMA.Plugboard = function (left, leftObj) {
     leftObj = leftObj || null;
 

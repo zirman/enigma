@@ -1,27 +1,40 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true */
 
 /*globals ENIGMA, $*/
 
+/**
+ * Immediate function that creates all event handlers and controller logic.
+ */
 (function () {
   'use strict';
 
   $(document).ready(function () {
-    var enigmaMachine = new ENIGMA.EnigmaMachine();
-    var clearText = '';
-    var cipherText = '';
-
+    /**
+     * Private variables.
+     * @private
+     */
     var whiteSpace = /\s/;
     var alphabetic = /[a-zA-Z]/;
 
+    var clearText = '';
+    var cipherText = '';
+    var enigmaStateStack;
+
+    var enigmaMachine = new ENIGMA.EnigmaMachine();
+
     var chatWindow = $('#chatWindow');
 
+    var reflectorDropdown = $('#reflectorDropdown');
+    var reflectorItems = $('.reflectorItem');
+
     var leftRotorDropdown = $('#leftRotorDropdown');
+    var leftRotorItems = $('.leftRotorItem');
+
     var middleRotorDropdown = $('#middleRotorDropdown');
+    var middleRotorItems = $('.middleRotorItem');
+
     var rightRotorDropdown = $('#rightRotorDropdown');
+    var rightRotorItems = $('.rightRotorItem');
 
     var leftRotorRingSettingField = $('#leftRotorRingSettingField');
     var middleRotorRingSettingField = $('#middleRotorRingSettingField');
@@ -62,18 +75,23 @@ strict: true
     var plugboardZField = $('#plugboardZField');
 
     var clearTextField = $('#clearTextField');
+    var sendClearTextButton = $('#sendClearTextButton');
+
     var cipherTextField = $('#cipherTextField');
+    var sendCipherTextButton = $('#sendCipherTextButton');
 
-    var enigmaStateStack;
-
-    // this function reads and validates the current #hash tag and updates
-    // the user interface
+    /**
+     * Validates the current settings in the hash tag and updates the user
+     * interface. If the settings are invalid, they are replaced. Clears
+     * clearTextField, cipherTextField and enigmaStateStack.
+     */
     var validateHashSettings = function () {
       var hashSettings = window.location.hash.slice(1);
       enigmaMachine.setAllSettings(hashSettings);
       var validHashSettings = enigmaMachine.getAllSettings();
 
       // change hash to valid version and return, we will be back
+
       if (validHashSettings !== hashSettings) {
         window.location.hash = '#' + validHashSettings;
         return;
@@ -82,12 +100,15 @@ strict: true
       enigmaStateStack = [window.location.hash];
 
       // clear text fields
-      clearTextField.val(clearText = '');
-      cipherTextField.val(cipherText = '');
+
+      clearText = '';
+      cipherText = '';
+      clearTextField.val(clearText);
+      cipherTextField.val(cipherText);
 
       // update user interface
 
-      $('#reflectorDropdown').text(enigmaMachine.getReflector().getLabel());
+      reflectorDropdown.text(enigmaMachine.getReflector().getLabel());
 
       var leftRotor = enigmaMachine.getLeftRotor();
       var middleRotor = enigmaMachine.getMiddleRotor();
@@ -134,25 +155,7 @@ strict: true
       plugboardZField.val(plugboardMapping.Z);
     };
 
-    //-------------------------------
-    // setup initial enigma settings
-    //-------------------------------
-
-    if (window.location.hash.length > 1) {
-      validateHashSettings();
-
-    // otherwise set hash tag to default enigma settings
-    } else {
-      // this will trigger event to call validateHashSettings
-      window.location.hash = '#' + enigmaMachine.getAllSettings();
-    }
-
-    //----------------------
-    // setup event handlers
-    //----------------------
-
-    $('.reflectorItem').click(function (event) {
-      var label = $(event.target).text();
+    var setReflectorDropdown = function (label) {
       var reflector = enigmaMachine.getReflector();
 
       if (reflector.getLabel() !== label) {
@@ -160,10 +163,9 @@ strict: true
         enigmaMachine.swapReflector(ENIGMA.Reflector.withLabel(label));
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
     var rotorPulldownHandler = function (getRotor) {
-
       return function(event) {
         var label = $(event.target).text();
         var rotor = getRotor();
@@ -176,16 +178,7 @@ strict: true
       };
     };
 
-    $('.leftRotorItem').click(rotorPulldownHandler(enigmaMachine.getLeftRotor));
-
-    $('.middleRotorItem').click(rotorPulldownHandler(
-      enigmaMachine.getMiddleRotor));
-
-    $('.rightRotorItem').click(rotorPulldownHandler(
-      enigmaMachine.getRightRotor));
-
     var plugboardFieldHandler = function (letter) {
-
       return function (event) {
         event.preventDefault();
         var character = String.fromCharCode(event.keyCode);
@@ -200,100 +193,55 @@ strict: true
       };
     };
 
-    plugboardAField.keydown(plugboardFieldHandler('A'));
-    plugboardBField.keydown(plugboardFieldHandler('B'));
-    plugboardCField.keydown(plugboardFieldHandler('C'));
-    plugboardDField.keydown(plugboardFieldHandler('D'));
-    plugboardEField.keydown(plugboardFieldHandler('E'));
-    plugboardFField.keydown(plugboardFieldHandler('F'));
-    plugboardGField.keydown(plugboardFieldHandler('G'));
-    plugboardHField.keydown(plugboardFieldHandler('H'));
-    plugboardIField.keydown(plugboardFieldHandler('I'));
-    plugboardJField.keydown(plugboardFieldHandler('J'));
-    plugboardKField.keydown(plugboardFieldHandler('K'));
-    plugboardLField.keydown(plugboardFieldHandler('L'));
-    plugboardMField.keydown(plugboardFieldHandler('M'));
-    plugboardNField.keydown(plugboardFieldHandler('N'));
-    plugboardOField.keydown(plugboardFieldHandler('O'));
-    plugboardPField.keydown(plugboardFieldHandler('P'));
-    plugboardQField.keydown(plugboardFieldHandler('Q'));
-    plugboardRField.keydown(plugboardFieldHandler('R'));
-    plugboardSField.keydown(plugboardFieldHandler('S'));
-    plugboardTField.keydown(plugboardFieldHandler('T'));
-    plugboardUField.keydown(plugboardFieldHandler('U'));
-    plugboardVField.keydown(plugboardFieldHandler('V'));
-    plugboardWField.keydown(plugboardFieldHandler('W'));
-    plugboardXField.keydown(plugboardFieldHandler('X'));
-    plugboardYField.keydown(plugboardFieldHandler('Y'));
-    plugboardZField.keydown(plugboardFieldHandler('Z'));
-
-    leftRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setLeftRotorRingSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getLeftRotor().setRingSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    middleRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setMiddleRotorRingSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getMiddleRotor().setRingSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    rightRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setRightRotorRingSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getRightRotor().setRingSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    leftRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setLeftRotorGroundSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getLeftRotor().setGroundSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    middleRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setMiddleRotorGroundSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getMiddleRotor().setGroundSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    rightRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      var character = String.fromCharCode(event.keyCode);
-
+    var setRightRotorGroundSetting = function (character) {
       if (alphabetic.test(character)) {
         enigmaMachine.setAllSettings(window.location.hash.slice(1));
         enigmaMachine.getRightRotor().setGroundSetting(character);
         window.location.hash = '#' + enigmaMachine.getAllSettings();
       }
-    });
+    };
 
-    randomizeSettingsButton.click(function() {
+    var randomizeSettings = function () {
       enigmaMachine.swapReflector(ENIGMA.Reflector.getRandomly());
 
       enigmaMachine.swapRotor(enigmaMachine.getLeftRotor(),
@@ -315,17 +263,9 @@ strict: true
       enigmaMachine.getPlugboard().randomize();
 
       window.location.hash = '#' + enigmaMachine.getAllSettings();
-    });
+    };
 
-    sendSettingsButton.click(function() {
-      ENIGMA.chatClient.sendSettings(window.location.hash.slice(1));
-    });
-
-    clearTextField.keydown(function(event) {
-      var character = String.fromCharCode(event.keyCode);
-
-      event.preventDefault();
-
+    var typeKey = function (character) {
       // pass through whitespace
       if (whiteSpace.test(character)) {
         clearText += character;
@@ -384,11 +324,118 @@ strict: true
           cipherTextField.val(cipherText);
         }
       }
+    };
+
+    //----------------------
+    // setup event handlers
+    //----------------------
+
+    // reflector pulldown handler
+
+    reflectorItems.click(function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setReflectorDropdown($(event.target).text());
     });
 
-    $(window).bind('hashchange', validateHashSettings);
+    // rotor pulldown handlers
 
-    $('#sendClearTextButton').click(function () {
+    leftRotorItems.click(rotorPulldownHandler(enigmaMachine.getLeftRotor));
+    middleRotorItems.click(rotorPulldownHandler(enigmaMachine.getMiddleRotor));
+    rightRotorItems.click(rotorPulldownHandler(enigmaMachine.getRightRotor));
+
+    // plugboard field handlers
+
+    plugboardAField.keydown(plugboardFieldHandler('A'));
+    plugboardBField.keydown(plugboardFieldHandler('B'));
+    plugboardCField.keydown(plugboardFieldHandler('C'));
+    plugboardDField.keydown(plugboardFieldHandler('D'));
+    plugboardEField.keydown(plugboardFieldHandler('E'));
+    plugboardFField.keydown(plugboardFieldHandler('F'));
+    plugboardGField.keydown(plugboardFieldHandler('G'));
+    plugboardHField.keydown(plugboardFieldHandler('H'));
+    plugboardIField.keydown(plugboardFieldHandler('I'));
+    plugboardJField.keydown(plugboardFieldHandler('J'));
+    plugboardKField.keydown(plugboardFieldHandler('K'));
+    plugboardLField.keydown(plugboardFieldHandler('L'));
+    plugboardMField.keydown(plugboardFieldHandler('M'));
+    plugboardNField.keydown(plugboardFieldHandler('N'));
+    plugboardOField.keydown(plugboardFieldHandler('O'));
+    plugboardPField.keydown(plugboardFieldHandler('P'));
+    plugboardQField.keydown(plugboardFieldHandler('Q'));
+    plugboardRField.keydown(plugboardFieldHandler('R'));
+    plugboardSField.keydown(plugboardFieldHandler('S'));
+    plugboardTField.keydown(plugboardFieldHandler('T'));
+    plugboardUField.keydown(plugboardFieldHandler('U'));
+    plugboardVField.keydown(plugboardFieldHandler('V'));
+    plugboardWField.keydown(plugboardFieldHandler('W'));
+    plugboardXField.keydown(plugboardFieldHandler('X'));
+    plugboardYField.keydown(plugboardFieldHandler('Y'));
+    plugboardZField.keydown(plugboardFieldHandler('Z'));
+
+    // set rotor ring setting handlers
+
+    leftRotorRingSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setLeftRotorRingSetting(String.fromCharCode(event.keyCode));
+    });
+
+    middleRotorRingSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setMiddleRotorRingSetting(String.fromCharCode(event.keyCode));
+    });
+
+    rightRotorRingSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setRightRotorRingSetting(String.fromCharCode(event.keyCode));
+    });
+
+    // set rotor ground setting handlers
+
+    leftRotorGroundSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setLeftRotorGroundSetting(String.fromCharCode(event.keyCode));
+    });
+
+    middleRotorGroundSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setMiddleRotorGroundSetting(String.fromCharCode(event.keyCode));
+    });
+
+    rightRotorGroundSettingField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      setRightRotorGroundSetting(String.fromCharCode(event.keyCode));
+    });
+
+    // set randomize button handler
+
+    randomizeSettingsButton.click(function() {
+      event.preventDefault();
+      event.stopPropagation();
+      randomizeSettings();
+    });
+
+    // set send button handler
+
+    sendSettingsButton.click(function() {
+      event.preventDefault();
+      event.stopPropagation();
+      ENIGMA.chatClient.sendSettings(window.location.hash.slice(1));
+    });
+
+    clearTextField.keydown(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      typeKey(String.fromCharCode(event.keyCode));
+    });
+
+    sendClearTextButton.click(function () {
       ENIGMA.chatClient.sendClearText(clearText);
       enigmaStateStack = [window.location.hash];
       enigmaMachine.setAllSettings(window.location.hash.slice(1));
@@ -405,11 +452,14 @@ strict: true
         enigmaMachine.getRightRotor().getGroundSetting()
       );
 
-      clearTextField.val(clearText = '');
-      cipherTextField.val(cipherText = '');
+      clearText = '';
+      clearTextField.val(clearText);
+
+      cipherText = '';
+      cipherTextField.val(cipherText);
     });
 
-    $('#sendCipherTextButton').click(function () {
+    sendCipherTextButton.click(function () {
       ENIGMA.chatClient.sendCipherText(cipherText);
 
       enigmaStateStack = [window.location.hash];
@@ -427,13 +477,16 @@ strict: true
         enigmaMachine.getRightRotor().getGroundSetting()
       );
 
-      clearTextField.val(clearText = '');
-      cipherTextField.val(cipherText = '');
+      clearText = '';
+      clearTextField.val(clearText);
+
+      cipherText = '';
+      cipherTextField.val(cipherText);
     });
 
-    // connect to chat server and setup event handlers
-    ENIGMA.chatClient.connect({
+    // connect to chat server and setup network event handlers
 
+    ENIGMA.chatClient.connect({
       onopen: function () {
         chatWindow.append('<p><span class="chatStatus">connected</span></p>');
       },
@@ -468,7 +521,7 @@ strict: true
 
         } else if (json.settings) {
           chatWindow.append('<p><a href="#' + json.settings + '">' + json.from +
-            '\'s settings</a></p>');
+            '&apos;s settings</a></p>');
         }
       },
 
@@ -477,5 +530,20 @@ strict: true
           '<p><span class="chatStatus">disconnected</span></p>');
       }
     });
+
+    //-------------------------------
+    // setup initial enigma settings
+    //-------------------------------
+
+    $(window).bind('hashchange', validateHashSettings);
+
+    if (window.location.hash.length > 1) {
+      validateHashSettings();
+
+    // otherwise set hash tag to default enigma settings
+    } else {
+      // this will trigger event to call validateHashSettings
+      window.location.hash = '#' + enigmaMachine.getAllSettings();
+    }
   });
 }());

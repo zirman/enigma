@@ -20,17 +20,22 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand">Enigma</a>
+      <a class="brand" href="#myModalEnigma" role="button" class="btn" data-toggle="modal">Enigma</a>
 
-      <!--ul class="nav pull-right">
+      <ul class="nav pull-right">
         <li class="divider-vertical"></li>
-        <li class="dropdown">
+
+        <!-- Buttons to trigger modals -->
+
+        <li><a class="nav" href="#myModal" role="button" class="btn" data-toggle="modal">Code Book</a></li>
+        <li><a class="nav" href="#myModalTwo" role="button" class="btn" data-toggle="modal">Manual</a></li>
+        <!--li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Name <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#profile">Profile</a></li>
           </ul>
-        </li>
-      </ul-->
+        </li-->
+      </ul>
     </div>
   </div>
 </div>
@@ -278,6 +283,221 @@
 
 </div>
 
+<!-- About Us - Enigma Modal -->
+<div id="myModalEnigma" class="modal hide fade" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Enigma</h3>
+  </div>
+  <div class="modal-body">
+
+    <h3>About Us</h3>
+    <p>This web app is brought to you by the collaborative efforts of:</p>
+
+      <ul>Robert Chrzanowski</ul>
+      <ul>Tyrone Traynum</ul>
+      <ul>Ingus Smith</ul>
+      <ul>Shawn Mowatt</ul>
+
+    <p>ECPI University</p>
+    <p>IS670-Software Engineering</p>
+    <p>Dr. Patrick</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+ </div>
+</div>
+
+<!-- Code Book Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Enigma Machine Code Book</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+      <h4>Key Sheets for Enigma Machine:</h4>
+
+      <table>
+        <tr>
+          <th>Code Book Number</th>
+          <th>Rotor Configuration</th>
+          <th>Key Ring Setting</th>
+          <th>Plugboard Connections</th>
+          <th>Key Identifier (Ground Setting)</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>I, III, V</td>
+          <td>08, 23, 24</td>
+          <td>CQ RZ IS TU VW XY ZA BJ DE FG HI KL MN OP</td>
+          <td>TEU ILM OPZ RCA</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>II, IV, I</td>
+          <td>25, 13, 01</td>
+          <td>AB CD EF GH IJ KL MN OP QR ST UV WX YZ</td>
+          <td>PZA YOK IDE TGB</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>III, V, II</td>
+          <td>09, 23, 14</td>
+          <td>AZ YB CX DW EV FU GT HS IR JQ KP LO NM</td>
+          <td>YAK POE RID BUC</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>IV, I, III</td>
+          <td>10, 20, 22</td>
+          <td>AC BD EG FH IK JL MO NP QT RS UW VX YZ</td>
+          <td>RAY TED MON PIS</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>V, II, IV</td>
+          <td>02, 12, 21</td>
+          <td>RC IS TE GD VJ OK ZP</td>
+          <td>SAP LOW BYE HIK</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>I, II, III</td>
+          <td>07, 05, 08</td>
+          <td>EU AT PG BL JH ZS RF DK CI MQ NP OY XW VZ</td>
+          <td>MUC TRP ABZ XWD</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>II, III, IV</td>
+          <td>13, 23, 03</td>
+          <td>TA EZ UO IK PR YD</td>
+          <td>QRZ DEC WTV UXI</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>III, IV, V</td>
+          <td>04, 14, 24</td>
+          <td>ED NO TZ AB RU MY IL</td>
+          <td>NUT WAY XVQ EZC</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>IV, V, I</td>
+          <td>16, 01, 15</td>
+          <td>PA BE DO KC JR IT LM NV FS GZ YH XQ WU</td>
+          <td>WRD PIE FCO ALU</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>V, I, II</td>
+          <td>11, 22, 09</td>
+          <td>BI DT UG QA ZE WS VO</td>
+          <td>FIG AOL PET SUN</td>
+        </tr>
+      </table>
+</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+ </div>
+</div>
+
+<!-- Manual Modal -->
+<div id="myModalTwo" class="modal hide fade" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Enigma Machine Manual</h3>
+  </div>
+  <div class="modal-body">
+
+    <p>The German Enigma was a feared electro-mechanical machine theoretically
+        capable of 3,283,883,513,796,974,198,700,882,069,882,752,878,379,955,
+        261,095,623,685, 444,055,315,226,006,433,615,627,409,666,933,182,371,
+        154,802,769,920,000,000,000 conﬁgurations (Miller, 1996).
+    </p>
+
+
+    <h4>The Enigma Machine configurations consists of the following:</h4>
+      <ul>Choice and order of rotors</ul>
+      <ul>The alphabet keyring setting, the position of the rotor wiring -
+      relative to the alphabet keyrings
+    </ul>
+    <ul>The plug connections on the plugboard</ul>
+    <ul>A key identifier group to identify the code book number on the key sheet
+    </ul>
+
+    <p>The Enigma Machine transmits messages using five letter group pairings.
+    </p>
+
+    <p>To identify the message key, a five letter group must be inserted. The
+      five letter group is composed of two random characters and then the KEY
+      IDENTIFIER. The five letter key identifier is inserted at the beginning
+      of the message and should not be encrypted. The key identifies which
+      rotors are used and in which order, the setting of the alphabet keyrings
+      and the position of the rotor wiring, and the plug connections on the
+      plugboard as formatted in the CODE BOOK. Once the key is identified the
+      Enigma Machine can be properly configured to decrypt the rest of the
+      message.
+    </p>
+
+    <h4>Enigma Machine Button and Text Field Usage:</h4>
+
+      <ul><b>Reflector:</b> The reflector allows the user to change between
+        reflectors ‘B’ and ‘C’.
+      </ul>
+
+      <ul><b>Rotors:</b> There are 8 possible rotors for the user to choose
+        from to place in the Enigma Machine’s 3 rotor slots.
+      </ul>
+
+      <ul><b>Ring Setting:</b> By clicking inside any of the 3 ring setting text
+        fields, a user has the ability to change the starting position of each
+        corresponding rotor.
+      </ul>
+
+      <ul><b>Ground Setting:</b> By clicking inside any of the 3 ground setting
+        text fields, a user has the ability to generate a key identification
+        group when wanting to transmit an encrypted message to a receiving
+        party.
+      </ul>
+
+      <ul><b>Plugboard:</b> By clicking inside any of the 26 plugboard text
+        fields, a user has the ability to adjust the plugboard configurations
+        in a manner of the users choice.
+      </ul>
+
+      <ul><b>Book:</b> By clicking the ‘Book’ button, a user has the option to
+        choose a preprogrammed code book setting.
+      </ul>
+
+      <ul><b>Random:</b> By clicking the ‘Random’ button, a user has the option
+        to randomize the entire Enigma Machine.
+      </ul>
+
+      <ul><b>Send:</b> By clicking the ‘Send’ button, a user can send his or
+        her state of the Enigma Machine to a receiving party in order to
+        encrypt and decrypt messages amongst each other.
+      </ul>
+
+      <ul><b>Send Clear Text:</b> By clicking the ‘Send Clear Text’ button,
+        sends the message that the user has typed into the clear text text-field
+        to the server. All unencrypted messages are in red font color.
+      </ul>
+
+      <ul><b>Send Cipher Text:</b> By clicking the ‘Send Cipher Text’ button,
+        sends the encrypted version of the clear text message. The text field
+        for the cipher text is locked.
+        All encrypted messages are in black font color.
+      </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+ </div>
+</div>
 <!--[if lt IE 7]>
     <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->

@@ -1,8 +1,4 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 /*globals ENIGMA, $*/
 

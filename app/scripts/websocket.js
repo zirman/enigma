@@ -1,9 +1,4 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true,
-bitwise: false
-*/
+/*jshint indent: 2, maxlen: 80, strict: true, bitwise: false*/
 
 (function () {
   'use strict';

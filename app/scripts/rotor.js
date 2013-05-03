@@ -237,7 +237,6 @@
     /**
      * Traces the path a letter takes through the enigma machine when passing
      * letter to the left.
-     * rotor.
      * @param {string} letter
      * @param {array} path Contains path information.
      * @return {string} Substituted letter.

@@ -82,225 +82,115 @@
 
     ui.reflectorItems.click(function (event) {
       event.preventDefault();
-      controller.setReflectorDropdown($(event.target).text());
+      controller.setReflectorDropdown($(this).text());
     });
 
     // set rotor items' click event handlers
 
     ui.leftRotorItems.click(function (event) {
       event.preventDefault();
-      controller.setLeftRotorDropdown($(event.target).text());
+      controller.setLeftRotorDropdown($(this).text());
     });
 
     ui.middleRotorItems.click(function (event) {
       event.preventDefault();
-      controller.setMiddleRotorDropdown($(event.target).text());
+      controller.setMiddleRotorDropdown($(this).text());
     });
 
     ui.rightRotorItems.click(function (event) {
       event.preventDefault();
-      controller.setRightRotorDropdown($(event.target).text());
+      controller.setRightRotorDropdown($(this).text());
     });
 
-    // set plugboard field keydown event handlers
+    // set rotor ring setting keydown and input event handlers
 
-    ui.plugboardAField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardAField(String.fromCharCode(event.keyCode));
+    var focusEventHandler = function () {
+      this.select();
+      return false;
+    };
+
+    var mouseupEventHandler = function () {
+      return false;
+    };
+
+    var keydownEventHandler = function() {
+      var character = String.fromCharCode(event.keyCode).toUpperCase();
+
+      if (/[A-Z]/.test(character)) {
+        var field = $(this);
+        field.val(character);
+        field.select();
+      }
+
+      return false;
+    };
+
+    var inputEventHandler = function () {
+      var target = $(this);
+      var matches = /([A-Z])/.exec(target.val().toUpperCase());
+      var character;
+
+      if (matches.length < 2) {
+        character = 'A';
+
+      } else {
+        character = matches[1];
+      }
+
+      target.val(character);
+      target.select();
+      return false;
+    };
+
+    var singleTextField = function (textField) {
+      textField.focus(focusEventHandler);
+      textField.mouseup(mouseupEventHandler);
+      textField.keydown(keydownEventHandler);
+      textField.bind('input', inputEventHandler);
+    };
+
+    singleTextField(ui.leftRotorRingSettingField);
+
+    ui.leftRotorRingSettingField.focusout(function () {
+      controller.setLeftRotorRingSetting($(this).val());
+      return false;
     });
 
-    ui.plugboardBField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardBField(String.fromCharCode(event.keyCode));
+    singleTextField(ui.middleRotorRingSettingField);
+
+    ui.middleRotorRingSettingField.focusout(function () {
+      controller.setMiddleRotorRingSetting($(this).val());
+      return false;
     });
 
-    ui.plugboardCField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardCField(String.fromCharCode(event.keyCode));
+    singleTextField(ui.rightRotorRingSettingField);
+
+    ui.rightRotorRingSettingField.focusout(function () {
+      controller.setRightRotorRingSetting($(this).val());
+      return false;
     });
 
-    ui.plugboardDField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardDField(String.fromCharCode(event.keyCode));
+    // set rotor ground setting focusout and input event handlers
+
+    singleTextField(ui.leftRotorGroundSettingField);
+
+    ui.leftRotorGroundSettingField.focusout(function () {
+      controller.setLeftRotorGroundSetting($(this).val());
+      return false;
     });
 
-    ui.plugboardEField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardEField(String.fromCharCode(event.keyCode));
+    singleTextField(ui.middleRotorGroundSettingField);
+
+    ui.middleRotorGroundSettingField.focusout(function () {
+      controller.setMiddleRotorGroundSetting($(this).val());
+      return false;
     });
 
-    ui.plugboardFField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardFField(String.fromCharCode(event.keyCode));
-    });
+    singleTextField(ui.rightRotorGroundSettingField);
 
-    ui.plugboardGField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardGField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardHField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardHField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardIField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardIField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardJField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardJField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardKField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardKField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardLField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardLField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardMField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardMField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardNField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardNField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardOField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardOField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardPField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardPField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardQField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardQField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardRField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardRField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardSField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardSField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardTField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardTField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardUField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardUField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardVField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardVField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardWField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardWField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardXField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardXField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardYField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardYField(String.fromCharCode(event.keyCode));
-    });
-
-    ui.plugboardZField.keydown(function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setPlugboardZField(String.fromCharCode(event.keyCode));
-    });
-
-    // set rotor ring setting keydown event handlers
-
-    ui.leftRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setLeftRotorRingSetting(String.fromCharCode(event.keyCode));
-    });
-
-    ui.middleRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setMiddleRotorRingSetting(String.fromCharCode(event.keyCode));
-    });
-
-    ui.rightRotorRingSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setRightRotorRingSetting(String.fromCharCode(event.keyCode));
-    });
-
-    // set rotor ground setting keydown event handlers
-
-    ui.leftRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setLeftRotorGroundSetting(String.fromCharCode(event.keyCode));
-    });
-
-    ui.middleRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      controller.setMiddleRotorGroundSetting(
-        String.fromCharCode(event.keyCode)
-      );
-    });
-
-    ui.rightRotorGroundSettingField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      controller.setRightRotorGroundSetting(String.fromCharCode(event.keyCode));
+    ui.rightRotorGroundSettingField.focusout(function () {
+      controller.setRightRotorGroundSetting($(this).val());
+      return false;
     });
 
     // set randomize button click event handler
@@ -317,20 +207,202 @@
       controller.sendSettings();
     });
 
+    // set plugboard field keydown event handlers
+
+    singleTextField(ui.plugboardAField);
+
+    ui.plugboardAField.focusout(function () {
+      controller.setPlugboardAField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardBField);
+
+    ui.plugboardBField.focusout(function () {
+      controller.setPlugboardBField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardCField);
+
+    ui.plugboardCField.focusout(function () {
+      controller.setPlugboardCField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardDField);
+
+    ui.plugboardDField.focusout(function () {
+      controller.setPlugboardDField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardEField);
+
+    ui.plugboardEField.focusout(function () {
+      controller.setPlugboardEField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardFField);
+
+    ui.plugboardFField.focusout(function () {
+      controller.setPlugboardFField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardGField);
+
+    ui.plugboardGField.focusout(function () {
+      controller.setPlugboardGField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardHField);
+
+    ui.plugboardHField.focusout(function () {
+      controller.setPlugboardHField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardIField);
+
+    ui.plugboardIField.focusout(function () {
+      controller.setPlugboardIField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardJField);
+
+    ui.plugboardJField.focusout(function () {
+      controller.setPlugboardJField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardKField);
+
+    ui.plugboardKField.focusout(function () {
+      controller.setPlugboardKField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardLField);
+
+    ui.plugboardLField.focusout(function () {
+      controller.setPlugboardLField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardMField);
+
+    ui.plugboardMField.focusout(function () {
+      controller.setPlugboardMField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardNField);
+
+    ui.plugboardNField.focusout(function () {
+      controller.setPlugboardNField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardOField);
+
+    ui.plugboardOField.focusout(function () {
+      controller.setPlugboardOField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardPField);
+
+    ui.plugboardPField.focusout(function () {
+      controller.setPlugboardPField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardQField);
+
+    ui.plugboardQField.focusout(function () {
+      controller.setPlugboardQField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardRField);
+
+    ui.plugboardRField.focusout(function () {
+      controller.setPlugboardRField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardSField);
+
+    ui.plugboardSField.focusout(function () {
+      controller.setPlugboardSField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardTField);
+
+    ui.plugboardTField.focusout(function () {
+      controller.setPlugboardTField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardUField);
+
+    ui.plugboardUField.focusout(function () {
+      controller.setPlugboardUField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardVField);
+
+    ui.plugboardVField.focusout(function () {
+      controller.setPlugboardVField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardWField);
+
+    ui.plugboardWField.focusout(function () {
+      controller.setPlugboardWField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardXField);
+
+    ui.plugboardXField.focusout(function () {
+      controller.setPlugboardXField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardYField);
+
+    ui.plugboardYField.focusout(function () {
+      controller.setPlugboardYField($(this).val());
+      return false;
+    });
+
+    singleTextField(ui.plugboardZField);
+
+    ui.plugboardZField.focusout(function () {
+      controller.setPlugboardZField($(this).val());
+      return false;
+    });
+
     // set clear text field keydown event handler
 
     ui.clearTextField.keydown(function(event) {
-      event.preventDefault();
-      event.stopPropagation();
       controller.typeKey(String.fromCharCode(event.keyCode));
+      return false;
     });
 
     // set clear text field input event handler
 
-    ui.clearTextField.bind('input', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
+    ui.clearTextField.bind('input', function () {
       controller.setClearText(ui.clearTextField.val());
+      return false;
     });
 
     // set send clear text button click event handler

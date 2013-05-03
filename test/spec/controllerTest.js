@@ -1,212 +1,83 @@
 /*jshint indent: 2, unused: false*/
 
-/*global describe, it, ENIGMA, expect, KeyboardEvent, beforeEach*/
+/*global describe, it, $, ENIGMA, expect, KeyboardEvent, beforeEach*/
+
 (function () {
   'use strict';
 
-  describe('ENIGMA.EnigmaController', function () {
-
-    it('should respond to EnigmaController', function () {
-      expect(ENIGMA).to.respondTo('EnigmaController');
+  describe('ENIGMA', function () {
+    it('global ENIGMA should have "controller" module', function () {
+      expect(ENIGMA).to.have.property('controller');
     });
 
-    var enigmaController = new ENIGMA.EnigmaController();
+    ENIGMA.controller.setUI({
+      chatWindow: $(document.createElement('div')),
+
+      reflectorDropdown: $(document.createElement('div')),
+      reflectorItems: $(document.createElement('div')),
+
+      leftRotorDropdown: $(document.createElement('div')),
+      leftRotorItems: $(document.createElement('div')),
+
+      middleRotorDropdown: $(document.createElement('div')),
+      middleRotorItems: $(document.createElement('div')),
+
+      rightRotorDropdown: $(document.createElement('div')),
+      rightRotorItems: $(document.createElement('div')),
+
+      leftRotorRingSettingField: $(document.createElement('div')),
+      middleRotorRingSettingField: $(document.createElement('div')),
+      rightRotorRingSettingField: $(document.createElement('div')),
+
+      leftRotorGroundSettingField: $(document.createElement('div')),
+      middleRotorGroundSettingField: $(document.createElement('div')),
+      rightRotorGroundSettingField: $(document.createElement('div')),
+
+      randomizeSettingsButton: $(document.createElement('div')),
+      sendSettingsButton: $(document.createElement('div')),
+
+      plugboardAField: $(document.createElement('div')),
+      plugboardBField: $(document.createElement('div')),
+      plugboardCField: $(document.createElement('div')),
+      plugboardDField: $(document.createElement('div')),
+      plugboardEField: $(document.createElement('div')),
+      plugboardFField: $(document.createElement('div')),
+      plugboardGField: $(document.createElement('div')),
+      plugboardHField: $(document.createElement('div')),
+      plugboardIField: $(document.createElement('div')),
+      plugboardJField: $(document.createElement('div')),
+      plugboardKField: $(document.createElement('div')),
+      plugboardLField: $(document.createElement('div')),
+      plugboardMField: $(document.createElement('div')),
+      plugboardNField: $(document.createElement('div')),
+      plugboardOField: $(document.createElement('div')),
+      plugboardPField: $(document.createElement('div')),
+      plugboardQField: $(document.createElement('div')),
+      plugboardRField: $(document.createElement('div')),
+      plugboardSField: $(document.createElement('div')),
+      plugboardTField: $(document.createElement('div')),
+      plugboardUField: $(document.createElement('div')),
+      plugboardVField: $(document.createElement('div')),
+      plugboardWField: $(document.createElement('div')),
+      plugboardXField: $(document.createElement('div')),
+      plugboardYField: $(document.createElement('div')),
+      plugboardZField: $(document.createElement('div')),
+
+      clearTextField: $(document.createElement('div')),
+      sendClearTextButton: $(document.createElement('div')),
+
+      cipherTextField: $(document.createElement('div')),
+      sendCipherTextButton: $(document.createElement('div'))
+    });
 
     describe('#getEnigmaMachine()', function () {
 
       it('should respond to getEnigmaMachine', function () {
-        expect(enigmaController).to.respondTo('getEnigmaMachine');
+        expect(ENIGMA.controller).to.respondTo('getEnigmaMachine');
       });
 
       it('should return an EnigmaMachine', function () {
-        expect(enigmaController.getEnigmaMachine()).to.be.an.instanceOf(ENIGMA.EnigmaMachine);
-      });
-    });
-
-    describe('#getEnigmaView()', function () {
-
-      it('should respond to getEnigmaView', function () {
-        expect(enigmaController).to.respondTo('getEnigmaView');
-      });
-
-      it('should return an EnigmaView', function () {
-        //expect(enigmaController.getEnigmaView()).to.be.an.instanceOf(ENIGMA.EnigmaView);
-      });
-    });
-
-    describe('#setEnigmaView()', function () {
-
-      it('should respond to setEnigmaView', function () {
-        expect(enigmaController).to.respondTo('setEnigmaView');
-      });
-
-      it('should set enigmaView', function () {
-        var enigmaView = new ENIGMA.EnigmaView();
-        enigmaController.setEnigmaView(enigmaView);
-        expect(enigmaController.getEnigmaView()).to.equal(enigmaView);
-      });
-    });
-
-    describe('#clearAll()', function () {
-
-      it('should respond to clearAll', function () {
-        expect(enigmaController).to.respondTo('clearAll');
-      });
-    });
-
-    describe('#keyboardEvent()', function () {
-
-      it('should respond to keyboardEvent', function () {
-        expect(enigmaController).to.respondTo('keyboardEvent');
-      });
-
-      var lightedState;
-      var keyState;
-
-      enigmaController.setEnigmaView({
-
-        getLightedState: function (letter) {
-          return lightedState[letter];
-        },
-
-        setLightedState: function (letter, lighted) {
-          lightedState[letter] = lighted;
-        },
-
-        getKeyState: function (letter) {
-          return keyState[letter];
-        },
-
-        setKeyState: function (letter, depressed) {
-          keyState[letter] = depressed;
-        }
-      });
-
-      beforeEach(function () {
-
-        var getClearState = function () {
-          return {
-            'a': false,
-            'b': false,
-            'c': false,
-            'd': false,
-            'e': false,
-            'f': false,
-            'g': false,
-            'h': false,
-            'i': false,
-            'j': false,
-            'k': false,
-            'l': false,
-            'm': false,
-            'n': false,
-            'o': false,
-            'p': false,
-            'q': false,
-            'r': false,
-            's': false,
-            't': false,
-            'u': false,
-            'v': false,
-            'w': false,
-            'x': false,
-            'y': false,
-            'z': false
-          };
-        };
-
-        lightedState = getClearState();
-        keyState = getClearState();
-      });
-
-      var makeKeyboardEvent = function (key) {
-
-        var event = new KeyboardEvent('keydown', {
-          bubbles: true,
-          cancelable: true,
-          key: key,
-          char: key,
-          shiftKey: key === key.toUpperCase()
-        });
-
-        event.key = key;
-        event.char = key;
-        return event;
-      };
-
-      it('should update EnigmaMachine when receiving a keyboardEvent', function () {
-
-        var keyboardEventEnigmaMachine = function (key) {
-          var enigmaMachine = new ENIGMA.EnigmaMachine();
-          var model = enigmaController.getEnigmaMachine();
-          enigmaMachine.getLeftRotor().setGroundSetting(model.getLeftRotor().getGroundSetting());
-          enigmaMachine.getMiddleRotor().setGroundSetting(model.getMiddleRotor().getGroundSetting());
-          enigmaMachine.getRightRotor().setGroundSetting(model.getRightRotor().getGroundSetting());
-          enigmaMachine.encipherLetter(key);
-          enigmaController.keyboardEvent(makeKeyboardEvent(key));
-          expect(model.getLeftRotor().getGroundSetting()).to.equal(enigmaMachine.getLeftRotor().getGroundSetting());
-          expect(model.getMiddleRotor().getGroundSetting()).to.equal(enigmaMachine.getMiddleRotor().getGroundSetting());
-          expect(model.getRightRotor().getGroundSetting()).to.equal(enigmaMachine.getRightRotor().getGroundSetting());
-        };
-
-        keyboardEventEnigmaMachine('a');
-        keyboardEventEnigmaMachine('b');
-        keyboardEventEnigmaMachine('c');
-        keyboardEventEnigmaMachine('d');
-        keyboardEventEnigmaMachine('e');
-        keyboardEventEnigmaMachine('f');
-        keyboardEventEnigmaMachine('g');
-      });
-
-      it('should update EnigmaView when receiving a keyboardEvent', function () {
-        var clearText = '';
-        var cipherText = '';
-
-        enigmaController.clearAll();
-
-        var enigmaView = {
-          getClearText: function () {
-            return clearText;
-          },
-          setClearText: function (newClearText) {
-            clearText= newClearText;
-          },
-          getCipherText: function () {
-            return cipherText;
-          },
-          setCipherText: function (newCipherText) {
-            cipherText = newCipherText;
-          }
-        };
-
-        enigmaController.setEnigmaView(enigmaView);
-
-        var keyboardEventEnigmaView = function (letter) {
-          var enigmaMachine = new ENIGMA.EnigmaMachine();
-          var model = enigmaController.getEnigmaMachine();
-          enigmaMachine.getLeftRotor().setGroundSetting(model.getLeftRotor().getGroundSetting());
-          enigmaMachine.getMiddleRotor().setGroundSetting(model.getMiddleRotor().getGroundSetting());
-          enigmaMachine.getRightRotor().setGroundSetting(model.getRightRotor().getGroundSetting());
-
-          var oldClearText = enigmaController.getEnigmaView().getClearText();
-          var oldCipherText = enigmaController.getEnigmaView().getCipherText();
-
-          var clearLetter = letter;
-          var cipherLetter = enigmaMachine.encipherLetter(letter);
-
-          enigmaController.keyboardEvent(makeKeyboardEvent(letter));
-
-          expect(enigmaController.getEnigmaView().getClearText()).to.equal(oldClearText + clearLetter);
-          expect(enigmaController.getEnigmaView().getCipherText()).to.equal(oldCipherText + cipherLetter);
-        };
-
-        keyboardEventEnigmaView('a');
-        keyboardEventEnigmaView('b');
-        keyboardEventEnigmaView('c');
-        keyboardEventEnigmaView('d');
-        keyboardEventEnigmaView('e');
-        keyboardEventEnigmaView('f');
-        keyboardEventEnigmaView('g');
+        expect(ENIGMA.controller.getEnigmaMachine()).to.be.an.instanceOf(ENIGMA.EnigmaMachine);
       });
     });
   });

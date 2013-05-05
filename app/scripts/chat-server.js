@@ -3,36 +3,11 @@
 (function () {
   'use strict';
 
+  var https = require('https');
+  var crypto = require('crypto');
+  var querystring = require('querystring');
   var ws = require('./websocket.js');
   var sockets = [];
-
-  var names = [
-    'alice',
-    'bob',
-    'dawn',
-    'earl',
-    'fay',
-    'gene',
-    'hope',
-    'ian',
-    'jade',
-    'ken',
-    'liz',
-    'mack',
-    'nell',
-    'omar',
-    'pam',
-    'quinn',
-    'rae',
-    'sam',
-    'tess',
-    'uriel',
-    'violet',
-    'will',
-    'xena',
-    'york',
-    'zoe',
-  ];
 
   var upgrade = function (req, res, next) {
     req.socket.server.on('upgrade', websocket);
@@ -49,8 +24,6 @@
   };
 
   var websocket = function (request, socket) {
-    var crypto = require('crypto');
-
     // initialize connection with objects
     if (request.headers['sec-websocket-protocol'] !== 'enigmaChat') {
       console.log('incompatible protocol ' + request.
@@ -75,22 +48,10 @@
     socket.write(handshake);
 
     console.log('HTTP Upgraded to WebSocket');
-    // choose a randome name from the list
-    var name = names[Math.floor(Math.random() * names.length)];
+    var email = null;
+    var expires = null;
+    var name = 'anonymous-' + Math.floor(Math.random() * 1000);
     sockets.push(socket);
-
-    // send join message to all sockets
-    (function () {
-      console.log(name + ' joined');
-
-      var encodedJsonString = ws.encode(JSON.stringify({
-        server: name + ' joined'
-      }));
-
-      sockets.forEach(function (socket) {
-        socket.write(encodedJsonString);
-      });
-    }());
 
     socket.on('error', function (error) {
       console.log('WebSocket: error ' + error);
@@ -115,6 +76,7 @@
     });
 
     socket.on('data', function (data) {
+
       try {
         console.log('WebSocket: data');
 
@@ -127,39 +89,127 @@
 
         var inputObject = JSON.parse(jsonString);
 
-        if (typeof inputObject.clearText !== 'string' &&
-            typeof inputObject.cipherText !== 'string' &&
-            typeof inputObject.settings !== 'string') {
-          console.log('strange message from ' + name);
-          return;
+        //console.log(name + ': ' + inputObject);
+        var encodedMessage = null;
+
+        if (typeof inputObject.logout === 'boolean' && email) {
+          // left message
+          (function () {
+            var encodedJsonString = ws.encode(JSON.stringify({
+              server: name + ' left'
+            }));
+
+            sockets.forEach(function (socket) {
+              socket.write(encodedJsonString);
+            });
+          }());
+
+          email = null;
+          expires = null;
+          name = 'anonymous-' + Math.floor(Math.random() * 1000);
+
+        } else if (typeof inputObject.assertion === 'string') {
+
+          var postQueryString = querystring.stringify({
+            assertion: inputObject.assertion,
+            audience: 'http://localhost:9000' // read this from a config file
+          });
+
+          var options = {
+            hostname: 'verifier.login.persona.org',
+            port: 443,
+            path: '/verify',
+            method: 'POST',
+
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': postQueryString.length
+            }
+          };
+
+          var req = https.request(options, function (res) {
+
+            res.on('data', function (personaJsonString) {
+
+              if (res.statusCode !== 200) {
+                console.log('statusCode: ', res.statusCode);
+                console.log('headers: ', res.headers);
+                process.stdout.write(data);
+                return;
+              }
+
+              var persona = JSON.parse(personaJsonString);
+              email = persona.email;
+              expires = persona.expires;
+              var nameMatch = email.match(/^([^@]*)@/);
+              name = nameMatch ? nameMatch[1] : '';
+              console.log(name + ' logged in');
+              var md5Hash = crypto.createHash('md5');
+              md5Hash.update(new Buffer(email));
+
+              // send authenticated email
+              socket.write(ws.encode(JSON.stringify({
+                email: persona.email,
+                expires: persona.expires,
+                emailHash: md5Hash.digest('hex')
+              })));
+
+              // send joined message
+              (function () {
+                var encodedJsonString = ws.encode(JSON.stringify({
+                  server: name + ' logged in'
+                }));
+
+                sockets.forEach(function (socket) {
+                  socket.write(encodedJsonString);
+                });
+              }());
+            });
+          });
+
+          req.on('error', function(error) {
+            console.error(error);
+          });
+
+          req.write(postQueryString);
+          req.end();
+
+        } else if (inputObject.clearText) {
+
+          encodedMessage = ws.encode(JSON.stringify({
+            from: name,
+            clearText: inputObject.clearText
+          }));
+
+        } else if (inputObject.cipherText) {
+
+          encodedMessage = ws.encode(JSON.stringify({
+            from: name,
+            cipherText: inputObject.cipherText
+          }));
+
+        } else if (inputObject.settings) {
+
+          encodedMessage = ws.encode(JSON.stringify({
+            from: name,
+            settings: inputObject.settings
+          }));
+
+        } else {
+          console.log(name + ' send invalid message: ' +
+            JSON.stringify(inputObject));
         }
 
-        var outputObject = {
-          from: name
-        };
-
-        if (inputObject.clearText) {
-          outputObject.clearText = inputObject.clearText;
+        if (encodedMessage) {
+          sockets.forEach(function (socket) {
+            socket.write(encodedMessage);
+          });
         }
-
-        if (inputObject.cipherText) {
-          outputObject.cipherText = inputObject.cipherText;
-        }
-
-        if (inputObject.settings) {
-          outputObject.settings = inputObject.settings;
-        }
-
-        console.log(outputObject);
-
-        var encodedOutputString = ws.encode(JSON.stringify(outputObject));
-
-        sockets.forEach(function (socket) {
-          socket.write(encodedOutputString);
-        });
 
       } catch (e) {
-        console.log('bad data from ' + name);
+        console.log(name + ' (exception): ' + e);
+        console.log(inputObject);
+
         return;
       }
     });

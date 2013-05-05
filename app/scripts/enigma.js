@@ -1,8 +1,4 @@
-/*jshint
-indent: 2,
-maxlen: 80,
-strict: true
-*/
+/*jshint indent: 2, maxlen: 80, strict: true*/
 
 /*globals ENIGMA*/
 
@@ -340,9 +336,6 @@ strict: true
 
       for (var i = 0; i < cleartext.length; i += 1) {
         ciphertext += this.encipherLetter(cleartext.charAt(i));
-        console.log(leftRotor.getGroundSetting() +
-          middleRotor.getGroundSetting() + rightRotor.getGroundSetting() + ' ' +
-          cleartext.charAt(i) + '->' + ciphertext.charAt(i));
       }
 
       return ciphertext;

@@ -207,8 +207,8 @@
         }
 
       } catch (e) {
-        console.log(name + ' caused and exception: ' +
-          JSON.stringify(inputObject));
+        console.log(name + ' (exception): ' + e);
+        console.log(inputObject);
 
         return;
       }

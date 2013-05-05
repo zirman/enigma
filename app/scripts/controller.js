@@ -21,8 +21,20 @@
   var clearText = '';
   var cipherText = '';
   var ui = {};
+  var email = null;
+  var emailHash = null;
+  var expires = null;
+  var username = null;
 
   ENIGMA.controller = {};
+
+  ENIGMA.controller.login = function () {
+    navigator.id.request();
+  };
+
+  ENIGMA.controller.logout = function () {
+    navigator.id.logout();
+  };
 
   ENIGMA.controller.getEnigmaMachine = function () {
     return enigmaMachine;
@@ -488,7 +500,8 @@
     ui = newUI;
   };
 
-  // this should be called when after DOM is loaded and ui has been set
+  // initialize should be called when after DOM is loaded and ui property has
+  // been set
 
   ENIGMA.controller.initialize = function () {
     $(window).bind('hashchange', ENIGMA.controller.validateHashAndUpdateUI);
@@ -506,6 +519,71 @@
 
     // connect to chat server and setup network event handlers
 
+    // initialize persona event handlers
+
+    navigator.id.watch({
+      loggedInUser: email,
+
+      onlogin: function (assertion) {
+        ENIGMA.chatClient.sendAssertion(assertion);
+      },
+      onlogout: function() {
+        email = null;
+        emailHash = null;
+        expires = null;
+        username = null;
+
+        // hide user menu and show login button
+        ui.login.show();
+        ui.userPulldown.hide();
+        ui.gravatarImg.hide();
+
+        ENIGMA.chatClient.sendLogout();
+
+        // A user has logged out! Here you need to:
+        // Tear down the user's session by redirecting the user or making a call
+        // to your backend.
+        // Also, make sure loggedInUser will get set to null on the next page
+        // load.
+        // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+        /*
+        $.ajax({
+          type: 'POST',
+          url: '/auth/logout', // This is a URL on your website.
+          success: function(res, status, xhr) { window.location.reload(); },
+          error: function(xhr, status, err) { alert("Logout failure: " + err); }
+        });
+        */
+      }
+    });
+
+    var setAuthentication = function (authenticated) {
+      email = authenticated.email;
+      expires = authenticated.expires;
+      emailHash = authenticated.emailHash;
+      var nameMatch = email.match(/^([^@]*)@/);
+      username = nameMatch ? nameMatch[1] : '';
+
+      // hide login button and show user menu
+      ui.login.hide();
+      ui.username.text(username);
+      ui.userPulldown.show();
+
+      // load gravatar image if not loaded and display when download complete
+      var src = 'http://www.gravatar.com/avatar/' + emailHash + '?s=36';
+
+      if (ui.gravatarImg.attr('src') !== src) {
+        ui.gravatarImg.attr('src', src);
+
+        ui.gravatarImg.load(function () {
+          ui.gravatarImg.show();
+        });
+
+      } else {
+        ui.gravatarImg.show();
+      }
+    };
+
     ENIGMA.chatClient.connect({
       onopen: function () {
         ui.chatWindow.append(
@@ -518,6 +596,10 @@
       },
 
       onmessage: function (json) {
+
+        if (json.email) {
+          setAuthentication(json);
+        }
 
         if (json.server) {
           ui.chatWindow.append('<p><span class="server">' + json.server +

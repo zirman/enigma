@@ -11,6 +11,14 @@
 
   $(document).ready(function () {
     var ui = {
+      login: $('#login'),
+
+      userPulldown: $('#userPulldown'),
+      username: $('#username'),
+      logout: $('#logout'),
+
+      gravatarImg: $('#gravatarImg'),
+
       chatWindow: $('#chatWindow'),
 
       reflectorDropdown: $('#reflectorDropdown'),
@@ -77,6 +85,20 @@
     var controller = ENIGMA.controller;
     controller.setUI(ui);
     controller.initialize(ui);
+
+    // set login event handler
+
+    ui.login.click(function () {
+      event.preventDefault();
+      controller.login();
+    });
+
+    // set logout event handler
+
+    ui.logout.click(function () {
+      event.preventDefault();
+      controller.logout();
+    });
 
     // set reflector items' click event handler
 

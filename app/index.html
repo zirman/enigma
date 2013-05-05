@@ -22,21 +22,28 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#myModalEnigma" role="button" class="btn" data-toggle="modal">Enigma</a>
+      <a class="brand" href="#enigma" role="button" class="btn" data-toggle="modal">Enigma</a>
 
       <ul class="nav pull-right">
-        <li class="divider-vertical"></li>
-
         <!-- Buttons to trigger modals -->
 
-        <li><a class="nav" href="#myModal" role="button" class="btn" data-toggle="modal">Code Book</a></li>
-        <li><a class="nav" href="#myModalTwo" role="button" class="btn" data-toggle="modal">Manual</a></li>
-        <!--li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Name <b class="caret"></b></a>
+        <li><a class="nav" href="#codebook" role="button" class="btn" data-toggle="modal">Code Book</a></li>
+        <li><a class="nav" href="#manual" role="button" class="btn" data-toggle="modal">Manual</a></li>
+
+        <li class="divider-vertical"></li>
+
+        <li><a id="login" href="#">Login</a></li>
+
+        <li class="dropdown">
+          <a id="userPulldown" style="display: none;" class="dropdown-toggle" data-toggle="dropdown" href="#usermenu">
+            <span id="username">username</span> <b class="caret"></b>
+          </a>
           <ul class="dropdown-menu">
-            <li><a href="#profile">Profile</a></li>
+            <li><a id="logout" href="#logout">Logout</a></li>
           </ul>
-        </li-->
+        </li>
+
+        <li><img id="gravatarImg" class="img-rounded" style="display:none; margin: 2px;"></li>
       </ul>
     </div>
   </div>
@@ -286,7 +293,7 @@
 </div>
 
 <!-- About Us - Enigma Modal -->
-<div id="myModalEnigma" class="modal hide fade" tabindex="-1" role="dialog"
+<div id="enigma" class="modal hide fade" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -325,7 +332,7 @@
 </div>
 
 <!-- Code Book Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="codebook" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Enigma Machine Code Book</h3>
@@ -421,7 +428,7 @@
 </div>
 
 <!-- Manual Modal -->
-<div id="myModalTwo" class="modal hide fade" tabindex="-1" role="dialog"
+<div id="manual" class="modal hide fade" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -553,6 +560,8 @@
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
 </script-->
+
+<script src="https://login.persona.org/include.js"></script>
 
 <script>window.ENIGMA = {};</script>
 

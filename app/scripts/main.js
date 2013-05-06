@@ -88,14 +88,14 @@
 
     // set login event handler
 
-    ui.login.click(function () {
+    ui.login.click(function (event) {
       event.preventDefault();
       controller.login();
     });
 
     // set logout event handler
 
-    ui.logout.click(function () {
+    ui.logout.click(function (event) {
       event.preventDefault();
       controller.logout();
     });

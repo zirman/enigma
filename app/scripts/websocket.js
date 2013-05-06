@@ -8,16 +8,16 @@
    */
 
   exports.getDecoder = function () {
-    var length = 0; // websocket frame length
-    var maskBytes;
-    var decoded;
-    var decodedIndex;
+    var decoded = null;
+    var decodedIndex = 0;
+    var mask = null;
 
     return function (data) {
-      var dataBytes;
+      var length;
+      var dataIndex;
 
       // if this is the first data for this frame
-      if (length === 0) {
+      if (decoded === null) {
 
         var type = data[0];
 
@@ -28,14 +28,14 @@
 
         length = data[1] & 127;
 
-        var firstMaskByte;
+        var maskIndex;
 
         if (length === 126) {
-          firstMaskByte = 4;
+          maskIndex = 4;
           length = (data[2] << 8) | data[3];
 
         } else if (length === 127) {
-          firstMaskByte = 10;
+          maskIndex = 10;
 
           length =
             (data[2] << 56) |
@@ -48,29 +48,31 @@
             data[9];
 
         } else {
-          firstMaskByte = 2;
+          maskIndex = 2;
         }
 
-        var firstDataByte = firstMaskByte + 4;
-        maskBytes = data.slice(firstMaskByte, firstMaskByte + 4);
-        dataBytes = data.slice(firstDataByte);
+        dataIndex = maskIndex + 4;
+        mask = data.slice(maskIndex, dataIndex);
         decoded = new Buffer(length);
         decodedIndex = 0;
 
       } else {
-        dataBytes = data;
+        dataIndex = 0;
       }
 
-      for (var i = 0; i < dataBytes.length; decodedIndex += 1, i += 1) {
-        decoded[decodedIndex] = dataBytes[i] ^ maskBytes[decodedIndex % 4];
+      for (; dataIndex < data.length; decodedIndex += 1, dataIndex += 1) {
+        decoded[decodedIndex] = data[dataIndex] ^ mask[decodedIndex % 4];
       }
 
-      if (decodedIndex < length) {
+      if (decodedIndex < decoded.length) {
         return null;
       }
 
-      length = 0;
-      return decoded;
+      var retVal = decoded;
+      decoded = null;
+      decodedIndex = 0;
+      mask = null;
+      return retVal;
     };
   };
 

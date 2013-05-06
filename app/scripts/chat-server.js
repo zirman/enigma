@@ -3,6 +3,8 @@
 (function () {
   'use strict';
 
+  var serverUrl = 'http://localhost:9000';
+
   var https = require('https');
   var crypto = require('crypto');
   var querystring = require('querystring');
@@ -52,8 +54,18 @@
     console.log('HTTP Upgraded to WebSocket');
     var email = null;
     var expires = null;
-    var name = 'anonymous-' + Math.floor(Math.random() * 1000);
+    var name = 'anonymous';
     sockets.push(socket);
+
+    (function () {
+      var encodedJsonString = ws.encode(JSON.stringify({
+        server: name + ' joined'
+      }));
+
+      sockets.forEach(function (socket) {
+        socket.write(encodedJsonString);
+      });
+    }());
 
     socket.on('error', function (error) {
       console.log('WebSocket: error ' + error);
@@ -78,150 +90,161 @@
     });
 
     socket.on('data', function (socketData) {
+      console.log('WebSocket: data');
+
+      var jsonData = decode(socketData);
+
+      if (jsonData === null || jsonData.length === 0) {
+        return;
+      }
+
+      var json;
+
       try {
-        console.log('WebSocket: data');
+        json = JSON.parse(jsonData.toString());
 
-        var jsonData = decode(socketData);
+      } catch (exception) {
+        console.log('Exception parsing json string: ' + exception);
+        console.log(jsonData.toString());
+        return;
+      }
 
-//        console.log(jsonData);
+      var broadcastMessage = null;
 
-        if (jsonData === null || jsonData.length === 0) {
-          return;
-        }
+      if (typeof json.logout === 'boolean' && email) {
+        // left message
+        (function () {
+          var encodedJsonString = ws.encode(JSON.stringify({
+            server: name + ' left'
+          }));
 
-        var inputObject;
-
-        try {
-          inputObject = JSON.parse(jsonData.toString());
-
-        } catch (error) {
-          console.log('Error parsing json string: ' + error);
-          return;
-        }
-
-        //console.log(name + ': ' + inputObject);
-        var encodedMessage = null;
-
-        if (typeof inputObject.logout === 'boolean' && email) {
-          // left message
-          (function () {
-            var encodedJsonString = ws.encode(JSON.stringify({
-              server: name + ' left'
-            }));
-
-            sockets.forEach(function (socket) {
-              socket.write(encodedJsonString);
-            });
-          }());
-
-          email = null;
-          expires = null;
-          name = 'anonymous-' + Math.floor(Math.random() * 1000);
-
-        } else if (typeof inputObject.assertion === 'string') {
-
-          var postQueryString = querystring.stringify({
-            assertion: inputObject.assertion,
-            audience: 'http://localhost:9000' // read this from a config file
+          sockets.forEach(function (socket) {
+            socket.write(encodedJsonString);
           });
+        }());
 
-          var options = {
-            hostname: 'verifier.login.persona.org',
-            port: 443,
-            path: '/verify',
-            method: 'POST',
+        email = null;
+        expires = null;
+        name = 'anonymous';
 
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Content-Length': postQueryString.length
+      } else if (typeof json.assertion === 'string') {
+
+        var postQueryString = querystring.stringify({
+          assertion: json.assertion,
+          audience: serverUrl
+        });
+
+        var options = {
+          hostname: 'verifier.login.persona.org',
+          port: 443,
+          path: '/verify',
+          method: 'POST',
+
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': postQueryString.length
+          }
+        };
+
+        var req = https.request(options, function (res) {
+
+          res.on('data', function (personaJsonString) {
+
+            if (res.statusCode !== 200) {
+              console.log('statusCode: ', res.statusCode);
+              console.log('headers: ', res.headers);
+              process.stdout.write(personaJsonString);
+              return;
             }
-          };
 
-          var req = https.request(options, function (res) {
+            var persona;
 
-            res.on('data', function (personaJsonString) {
+            try {
+              persona = JSON.parse(personaJsonString);
 
-              if (res.statusCode !== 200) {
-                console.log('statusCode: ', res.statusCode);
-                console.log('headers: ', res.headers);
-                process.stdout.write(personaJsonString);
-                return;
-              }
+            } catch (exception) {
+              console.log('Exception parsing json string: ' + exception);
+              console.log(jsonData.toString());
+              return;
+            }
 
-              var persona = JSON.parse(personaJsonString);
-              console.log(persona);
-              email = persona.email;
-              expires = persona.expires;
-              var nameMatch = email.match(/^([^@]*)@/);
-              name = nameMatch ? nameMatch[1] : '';
-              console.log(name + ' logged in');
-              var md5Hash = crypto.createHash('md5');
-              md5Hash.update(new Buffer(email));
+            console.log(persona);
 
-              // send authenticated email
+            if (typeof persona.status !== 'string' ||
+                persona.status !== 'okay') {
+
+              // send a failed attempt
               socket.write(ws.encode(JSON.stringify({
-                email: persona.email,
-                expires: persona.expires,
-                emailHash: md5Hash.digest('hex')
+                authenticationFailed: true
               })));
 
-              // send joined message
-              (function () {
-                var encodedJsonString = ws.encode(JSON.stringify({
-                  server: name + ' logged in'
-                }));
+              return;
+            }
 
-                sockets.forEach(function (socket) {
-                  socket.write(encodedJsonString);
-                });
-              }());
-            });
+            email = persona.email;
+            expires = persona.expires;
+            var nameMatch = email.match(/^([^@]*)@/);
+            name = nameMatch ? nameMatch[1] : '';
+            console.log(name + ' logged in');
+            var md5Hash = crypto.createHash('md5');
+            md5Hash.update(new Buffer(email));
+
+            // send authentication
+            socket.write(ws.encode(JSON.stringify({
+              persona: persona,
+              emailHash: md5Hash.digest('hex')
+            })));
+
+            // send joined message
+            (function () {
+              var encodedJsonString = ws.encode(JSON.stringify({
+                server: name + ' logged in'
+              }));
+
+              sockets.forEach(function (socket) {
+                socket.write(encodedJsonString);
+              });
+            }());
           });
+        });
 
-          req.on('error', function(error) {
-            console.error(error);
-          });
+        req.on('error', function(error) {
+          console.error(error);
+        });
 
-          req.write(postQueryString);
-          req.end();
+        req.write(postQueryString);
+        req.end();
 
-        } else if (inputObject.clearText) {
+      } else if (json.clearText) {
 
-          encodedMessage = ws.encode(JSON.stringify({
-            from: name,
-            clearText: inputObject.clearText
-          }));
+        broadcastMessage = ws.encode(JSON.stringify({
+          from: name,
+          clearText: json.clearText
+        }));
 
-        } else if (inputObject.cipherText) {
+      } else if (json.cipherText) {
 
-          encodedMessage = ws.encode(JSON.stringify({
-            from: name,
-            cipherText: inputObject.cipherText
-          }));
+        broadcastMessage = ws.encode(JSON.stringify({
+          from: name,
+          cipherText: json.cipherText
+        }));
 
-        } else if (inputObject.settings) {
+      } else if (json.settings) {
 
-          encodedMessage = ws.encode(JSON.stringify({
-            from: name,
-            settings: inputObject.settings
-          }));
+        broadcastMessage = ws.encode(JSON.stringify({
+          from: name,
+          settings: json.settings
+        }));
 
-        } else {
-          console.log(name + ' send invalid message: ' +
-            JSON.stringify(inputObject));
-        }
+      } else {
+        console.log(name + ' send invalid message: ' +
+          JSON.stringify(json));
+      }
 
-        if (encodedMessage) {
-          sockets.forEach(function (socket) {
-            socket.write(encodedMessage);
-          });
-        }
-
-      } catch (e) {
-        console.log(name + ' (exception): ' + e);
-        console.log(inputObject);
-
-        return;
+      if (broadcastMessage) {
+        sockets.forEach(function (socket) {
+          socket.write(broadcastMessage);
+        });
       }
     });
 

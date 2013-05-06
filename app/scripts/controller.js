@@ -20,10 +20,9 @@
   var enigmaStateStack = [];
   var clearText = '';
   var cipherText = '';
-  var ui = {};
-  var email = null;
+  var ui = null;
+  var persona = null;
   var emailHash = null;
-  var expires = null;
   var username = null;
 
   ENIGMA.controller = {};
@@ -522,15 +521,14 @@
     // initialize persona event handlers
 
     navigator.id.watch({
-      loggedInUser: email,
+      loggedInUser: null,
 
       onlogin: function (assertion) {
         ENIGMA.chatClient.sendAssertion(assertion);
       },
       onlogout: function() {
-        email = null;
+        persona = null;
         emailHash = null;
-        expires = null;
         username = null;
 
         // hide user menu and show login button
@@ -539,29 +537,13 @@
         ui.gravatarImg.hide();
 
         ENIGMA.chatClient.sendLogout();
-
-        // A user has logged out! Here you need to:
-        // Tear down the user's session by redirecting the user or making a call
-        // to your backend.
-        // Also, make sure loggedInUser will get set to null on the next page
-        // load.
-        // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
-        /*
-        $.ajax({
-          type: 'POST',
-          url: '/auth/logout', // This is a URL on your website.
-          success: function(res, status, xhr) { window.location.reload(); },
-          error: function(xhr, status, err) { alert("Logout failure: " + err); }
-        });
-        */
       }
     });
 
-    var setAuthentication = function (authenticated) {
-      email = authenticated.email;
-      expires = authenticated.expires;
-      emailHash = authenticated.emailHash;
-      var nameMatch = email.match(/^([^@]*)@/);
+    var setPersona = function (json) {
+      persona = json.persona;
+      emailHash = json.emailHash;
+      var nameMatch = persona.email.match(/^([^@]*)@/);
       username = nameMatch ? nameMatch[1] : '';
 
       // hide login button and show user menu
@@ -597,8 +579,12 @@
 
       onmessage: function (json) {
 
-        if (json.email) {
-          setAuthentication(json);
+        if (json.persona) {
+          setPersona(json);
+        }
+
+        if (json.authenticationFailed) {
+          navigator.id.logout();
         }
 
         if (json.server) {

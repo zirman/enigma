@@ -1,7 +1,8 @@
 Enigma
 ======
 
-A Web App Implementation of the German M3 Enigma Machine and Chat Server.
+A Web App Implementation of the German M3 Enigma Machine and Chat Server. Try it
+out here: <http://xbolo.org:9000>.
 
 Requirements
 ------------
@@ -14,8 +15,8 @@ Requirements
 
 *	Node.js >= 0.8.x
 
-	Node is used for the hosting the backend and and command line utilities to
-	compile Enigma.
+	Node is used for the running hosting the backend and and command line
+	build utilities.
 
 *	Ruby Gems
 
@@ -25,7 +26,7 @@ Requirements
 Download Source and Install Dependencies
 ----------------------------------------
 
-From the location you wish to install Enigma, type the following in the command
+From the location you wish to install Enigma, run the following in the command
 line:
 
 	sudo npm install -g yo grunt-cli bower
@@ -45,6 +46,12 @@ Runs Enigma in a development environment with live reload:
 Runs Enigma in a distribution environment with concatinated and minified source:
 
 	grunt server:dist
+
+Note that to properly authenticate users logging in with persona.org you will
+need to set the server url at the top of chat-server.js to match the url that
+users will be using to connect to your server.  For example:
+
+	var serverUrl = 'http://mychat.org:1234';
 
 Unit Tests
 ----------

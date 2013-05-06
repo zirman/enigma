@@ -12,7 +12,7 @@ Requirements
 	in active development and may not support your operating system. Your milage
 	may vary.
 
-*	Node.js
+*	Node.js >= 0.8.x
 
 	Node is used for the hosting the backend and and command line utilities to
 	compile Enigma.
@@ -22,16 +22,17 @@ Requirements
 	Sass and Compass is used to build Enigma's CSS files. Mac OS X has this
 	pre-installed.
 
-Download Source and Install Dependancies
+Download Source and Install Dependencies
 ----------------------------------------
 
 From the location you wish to install Enigma, type the following in the command
 line:
 
+	sudo npm install -g yo grunt-cli bower
+	sudo gem install compass
 	git clone https://github.com/zirman/enigma.git
 	cd enigma
 	sudo npm install
-	sudo gem install compass
 	sudo bower install
 
 Run Commands

@@ -7,35 +7,72 @@
    * decodes a websocket frame and returns a Buffer
    */
 
-  exports.decode = function (frame) {
-    var type, length, firstMaskByte, firstDataByte, maskBytes, dataBytes,
-      decoded, i;
+  exports.getDecoder = function () {
+    var length = 0; // websocket frame length
+    var maskBytes;
+    var decoded;
+    var decodedIndex;
 
-    type = frame[0];
-    length = frame[1] & 127;
+    return function (data) {
+      var dataBytes;
 
-    if (length === 126) {
-      firstMaskByte = 4;
+      // if this is the first data for this frame
+      if (length === 0) {
 
-    } else if (length === 127) {
-      firstMaskByte = 10;
+        var type = data[0];
 
-    } else {
-      firstMaskByte = 2;
-    }
+        if (type !== 0x81) {
+          console.log('type is not text (0x81): ' + type);
+          return;
+        }
 
-    firstDataByte = firstMaskByte + 4;
-    maskBytes = frame.slice(firstMaskByte, firstMaskByte + 4);
-    dataBytes = frame.slice(firstDataByte);
-    length = dataBytes.length;
+        length = data[1] & 127;
 
-    decoded = new Buffer(length);
+        var firstMaskByte;
 
-    for (i = 0; i < length; i += 1) {
-      decoded[i] = dataBytes[i] ^ maskBytes[i % 4];
-    }
+        if (length === 126) {
+          firstMaskByte = 4;
+          length = (data[2] << 8) | data[3];
 
-    return decoded;
+        } else if (length === 127) {
+          firstMaskByte = 10;
+
+          length =
+            (data[2] << 56) |
+            (data[3] << 48) |
+            (data[4] << 40) |
+            (data[5] << 32) |
+            (data[6] << 24) |
+            (data[7] << 16) |
+            (data[8] <<  8) |
+            data[9];
+
+        } else {
+          firstMaskByte = 2;
+          length = data[1];
+        }
+
+        var firstDataByte = firstMaskByte + 4;
+        maskBytes = data.slice(firstMaskByte, firstMaskByte + 4);
+        dataBytes = data.slice(firstDataByte);
+        decoded = new Buffer(length);
+        decodedIndex = 0;
+
+      } else {
+        dataBytes = data;
+      }
+
+      for (var i = 0; i < dataBytes.length; decodedIndex += 1, i += 1) {
+        decoded[decodedIndex] = dataBytes[i] ^ maskBytes[decodedIndex % 4];
+      }
+
+      if (decodedIndex < length) {
+        return null;
+      }
+
+      length = 0;
+      return decoded;
+    };
   };
 
   /*

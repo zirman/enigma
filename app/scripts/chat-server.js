@@ -47,6 +47,8 @@
 
     socket.write(handshake);
 
+    var decode = ws.getDecoder();
+
     console.log('HTTP Upgraded to WebSocket');
     var email = null;
     var expires = null;
@@ -75,19 +77,27 @@
       leave();
     });
 
-    socket.on('data', function (data) {
-
+    socket.on('data', function (socketData) {
       try {
         console.log('WebSocket: data');
 
-        var jsonString = ws.decode(data).toString();
+        var jsonData = decode(socketData);
 
-        if (jsonString.length === 0) {
-          console.log('ping from ' + name);
+//        console.log(jsonData);
+
+        if (jsonData === null || jsonData.length === 0) {
           return;
         }
 
-        var inputObject = JSON.parse(jsonString);
+        var inputObject;
+
+        try {
+          inputObject = JSON.parse(jsonData.toString());
+
+        } catch (error) {
+          console.log('Error parsing json string: ' + error);
+          return;
+        }
 
         //console.log(name + ': ' + inputObject);
         var encodedMessage = null;
@@ -134,11 +144,12 @@
               if (res.statusCode !== 200) {
                 console.log('statusCode: ', res.statusCode);
                 console.log('headers: ', res.headers);
-                process.stdout.write(data);
+                process.stdout.write(personaJsonString);
                 return;
               }
 
               var persona = JSON.parse(personaJsonString);
+              console.log(persona);
               email = persona.email;
               expires = persona.expires;
               var nameMatch = email.match(/^([^@]*)@/);

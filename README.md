@@ -19,8 +19,8 @@ Requirements
 
 *	Ruby Gems
 
-	Node is used for the hosting the backend and and command line utilities to
-	compile Enigma.  Mac OS X has this pre-installed.
+	Sass and Compass is used to build Enigma's CSS files. Mac OS X has this
+	pre-installed.
 
 Download Source and Install Dependancies
 ----------------------------------------

@@ -590,11 +590,15 @@
         if (json.server) {
           ui.chatWindow.append('<p><span class="server">' + json.server +
             '</span></p>');
+
+          ui.chatWindow.scrollTop(ui.chatWindow.height());
         }
 
         if (json.clearText) {
           ui.chatWindow.append('<p>' + json.from +
             ': <span class="clearText">' + json.clearText + '</span></p>');
+
+          ui.chatWindow.scrollTop(ui.chatWindow.height());
         }
 
         if (json.cipherText) {
@@ -609,9 +613,13 @@
               ': <span class="cipherText">' + json.cipherText + '</span></p>');
           }
 
+          ui.chatWindow.scrollTop(ui.chatWindow.height());
+
         } else if (json.settings) {
           ui.chatWindow.append('<p><a href="#' + json.settings + '">' +
             json.from + '&apos;s settings</a></p>');
+
+          ui.chatWindow.scrollTop(ui.chatWindow.height());
         }
       },
 

@@ -49,7 +49,6 @@
 
         } else {
           firstMaskByte = 2;
-          length = data[1];
         }
 
         var firstDataByte = firstMaskByte + 4;

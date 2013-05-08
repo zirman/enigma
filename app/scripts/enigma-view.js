@@ -66,7 +66,7 @@
     context.beginPath();
 
     drawLineToArc(plugboardX, plugboardY, outer + 5, path[0].ringRight);
-    drawLineToArc(plugboardX, plugboardY, inner + 5, path[0].ringLeft);
+    drawLineToArc(plugboardX, plugboardY, outer + 5, path[0].ringLeft);
 
     drawLineToArc(rightRotorX, rightRotorY, outer + 5, path[1].ringRight);
     drawLineToArc(rightRotorX, rightRotorY, inner + 5, path[1].ringLeft);
@@ -78,13 +78,13 @@
     drawLineToArc(leftRotorX, leftRotorY, inner + 5, path[3].ringLeft);
 
     drawLineToArc(reflectorX, reflectorY, outer + 5, path[4].ringRight);
-    drawLineToArc(reflectorX, reflectorY, inner + 5, path[4].ringLeft);
+    drawLineToArc(reflectorX, reflectorY, outer + 5, path[4].ringLeft);
 
     context.strokeStyle = '#0e0';
     context.stroke();
     context.beginPath();
 
-    drawLineToArc(reflectorX, reflectorY, inner + 5, path[4].ringLeft);
+    drawLineToArc(reflectorX, reflectorY, outer + 5, path[4].ringLeft);
 
     drawLineToArc(leftRotorX, leftRotorY, inner + 5, path[5].ringLeft);
     drawLineToArc(leftRotorX, leftRotorY, outer + 5, path[5].ringRight);
@@ -95,7 +95,7 @@
     drawLineToArc(rightRotorX, rightRotorY, inner + 5, path[7].ringLeft);
     drawLineToArc(rightRotorX, rightRotorY, outer + 5, path[7].ringRight);
 
-    drawLineToArc(plugboardX, plugboardY, inner + 5, path[8].ringLeft);
+    drawLineToArc(plugboardX, plugboardY, outer + 5, path[8].ringLeft);
     drawLineToArc(plugboardX, plugboardY, outer + 5, path[8].ringRight);
 
     context.strokeStyle = '#e00';
@@ -163,6 +163,34 @@
     context.restore();
   };
 
+  var drawSimpleMapping = function (outer, mapping) {
+    context.save();
+
+    for (var key in mapping) {
+
+      if (mapping.hasOwnProperty(key)) {
+        var letterFrom = key;
+        var letterTo = mapping[key];
+
+        var rads = (Math.PI / 13) * (letterFrom.charCodeAt(0) - aCharCode);
+
+        var sin = Math.sin(rads);
+        var cos = Math.cos(rads);
+        context.beginPath();
+        context.moveTo(sin * outer, -(cos * outer));
+        rads = (Math.PI / 13) * (letterTo.charCodeAt(0) - aCharCode);
+
+        sin = Math.sin(rads);
+        cos = Math.cos(rads);
+        context.lineTo(sin * outer, -(cos * outer));
+        context.strokeStyle = '#ddd';
+        context.stroke();
+      }
+    }
+
+    context.restore();
+  };
+
   var drawArrow = function () {
     context.moveTo(0, 0);
     context.lineTo(10, 10);
@@ -207,7 +235,7 @@
       context.translate(0, 10 - outer);
       context.beginPath();
       drawArrow();
-      context.fillStyle = '#444';
+      context.fillStyle = '#d40';
       context.fill();
       context.restore();
     }
@@ -241,11 +269,10 @@
     context.restore();
 
     // draw mapping
-    drawMapping(outer + 5, inner + 5, reflector.getMapping(), 'A');
+    drawSimpleMapping(outer + 5, reflector.getMapping());
 
-    // draw text rings
+    // draw text ring
     context.fillStyle = '#000';
-    drawTextRing(inner);
     drawTextRing(outer);
 
     context.restore();
@@ -258,12 +285,19 @@
     context.fillStyle = '#ddd';
     drawNumberRing(outer + 20);
 
-    // draw mapping
-    drawMapping(outer + 5, inner + 5, plugboard.getMapping(), 'A');
+    context.save();
+    context.fillStyle = '#666';
+    context.font = 'bold 70pt Calibri';
+    context.textAlign = 'center';
+    context.translate(0, 35);
+    context.fillText('PB', 0, 0);
+    context.restore();
 
-    // draw text rings
+    // draw mapping
+    drawSimpleMapping(outer + 5, plugboard.getMapping());
+
+    // draw text ring
     context.fillStyle = '#000';
-    drawTextRing(inner);
     drawTextRing(outer);
 
     context.restore();

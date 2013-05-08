@@ -237,6 +237,7 @@
     if (alphabetic.test(character)) {
       enigmaMachine.setAllSettings(enigmaStateStack[0]);
       enigmaMachine.getLeftRotor().setRingSetting(character);
+      ENIGMA.view.drawEnigmaMachine();
       window.location.hash = '#' + enigmaMachine.getAllSettings();
     }
   };
@@ -483,6 +484,7 @@
     );
 
     ui.clearTextField.val(clearText);
+    ENIGMA.view.drawEnigmaMachine();
     ui.cipherTextField.val(cipherText);
   };
 
@@ -506,6 +508,7 @@
     );
 
     ui.clearTextField.val(clearText);
+    ENIGMA.view.drawEnigmaMachine();
     ui.cipherTextField.val(cipherText);
   };
 
@@ -587,13 +590,13 @@
 
     ENIGMA.chatClient.connect({
       onopen: function () {
-        ui.chatWindow.append(
+        ui.chatContents.append(
           '<p><span class="chatStatus">connected</span></p>'
         );
       },
 
       onerror: function (error) {
-        ui.chatWindow.append('<p>error ' + error + '</p>');
+        ui.chatContents.append('<p>error ' + error + '</p>');
       },
 
       onmessage: function (json) {
@@ -607,38 +610,38 @@
         }
 
         if (json.server) {
-          ui.chatWindow.append('<p><span class="server">' + json.server +
+          ui.chatContents.append('<p><span class="server">' + json.server +
             '</span></p>');
 
-          ui.chatWindow.scrollTop(ui.chatWindow.height());
+          ui.chatWindow.scrollTop(ui.chatContents.outerHeight());
         }
 
         if (json.clearText) {
-          ui.chatWindow.append('<p>' + json.from +
+          ui.chatContents.append('<p>' + json.from +
             ': <span class="clearText">' + json.clearText + '</span></p>');
 
-          ui.chatWindow.scrollTop(ui.chatWindow.height());
+          ui.chatWindow.scrollTop(ui.chatContents.outerHeight());
         }
 
         if (json.cipherText) {
 
           if (json.settings) {
-            ui.chatWindow.append('<p><a href="#' + json.settings + '">' +
+            ui.chatContents.append('<p><a href="#' + json.settings + '">' +
               json.from + '</a>: <span class="cipherText">' + json.cipherText +
               '</span></p>');
 
           } else {
-            ui.chatWindow.append('<p>' + json.from +
+            ui.chatContents.append('<p>' + json.from +
               ': <span class="cipherText">' + json.cipherText + '</span></p>');
           }
 
-          ui.chatWindow.scrollTop(ui.chatWindow.height());
+          ui.chatWindow.scrollTop(ui.chatContents.outerHeight());
 
         } else if (json.settings) {
-          ui.chatWindow.append('<p><a href="#' + json.settings + '">' +
+          ui.chatContents.append('<p><a href="#' + json.settings + '">' +
             json.from + '&apos;s settings</a></p>');
 
-          ui.chatWindow.scrollTop(ui.chatWindow.height());
+          ui.chatWindow.scrollTop(ui.chatContents.outerHeight());
         }
       },
 

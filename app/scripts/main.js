@@ -20,6 +20,7 @@
       gravatarImg: $('#gravatarImg'),
 
       chatWindow: $('#chatWindow'),
+      chatContents: $('#chatContents'),
 
       reflectorDropdown: $('#reflectorDropdown'),
       reflectorItems: $('.reflectorItem'),

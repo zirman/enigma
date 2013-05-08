@@ -26,6 +26,20 @@
 
   ENIGMA.view = {};
 
+  /**
+   * Performs a Caesar shift on a capitalized single character string.
+   * @param {string} letter Capitalized single character string that is Caesar
+   * shifted.
+   * @param {string} shift Capitalized single character string that is the key
+   * for the Ceasar shift.
+   * @returns {string} Single character string of Ceasar shift cipher text.
+   */
+  var shiftRightLetter = function (letter, shift) {
+    var l = letter.toUpperCase().charCodeAt(0) - aCharCode;
+    var s = shift.toUpperCase().charCodeAt(0) - aCharCode;
+    return String.fromCharCode(((l + s) % 26) + aCharCode);
+  };
+
   ENIGMA.view.setCanvas = function (newCanvas) {
     canvas = newCanvas;
     context = canvas.getContext('2d');
@@ -121,21 +135,22 @@
     }
   };
 
-  var drawMapping = function (outer, inner, mapping) {
+  var drawMapping = function (outer, inner, mapping, shift) {
     context.save();
 
     for (var key in mapping) {
 
       if (mapping.hasOwnProperty(key)) {
-        var rads = (Math.PI / 13) * (key.toUpperCase().charCodeAt(0) -
-          aCharCode);
+        var letterFrom = shiftRightLetter(key, shift);
+        var letterTo = shiftRightLetter(mapping[key], shift);
+
+        var rads = (Math.PI / 13) * (letterFrom.charCodeAt(0) - aCharCode);
 
         var sin = Math.sin(rads);
         var cos = Math.cos(rads);
         context.beginPath();
         context.moveTo(sin * outer, -(cos * outer));
-        rads = (Math.PI / 13) * (mapping[key].toUpperCase().charCodeAt(0) -
-          aCharCode);
+        rads = (Math.PI / 13) * (letterTo.charCodeAt(0) - aCharCode);
 
         sin = Math.sin(rads);
         cos = Math.cos(rads);
@@ -198,7 +213,8 @@
     }
 
     // draw mapping
-    drawMapping(outer + 5, inner + 5, rotor.getMapping());
+    drawMapping(outer + 5, inner + 5, rotor.getMapping(),
+      rotor.getRingSetting());
 
     // draw text rings
     context.fillStyle = 'black';
@@ -225,7 +241,7 @@
     context.restore();
 
     // draw mapping
-    drawMapping(outer + 5, inner + 5, reflector.getMapping());
+    drawMapping(outer + 5, inner + 5, reflector.getMapping(), 'A');
 
     // draw text rings
     context.fillStyle = '#000';
@@ -243,7 +259,7 @@
     drawNumberRing(outer + 20);
 
     // draw mapping
-    drawMapping(outer + 5, inner + 5, plugboard.getMapping());
+    drawMapping(outer + 5, inner + 5, plugboard.getMapping(), 'A');
 
     // draw text rings
     context.fillStyle = '#000';

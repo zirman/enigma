@@ -74,10 +74,13 @@
 
     clearText = '';
     cipherText = '';
-    ui.clearTextField.val(clearText);
-    ui.cipherTextField.val(cipherText);
 
     // update user interface
+
+    ENIGMA.view.drawEnigmaMachine();
+
+    ui.clearTextField.val(clearText);
+    ui.cipherTextField.val(cipherText);
 
     ui.reflectorDropdown.text(enigmaMachine.getReflector().getLabel());
 
@@ -356,8 +359,14 @@
     // encrypt alphabetic characters
     } else if (alphabetic.test(character)) {
       clearText += character.toLowerCase();
-      cipherText += enigmaMachine.encipherLetter(character);
+      //cipherText += enigmaMachine.encipherLetter(character);
+      var path = enigmaMachine.traceLetter(character);
+      cipherText += path.letterOut;
+
       enigmaStateStack.push(enigmaMachine.getAllSettings());
+
+      ENIGMA.view.drawEnigmaMachine();
+      ENIGMA.view.drawPath(path.path);
 
       ui.leftRotorGroundSettingField.val(
         enigmaMachine.getLeftRotor().getGroundSetting()
@@ -404,6 +413,9 @@
         // remove last character from text fields
         clearText = clearText.slice(0, -1);
         cipherText = cipherText.slice(0, -1);
+
+        // update user interface
+        ENIGMA.view.drawEnigmaMachine();
         ui.clearTextField.val(clearText);
         ui.cipherTextField.val(cipherText);
       }
@@ -432,6 +444,8 @@
         enigmaStateStack.push(enigmaMachine.getAllSettings());
       }
     }
+
+    ENIGMA.view.drawEnigmaMachine();
 
     ui.clearTextField.val(clearText);
     ui.cipherTextField.val(cipherText);
@@ -497,6 +511,11 @@
 
   ENIGMA.controller.setUI = function (newUI) {
     ui = newUI;
+
+    // update canvas view
+    ENIGMA.view.setCanvas(document.getElementById('enigmaView'));
+    ENIGMA.view.setEnigmaMachine(enigmaMachine);
+    ENIGMA.view.drawEnigmaMachine();
   };
 
   // initialize should be called when after DOM is loaded and ui property has

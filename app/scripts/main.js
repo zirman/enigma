@@ -136,7 +136,7 @@
       return false;
     };
 
-    var keydownEventHandler = function() {
+    var keydownEventHandler = function(event) {
       var character = String.fromCharCode(event.keyCode).toUpperCase();
 
       if (/[A-Z]/.test(character)) {
@@ -218,14 +218,14 @@
 
     // set randomize button click event handler
 
-    ui.randomizeSettingsButton.click(function() {
+    ui.randomizeSettingsButton.click(function(event) {
       event.preventDefault();
       controller.randomizeSettings();
     });
 
     // set send button click event handler
 
-    ui.sendSettingsButton.click(function() {
+    ui.sendSettingsButton.click(function(event) {
       event.preventDefault();
       controller.sendSettings();
     });

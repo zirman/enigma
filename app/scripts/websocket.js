@@ -8,6 +8,7 @@
    */
 
   exports.getDecoder = function () {
+    var opcode = 0;
     var decoded = null;
     var decodedIndex = 0;
     var mask = null;
@@ -15,7 +16,6 @@
     return function (data) {
       var length;
       var dataIndex;
-      var opcode;
 
       // if this is the first data for this frame
       if (decoded === null) {
@@ -74,6 +74,10 @@
       mask = null;
 
       switch (opcode) {
+      // continuation frame
+      case 0x00:
+        return null;
+
       // text frame
       case 0x01:
         return retVal;

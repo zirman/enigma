@@ -416,7 +416,12 @@
 
     // set clear text field keydown event handler
 
-    ui.clearTextField.keydown(function(event) {
+    ui.clearTextField.keydown(function (event) {
+      // ignore keys when modifiers are present
+      if (event.altKey || event.ctrlKey || event.metaKey) {
+        return;
+      }
+
       controller.typeKey(String.fromCharCode(event.keyCode));
       return false;
     });

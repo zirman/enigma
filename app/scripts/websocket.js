@@ -15,16 +15,16 @@
     return function (data) {
       var length;
       var dataIndex;
+      var opcode;
 
       // if this is the first data for this frame
       if (decoded === null) {
 
-        var type = data[0];
-
-        if (type !== 0x81) {
-          console.log('type is not text (0x81): ' + type);
-          return;
+        if (data.length < 2) {
+          console.log('Frame too short');
         }
+
+        opcode = data[0] & 0x0f;
 
         length = data[1] & 127;
 
@@ -72,7 +72,47 @@
       decoded = null;
       decodedIndex = 0;
       mask = null;
-      return retVal;
+
+      switch (opcode) {
+      // text frame
+      case 0x01:
+        return retVal;
+
+      // binary frame
+      case 0x02:
+        return null;
+
+      // reserved for further non-control frames
+      case 0x03:
+      case 0x04:
+      case 0x05:
+      case 0x06:
+      case 0x07:
+        return null;
+
+      // connection close
+      case 0x08:
+        return null;
+
+      // ping
+      case 0x09:
+        // probably should send a pong back
+        return null;
+
+      // pong
+      case 0x0a:
+        return null;
+
+      // reserved for further control frames
+      case 0x0b:
+      case 0x0c:
+      case 0x0d:
+      case 0x0f:
+        return null;
+
+      default:
+        return null;
+      }
     };
   };
 
